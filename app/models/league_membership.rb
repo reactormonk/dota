@@ -5,6 +5,7 @@ class LeagueMembership
   # Properties
   #
   property :id, Serial
+  property :score, Float, :default => 1000.0
 
   # 
   # Associations

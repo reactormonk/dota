@@ -3,6 +3,7 @@ require 'rake/rdoctask'
 
 require 'merb-core'
 require 'merb-core/tasks/merb'
+require 'ruby-debug'
 
 include FileUtils
 

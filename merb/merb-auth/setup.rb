@@ -10,7 +10,7 @@
 begin
   # Sets the default class ofr authentication.  This is primarily used for 
   # Plugins and the default strategies
-  Merb::Authentication.user_class = User 
+  Merb::Authentication.user_class = Player 
   
   
   # Mixin the salted user mixin
