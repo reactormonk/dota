@@ -2,25 +2,25 @@ require File.join( File.dirname(__FILE__), '..', "spec_helper" )
 
 describe Game do
 
-  it 'should stage' do
+  describe 'stage' do
 
     it 'should be created associated to a league'
 
     it 'should be possible for players to join'
 
-    it 'should not allow a player to join if...' do
+    describe 'should not allow a player to join if' do
       
-      it "... he's banned"
+      it "he's banned"
 
-      it "... he's not vouched"
+      it "he's not vouched"
 
-      it "... he's playing already"
+      it "he's playing already"
 
     end
 
     it 'should be possible to set a mode'
 
-    it 'should implement various player distribution mechanism' do
+    describe 'various player distribution mechanism' do
 
       it 'should implement captains'
 
@@ -36,7 +36,7 @@ describe Game do
 
   end
 
-  it 'should start' do
+  describe 'start' do
 
     it 'should start only with 5 players each'
 
@@ -48,9 +48,9 @@ describe Game do
 
   end
 
-  it 'should finish' do
+  describe 'end' do
 
-    it 'should accept votes' do
+    describe 'accept votes' do
 
       it 'should be possible to abort the game'
 
