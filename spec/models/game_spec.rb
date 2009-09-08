@@ -1,12 +1,30 @@
 require File.join( File.dirname(__FILE__), '..', "spec_helper" )
 
 describe Game do
+  before(:all) do
+    League.gen
+  end
 
   describe 'stage' do
 
-    it 'should be created associated to a league'
+    it 'should be created associated to a league' do
+      Game.gen.league.class.should == League
+    end
 
-    it 'should be possible for players to join'
+    it 'should be possible for players to join' do
+      p = Player.gen
+      g = Game.gen
+      p.join(g) # @g.join(@p) possible too
+      g.players.all.should_include(p)
+    end
+
+    it 'should be possible for players to leave' do
+      p = Player.gen
+      g = Game.gen
+      p.join(g)
+      p.leave
+      g.players.all.should_not_include(p)
+    end
 
     describe 'should not allow a player to join if' do
       
@@ -18,7 +36,11 @@ describe Game do
 
     end
 
-    it 'should be possible to set a mode'
+    it 'should be possible to set a mode' do
+      g = Game.gen
+      g.mode = "ar"
+      g.mode.should == "ar"
+    end
 
     describe 'various player distribution mechanism' do
 
@@ -38,7 +60,7 @@ describe Game do
 
   describe 'start' do
 
-    it 'should start only with 5 players each'
+    it 'should start only with 5 players each and a mode set'
 
     it 'should set start_time'
 
