@@ -13,5 +13,6 @@ class LeagueMembership
   #
   belongs_to :player
   belongs_to :league
+  has n, :bans, :model => "LeagueBan"
 
 end

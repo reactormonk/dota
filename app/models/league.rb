@@ -21,14 +21,28 @@ class League
       players << player 
       save
     end
-    league_memberships.first(:player => player).vouched = true
+    lm(player).vouched = true
     player.save
   end
 
   def is_vouched?(player)
-    !! ((lm = league_memberships.first(:player => player)) && lm.vouched)
+    !! ((lm = lm(player)) && lm.vouched)
+  end
+
+  def ban(player, secs, reason)
+    return false unless is_vouched?(player)
+    ban = LeagueBan.create(:reason => reason, :until => Time.now + secs)
+    lm(player).bans << ban
+    ban.save
+    true
   end
 
   def is_banned?(player)
+    !! ((lm = lm(player)) && lm.bans.first(:until.gt => Time.now))
+  end
+
+  private
+  def lm(player)
+    league_memberships.first(:player => player)
   end
 end
