@@ -80,8 +80,6 @@ describe Game do
       Game.get(id).should be_nil
     end
 
-    it 'should be destroyable even with players staged/assigned'
-
     def pgl_vouch
       p = Player.gen
       g = Game.gen
