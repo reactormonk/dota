@@ -86,12 +86,19 @@ class Game
   end
 
   def join(player)
+    return false unless allowed_to_join?(player)
     players << player
     save
   end
 
   def leave(player)
     game_memberships.first(:player => player).destroy
+  end
+
+  def allowed_to_join?(player)
+    player.is_vouched?(league) &&
+    ! player.is_banned?(league) &&
+    ! player.is_playing?
   end
 
 end

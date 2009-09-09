@@ -14,6 +14,7 @@ describe Game do
     it 'should be possible for players to join' do
       p = Player.gen
       g = Game.gen
+      p.vouch(g.league)
       p.join(g).should be_true # @g.join(@p) possible too
       g.players.all.include?(p).should be_true
       p.where_playing.should == g
@@ -22,6 +23,7 @@ describe Game do
     it 'should be possible for players to leave' do
       p = Player.gen
       g = Game.gen
+      p.vouch(g.league)
       p.join(g).should be_true
       p.leave.should be_true
       g.reload
@@ -31,11 +33,31 @@ describe Game do
 
     describe 'should not allow a player to join if' do
       
-      it "he's banned"
+      it "he's banned" do
+        p = Player.gen
+        g = Game.gen
+        l = g.league
+        p.vouch(l)
+        p.ban(l, 2.weeks, "FAIL")
+        p.join(g).should be_false
+      end
 
-      it "he's not vouched"
+      it "he's not vouched" do
+        p = Player.gen
+        g = Game.gen
+        l = g.league
+        p.join(g).should be_false
+      end
 
-      it "he's playing already"
+      it "he's playing already" do
+        p = Player.gen
+        g = Game.gen
+        l = g.league
+        p.vouch(l)
+        p.join(g)
+        g2 = Game.gen
+        p.join(g2).should be_false
+      end
 
     end
 
