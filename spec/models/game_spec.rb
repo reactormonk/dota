@@ -72,7 +72,13 @@ describe Game do
       g.game_memberships.first(:player => p).score.should == p.league_memberships.first(:league => l).score
     end
 
-    it 'should be destroyed if the last player left the game'
+    it 'should be destroyed if the last player left the game' do
+      p,g,l = pgl_vouch
+      p.join(g)
+      p.leave
+      id = g.id
+      Game.get(id).should be_nil
+    end
 
     it 'should be destroyable even with players staged/assigned'
 

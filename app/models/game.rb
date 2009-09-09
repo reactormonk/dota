@@ -93,6 +93,7 @@ class Game
 
   def leave(player)
     game_memberships.first(:player => player).destroy
+    destroy if game_memberships.size == 0
   end
 
   def allowed_to_join?(player)
