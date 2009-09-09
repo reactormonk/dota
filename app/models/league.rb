@@ -17,7 +17,7 @@ class League
   has n, :games
 
   def vouch(player)
-    unless players.include?(player)
+    unless lm(player)
       players << player 
       save
     end
