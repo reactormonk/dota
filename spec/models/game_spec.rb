@@ -61,7 +61,17 @@ describe Game do
 
       it 'should implement captains'
 
-      it 'should implement (intelligent) random assignment'
+      it 'should implement (intelligent) random assignment' do
+        # Not intelligent yet :)
+        l = League.gen
+        ps = 12.of {Player.gen}
+        ps.each {|p| p.vouch l}
+        g = Game.gen(:league => l)
+        ps.each {|p| p.join(g).should be_true}
+        g.random_assignment.should be_true
+        g.sentinel.size.should == 5
+        g.scourge.size.should == 5
+      end
 
     end
 

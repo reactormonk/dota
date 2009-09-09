@@ -102,6 +102,34 @@ class Game
     ! player.is_playing?
   end
 
+  def random_assignment
+    gms = game_memberships.all
+    gms.shuffle!
+    gms[0..4].each { |gm| gm.party = :sentinel; gm.save}
+    gms[5..9].each { |gm| gm.party = :scourge; gm.save}
+    save
+  end
+
+  def sentinel
+    game_memberships.all(:party => :sentinel)
+  end
+
+  def scourge
+    game_memberships.all(:party => :scourge)
+  end
+
+  def set_sentinel(player)
+    set_party(player, :sentinel)
+  end
+
+  def set_scourge(player)
+    set_party(player, :scourge)
+  end
+
+  def set_party(player, party)
+    gm(player).party = party
+  end
+
   def gm(player)
     game_memberships.first(:player => player)
   end
