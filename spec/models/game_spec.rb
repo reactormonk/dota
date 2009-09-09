@@ -14,16 +14,19 @@ describe Game do
     it 'should be possible for players to join' do
       p = Player.gen
       g = Game.gen
-      p.join(g) # @g.join(@p) possible too
-      g.players.all.should_include(p)
+      p.join(g).should be_true # @g.join(@p) possible too
+      g.players.all.include?(p).should be_true
+      p.where_playing.should == g
     end
 
     it 'should be possible for players to leave' do
       p = Player.gen
       g = Game.gen
-      p.join(g)
-      p.leave
-      g.players.all.should_not_include(p)
+      p.join(g).should be_true
+      p.leave.should be_true
+      g.reload
+      g.players.all.include?(p).should be_false
+      p.is_playing?.should be_false
     end
 
     describe 'should not allow a player to join if' do

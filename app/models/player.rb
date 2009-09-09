@@ -12,6 +12,8 @@ class Player
   #
   has n, :league_memberships
   has n, :leagues, :through => :league_memberships
+  has n, :game_memberships
+  has n, :games, :through => :game_memberships
 
   #
   # Logic
@@ -34,6 +36,27 @@ class Player
 
   def bans(league)
     league.bans(self)
+  end
+
+  def join(game)
+    game.join(self)
+  end
+
+  def leave
+    if is_playing?
+      where_playing.leave(self)
+      return true
+    else
+      return false
+    end
+  end
+
+  def is_playing?
+    !! where_playing
+  end
+
+  def where_playing
+    games.first(:state => [:running, :staged])
   end
 
 end

@@ -85,8 +85,13 @@ class Game
     end
   end
 
-  #
-  # Validations
-  #
+  def join(player)
+    players << player
+    save
+  end
+
+  def leave(player)
+    game_memberships.first(:player => player).destroy
+  end
 
 end
