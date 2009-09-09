@@ -92,7 +92,7 @@ class Game
   end
 
   def leave(player)
-    game_memberships.first(:player => player).destroy
+    gm(player).destroy
     destroy if game_memberships.size == 0
   end
 
@@ -102,4 +102,7 @@ class Game
     ! player.is_playing?
   end
 
+  def gm(player)
+    game_memberships.first(:player => player)
+  end
 end
