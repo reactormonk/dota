@@ -30,7 +30,6 @@ describe Game do
     describe 'should not allow a player to join if' do
       
       it "he's banned" do
-        League.gen # WTF
         p,g,l = pgl_vouch
         p.ban(l, 2.weeks, "FAIL")
         p.join(g).should be_false
@@ -67,7 +66,6 @@ describe Game do
     end
 
     it "should grab the player's score from his LeagueMembership" do
-      League.gen # WTF?
       p,g,l = pgl_vouch
       p.league_memberships.first(:league => l).score = 1200.0
       p.join(g)
