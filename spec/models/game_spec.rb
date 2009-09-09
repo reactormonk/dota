@@ -12,18 +12,14 @@ describe Game do
     end
 
     it 'should be possible for players to join' do
-      p = Player.gen
-      g = Game.gen
-      p.vouch(g.league)
+      p,g,l = pgl_vouch
       p.join(g).should be_true # @g.join(@p) possible too
       g.players.all.include?(p).should be_true
       p.where_playing.should == g
     end
 
     it 'should be possible for players to leave' do
-      p = Player.gen
-      g = Game.gen
-      p.vouch(g.league)
+      p,g,l = pgl_vouch
       p.join(g).should be_true
       p.leave.should be_true
       g.reload
@@ -34,10 +30,8 @@ describe Game do
     describe 'should not allow a player to join if' do
       
       it "he's banned" do
-        p = Player.gen
-        g = Game.gen
-        l = g.league
-        p.vouch(l)
+        League.gen # WTF
+        p,g,l = pgl_vouch
         p.ban(l, 2.weeks, "FAIL")
         p.join(g).should be_false
       end
@@ -50,10 +44,7 @@ describe Game do
       end
 
       it "he's playing already" do
-        p = Player.gen
-        g = Game.gen
-        l = g.league
-        p.vouch(l)
+        p,g,l = pgl_vouch
         p.join(g)
         g2 = Game.gen
         p.join(g2).should be_false
@@ -80,6 +71,14 @@ describe Game do
     it 'should be destroyed if the last player left the game'
 
     it 'should be destroyable even with players staged/assigned'
+
+    def pgl_vouch
+      p = Player.gen
+      g = Game.gen
+      l = g.league
+      p.vouch(l)
+      [p,g,l]
+    end
 
   end
 
