@@ -66,7 +66,13 @@ describe Game do
 
     end
 
-    it "should grab the player's score from his LeagueMembership"
+    it "should grab the player's score from his LeagueMembership" do
+      League.gen # WTF?
+      p,g,l = pgl_vouch
+      p.league_memberships.first(:league => l).score = 1200.0
+      p.join(g)
+      g.game_memberships.first(:player => p).score.should == p.league_memberships.first(:league => l).score
+    end
 
     it 'should be destroyed if the last player left the game'
 

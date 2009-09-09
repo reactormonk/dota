@@ -5,7 +5,7 @@ class GameMembership
   # Properties
   #
   property :id, Serial
-  property :score, Float, :nullable => false, :default => 1000.0 #proc {|r,p| LeagueMembership.first(:player => r.player, :league => r.league).score}
+  property :score, Float, :nullable => false, :default => proc {|r,p| LeagueMembership.first(:player => r.player, :league => r.game.league).score}
   property :party, Enum[:staged, :scourge, :sentinel], :nullable => false, :default => :staged
 
   # 
