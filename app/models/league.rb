@@ -41,6 +41,14 @@ class League
     !! ((lm = lm(player)) && lm.bans.first(:until.gt => Time.now))
   end
 
+  def bans(player)
+    if lm = lm(player)
+      lm.bans
+    else
+      false
+    end
+  end
+
   private
   def lm(player)
     league_memberships.first(:player => player)
