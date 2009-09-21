@@ -95,7 +95,24 @@ describe Game do
           proc {game.pick((game.captains.all - [game.picking_captain]).first, players[4])}.should raise_error NotYourTurn
         end
 
-        it 'should be able to repick after a leave'
+        it 'should be able to repick after a leave' do
+          l = League.pick
+          players = 15.of {Player.gen}
+          players.each {|p| p.vouch(l)}
+          game = CaptainGame.gen(:captains => players[0..1], :league => l)
+          game.distribute_captains
+          players[2..14].each {|p| p.join(game)}
+          game.reload
+          proc {game.pick(game.picking_captain, players[2])}.should_not raise_error
+          game.reload
+          proc {game.pick(game.picking_captain, players[3])}.should_not raise_error
+          # Now both should have 2 players
+          game.reload
+          players[3].reload
+          [:sentinel, :scourge].include?(party = players[3].party).should be_true
+          players[3].leave
+          game.pick_next.should == party
+        end
 
         it 'should start with 5 players each'
 

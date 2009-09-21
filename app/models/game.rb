@@ -194,6 +194,7 @@ class CaptainGame < Game
       return true
     end
     super
+    choose_pick_next
   end
 
   def pick(capt, player)
