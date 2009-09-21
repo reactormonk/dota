@@ -17,12 +17,7 @@ class League
   has n, :games
 
   def vouch(player)
-    unless lm(player)
-      players << player 
-      save
-    end
-    lm(player).vouched = true
-    player.save
+    mem = league_memberships.first_or_create(:player => player).vouched = true
   end
 
   def is_vouched?(player)
