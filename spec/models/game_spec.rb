@@ -1,4 +1,5 @@
 require File.join( File.dirname(__FILE__), '..', "spec_helper" )
+require 'set'
 
 describe Game do
   before(:all) do
@@ -57,16 +58,35 @@ describe Game do
       g.mode.should == "ar"
     end
 
-    describe 'various player distribution mechanism' do
+    describe 'various player distribution mechanism:' do
 
-      it 'should implement captains'
+      describe 'captains' do
 
-      it 'should implement (intelligent) random assignment' do
+        it 'should be assigned' do
+          l = League.pick
+          players = 5.of {Player.gen}
+          players.each {|p| p.vouch(l)}
+          game = CaptainGame.gen(:captains => players[0..1])
+          game.reload
+          game.distribute_captains
+          game.players.all.size.should == 2
+          Set.new([game.gm(players[0]).party, game.gm(players[1]).party]).should == Set.new([:scourge, :sentinel])
+        end
+
+        it 'should be able to pick'
+
+        it 'should be able to repick after a leave'
+
+        it 'should start with 5 players each'
+
+      end
+
+      it '(intelligent) random assignment' do
         # Not intelligent yet :)
         l = League.gen
         ps = 12.of {Player.gen}
         ps.each {|p| p.vouch l}
-        g = Game.gen(:league => l)
+        g = RandomGame.gen(:league => l)
         ps.each {|p| p.join(g).should be_true}
         g.random_assignment.should be_true
         g.sentinel.size.should == 5

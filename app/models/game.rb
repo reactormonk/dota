@@ -12,6 +12,7 @@ class Game
   property :mode, String
   property :state, String
   property :replay, Text
+  property :type, Discriminator
   
   #
   # Associations
@@ -78,10 +79,10 @@ class Game
 
   def result
     case state
-      when :staged, :running then :undecided
       when :scourge_won then :scourge
       when :sentinel_won then :sentinel
       when :aborted then :aborted
+      else :undecided
     end
   end
 
@@ -102,14 +103,6 @@ class Game
     ! player.is_playing?
   end
 
-  def random_assignment
-    gms = game_memberships.all
-    gms.shuffle!
-    gms[0..4].each { |gm| gm.party = :sentinel; gm.save}
-    gms[5..9].each { |gm| gm.party = :scourge; gm.save}
-    save
-  end
-
   def sentinel
     game_memberships.all(:party => :sentinel)
   end
@@ -118,19 +111,99 @@ class Game
     game_memberships.all(:party => :scourge)
   end
 
-  def set_sentinel(player)
-    set_party(player, :sentinel)
+  def sentinel_set(player)
+    party_set(player, :sentinel)
   end
 
-  def set_scourge(player)
-    set_party(player, :scourge)
+  def scourge_set(player)
+    party_set(player, :scourge)
   end
 
-  def set_party(player, party)
+  def party_set(player, party)
     gm(player).party = party
   end
 
   def gm(player)
     game_memberships.first(:player => player)
+  end
+end
+
+class RandomGame < Game
+  def random_assignment
+    gms = game_memberships.all
+    gms.shuffle!
+    gms[0..4].each { |gm| gm.party = :sentinel; gm.save}
+    gms[5..9].each { |gm| gm.party = :scourge; gm.save}
+    save
+  end
+end
+
+class CaptainGame < Game
+
+  property :pick_next, Enum[:sentinel, :scourge], :default => proc {|r,p| r.choose_pick_next}
+  has 2, :captain_memberships, 'GameMembership', :child_key => [ :game_id ], :captain => true
+  has 2, :captains, 'Player', :through => :captain_memberships, :via => :player
+
+  #
+  # Validations
+  #
+
+  #
+  # State Machine
+  #
+
+  state_machine :default => :challenged do
+    state :challenged
+
+    event :challenge_accepted do
+      transition :from => :challenged, :to => :staged
+      # add timer
+    end
+
+  end
+
+  #
+  # Logic
+  #
+
+  def distribute_captains
+    # check allowed_to_join?
+    #return unless captain_memberships.all(:party => :staged).size == 2
+    party1, party2 = [:sentinel, :scourge].shuffle
+    party_set(captains.first,party1)
+    party_set(captains.last,party2)
+  end
+
+  def leave(player)
+    if captains.include? player
+      destroy
+      save
+      return true
+    end
+    super
+  end
+
+  def pick(capt, player)
+    unless capt.party == pick_next
+      # error here
+    else
+      unless player.party == :staged
+        player.party = pick_next
+        choose_pick_next
+      else
+        # error here
+      end
+    end
+  end
+
+  def choose_pick_next
+    case sentinel.size <=> scourge.size
+    when 1
+      :sentinel
+    when 0
+      [:sentinel, :scourge].sample
+    when -1
+      :scourge
+    end
   end
 end
