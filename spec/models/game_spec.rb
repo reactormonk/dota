@@ -63,11 +63,7 @@ describe Game do
       describe 'captains' do
 
         it 'should be assigned' do
-          l = League.pick
-          players = 5.of {Player.gen}
-          players.each {|p| p.vouch(l)}
-          game = CaptainGame.gen(:captains => players[0..1])
-          game.distribute_captains
+          l,players,game = capt_lpg
           game.players.all.size.should == 2
           Set.new([game.gm(players[0]).party, game.gm(players[1]).party]).should == Set.new([:scourge, :sentinel])
         end
@@ -75,12 +71,7 @@ describe Game do
         it 'should not allow an already playing captain to join'
 
         it 'should be able to pick' do
-          l = League.pick
-          players = 15.of {Player.gen}
-          players.each {|p| p.vouch(l)}
-          game = CaptainGame.gen(:captains => players[0..1], :league => l)
-          game.distribute_captains
-          game.reload
+          l, players, game = capt_lpg
           proc {game.pick(game.picking_captain, players[2])}.should raise_error PlayerNotJoined
           game.join(players[2]).should be_true
           game.reload
@@ -88,7 +79,7 @@ describe Game do
           game.reload
           players[2].reload
           proc {game.pick(game.picking_captain, players[2])}.should raise_error AlreadyPicked
-          players[3..6].each {|p| p.join(game)}
+          players[3..4].each {|p| p.join(game)}
           game.reload
           proc {game.pick(game.picking_captain, players[3])}.should_not raise_error
           game.reload
@@ -96,12 +87,8 @@ describe Game do
         end
 
         it 'should be able to repick after a leave' do
-          l = League.pick
-          players = 15.of {Player.gen}
-          players.each {|p| p.vouch(l)}
-          game = CaptainGame.gen(:captains => players[0..1], :league => l)
-          game.distribute_captains
-          players[2..14].each {|p| p.join(game)}
+          l, players, game = capt_lpg
+          players[2..4].each {|p| p.join(game)}
           game.reload
           proc {game.pick(game.picking_captain, players[2])}.should_not raise_error
           game.reload
@@ -116,6 +103,15 @@ describe Game do
 
         it 'should start with 5 players each'
 
+        def capt_lpg
+          l = League.pick
+          players = 5.of {Player.gen}
+          players.each {|p| p.vouch(l)}
+          game = CaptainGame.gen(:captains => players[0..1], :league => l)
+          game.distribute_captains
+          game.reload
+          [l,players,game]
+        end
       end
 
       it '(intelligent) random assignment' do
