@@ -67,7 +67,6 @@ describe Game do
           players = 5.of {Player.gen}
           players.each {|p| p.vouch(l)}
           game = CaptainGame.gen(:captains => players[0..1])
-          game.reload
           game.distribute_captains
           game.players.all.size.should == 2
           Set.new([game.gm(players[0]).party, game.gm(players[1]).party]).should == Set.new([:scourge, :sentinel])

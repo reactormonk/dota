@@ -97,6 +97,7 @@ class Game
     destroy if game_memberships.size == 0
   end
 
+  # TODO: specific error message
   def allowed_to_join?(player)
     player.is_vouched?(league) &&
     ! player.is_banned?(league) &&
@@ -167,11 +168,13 @@ class CaptainGame < Game
   #
 
   def distribute_captains
-    # check allowed_to_join?
-    #return unless captain_memberships.all(:party => :staged).size == 2
-    party1, party2 = [:sentinel, :scourge].shuffle
-    party_set(captains.first,party1)
-    party_set(captains.last,party2)
+    reload
+    if game_memberships.all(:player => captains).all? {|cm| cm.party == :staged}
+      # check allowed_to_join?
+      party1, party2 = [:sentinel, :scourge].shuffle
+      party_set(captains.first,party1)
+      party_set(captains.last,party2)
+    end
   end
 
   def leave(player)
