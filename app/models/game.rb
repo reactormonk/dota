@@ -97,11 +97,20 @@ class Game
     destroy if game_memberships.size == 0
   end
 
-  # TODO: specific error message
   def allowed_to_join?(player)
-    player.is_vouched?(league) &&
-    ! player.is_banned?(league) &&
-    ! player.is_playing?
+    begin
+      allowed_to_join(player)
+      true
+    rescue => e
+      errors.add :player, e
+      false
+    end
+  end
+
+  def allowed_to_join(player)
+    raise NotVouched, "#{player} is not vouched in #{league}." unless player.is_vouched?(league)
+    raise Banned, "#{player} is banned due to #{player.bans(league).last}." if player.is_banned?(league)
+    raise PlayerPlaying, "#{player} is playing in #{game}." if player.is_playing?
   end
 
   def sentinel
