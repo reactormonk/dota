@@ -72,7 +72,28 @@ describe Game do
           Set.new([game.gm(players[0]).party, game.gm(players[1]).party]).should == Set.new([:scourge, :sentinel])
         end
 
-        it 'should be able to pick'
+        it 'should not allow an already playing captain to join'
+
+        it 'should be able to pick' do
+          l = League.pick
+          players = 15.of {Player.gen}
+          players.each {|p| p.vouch(l)}
+          game = CaptainGame.gen(:captains => players[0..1], :league => l)
+          game.distribute_captains
+          game.reload
+          proc {game.pick(game.picking_captain, players[2])}.should raise_error PlayerNotJoined
+          game.join(players[2]).should be_true
+          game.reload
+          proc {game.pick(game.picking_captain, players[2])}.should_not raise_error
+          game.reload
+          players[2].reload
+          proc {game.pick(game.picking_captain, players[2])}.should raise_error AlreadyPicked
+          players[3..6].each {|p| p.join(game)}
+          game.reload
+          proc {game.pick(game.picking_captain, players[3])}.should_not raise_error
+          game.reload
+          proc {game.pick((game.captains.all - [game.picking_captain]).first, players[4])}.should raise_error NotYourTurn
+        end
 
         it 'should be able to repick after a leave'
 

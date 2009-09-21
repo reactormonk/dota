@@ -60,6 +60,6 @@ class Player
   end
 
   def party
-    game_memberships(:game => where_playing).party
+    game_memberships.first(:game => where_playing).party
   end
 end

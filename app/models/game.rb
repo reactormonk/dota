@@ -174,6 +174,7 @@ class CaptainGame < Game
       party1, party2 = [:sentinel, :scourge].shuffle
       party_set(captains.first,party1)
       party_set(captains.last,party2)
+      save
     end
   end
 
@@ -188,13 +189,15 @@ class CaptainGame < Game
 
   def pick(capt, player)
     unless capt.party == pick_next
-      # error here
+      raise NotYourTurn, "It's not #{capt.login}'s turn."
     else
-      unless player.party == :staged
-        player.party = pick_next
+      raise PlayerNotJoined, "#{player.login} hasn't joined Game \##{self.id}." unless gm(player)
+      if player.party == :staged
+        gm(player).party = pick_next
         choose_pick_next
+        save
       else
-        # error here
+        raise AlreadyPicked, "#{player.login} has been picked."
       end
     end
   end
@@ -209,4 +212,13 @@ class CaptainGame < Game
       :scourge
     end
   end
+
+  def picking_captain
+    game_memberships.first(:party => pick_next).player
+  end
 end
+
+class CaptainGameException < StandardError; end
+class NotYourTurn < CaptainGameException; end
+class AlreadyPicked < CaptainGameException; end
+class PlayerNotJoined < CaptainGameException; end
