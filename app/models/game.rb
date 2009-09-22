@@ -110,7 +110,7 @@ class Game
   def allowed_to_join(player)
     raise NotVouched, "#{player} is not vouched in #{league}." unless player.is_vouched?(league)
     raise Banned, "#{player} is banned due to #{player.bans(league).last}." if player.is_banned?(league)
-    raise PlayerPlaying, "#{player} is playing in #{game}." if player.is_playing?
+    raise PlayerPlaying, "#{player} is playing in #{player.where_playing}." if player.is_playing?
   end
 
   def sentinel
@@ -157,6 +157,20 @@ class CaptainGame < Game
   #
   # Validations
   #
+  
+  validates_with_method :allowed_to_be_captains
+
+  def allowed_to_be_captains
+    return true unless new?
+    captains.all? do |capt|
+      if allowed_to_join?(capt)
+        # add other checks here
+        true
+      else
+        false
+      end
+    end
+  end
 
   #
   # State Machine
@@ -179,7 +193,6 @@ class CaptainGame < Game
   def distribute_captains
     reload
     if game_memberships.all(:player => captains).all? {|cm| cm.party == :staged}
-      # check allowed_to_join?
       party1, party2 = [:sentinel, :scourge].shuffle
       party_set(captains.first,party1)
       party_set(captains.last,party2)
@@ -228,7 +241,11 @@ class CaptainGame < Game
   end
 end
 
-class CaptainGameException < StandardError; end
+class GameException < StandardError; end
+class NotVouched < GameException; end
+class Banned < GameException; end
+class PlayerPlaying < GameException; end
+class CaptainGameException < GameException; end
 class NotYourTurn < CaptainGameException; end
 class AlreadyPicked < CaptainGameException; end
 class PlayerNotJoined < CaptainGameException; end

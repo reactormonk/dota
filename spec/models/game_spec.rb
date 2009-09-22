@@ -68,7 +68,12 @@ describe Game do
           Set.new([game.gm(players[0]).party, game.gm(players[1]).party]).should == Set.new([:scourge, :sentinel])
         end
 
-        it 'should not allow an already playing captain to join'
+        it 'should not allow an already playing captain to join' do
+          l, players, game = capt_lpg
+          game = CaptainGame.gen(:captains => players[1..2])
+          (!! game.save).should == false
+          players[2].is_playing?.should be_false
+        end
 
         it 'should be able to pick' do
           l, players, game = capt_lpg
