@@ -56,7 +56,7 @@ class Player
   end
 
   def where_playing
-    games.first(:state => [:running, :staged])
+    games.first(:state => [:challenged, :running, :staged])
   end
 
   def party
