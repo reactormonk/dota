@@ -1,15 +1,26 @@
 require 'dm-sweatshop'
-include DataMapper::Sweatshop::Unique
-League.fix {{
-  :name => /\w{5,15}/.gen
-}}
+
+player_fib = Fiber.new do
+  n = 0
+  loop do
+    Fiber.yield :login => "log#{n}", :qauth => "q#{n}"
+    n +=1
+  end
+end
+league_fib = Fiber.new do
+  n = 0
+  loop do
+    Fiber.yield :name => "n#{n}"
+    n +=1
+  end
+end
+
+League.fix {league_fib.resume}
 
 Player.fix {{
-  :login => /\w{5,15}/.gen,
-  :qauth => /\w{5,15}/.gen,
   :password => "sekrit",
   :password_confirmation => "sekrit"
-}}
+}.merge player_fib.resume}
 
 LeagueMembership.fix {{
   :player => Player.make,
