@@ -46,7 +46,7 @@ describe Game do
       it "he's playing already" do
         p,g,l = pgl_vouch
         p.join(g)
-        g2 = Game.gen
+        g2 = Game.gen(:league => l)
         proc {p.join(g2)}.should raise_error PlayerPlaying
       end
 
