@@ -33,21 +33,21 @@ describe Game do
       it "he's banned" do
         p,g,l = pgl_vouch
         p.ban(l, 2.weeks, "FAIL")
-        p.join(g).should be_false
+        proc {p.join(g)}.should raise_error Banned
       end
 
       it "he's not vouched" do
         p = Player.gen
         g = Game.gen
         l = g.league
-        p.join(g).should be_false
+        proc { p.join(g)}.should raise_error NotVouched
       end
 
       it "he's playing already" do
         p,g,l = pgl_vouch
         p.join(g)
         g2 = Game.gen
-        p.join(g2).should be_false
+        proc {p.join(g2)}.should raise_error PlayerPlaying
       end
 
     end
@@ -73,7 +73,7 @@ describe Game do
             league = League.pick
             players = 2.of{Player.gen}
             players.each {|p| league.vouch p}
-            game = Game.gen
+            game = Game.gen(:league => league)
             game.join(players.first).should be_true
             game.save
             game.reload
@@ -87,7 +87,7 @@ describe Game do
             league = League.pick
             players = 2.of{Player.gen}
             players.each {|p| league.vouch p}
-            game = Game.gen
+            game = Game.gen(:league => league)
             game.join(players.first).should be_true
             game.save
             game.reload

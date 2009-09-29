@@ -87,7 +87,7 @@ class Game
   end
 
   def join(player)
-    return false unless allowed_to_join?(player)
+    allowed_to_join(player)
     players << player
     save
   end
