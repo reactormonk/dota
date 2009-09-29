@@ -229,7 +229,6 @@ class CaptainGame < Game
   def leave(player)
     if captains.include? player
       destroy
-      save
       return true
     end
     super
