@@ -17,7 +17,7 @@ class League
   has n, :games
 
   def vouch(player)
-    mem = league_memberships.first_or_create(:player => player).vouched = true
+    league_memberships.first_or_create(:player => player).vouched = true
   end
 
   def is_vouched?(player)
