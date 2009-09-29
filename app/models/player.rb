@@ -71,7 +71,7 @@ class Player
     case
     when captain_game = challenged
       if games.game_memberships(:league => league, :game => captain_game).party == :scourge
-        # trigger state change
+        captain_game.accept_challenge(self)
       else
         raise PlayerPlaying, "You've challenged someone."
       end
@@ -83,13 +83,14 @@ class Player
       if captain_game = CaptainGame.first(:state => :challenged, :league => league)
         captain_game.accept_challenge(self)
       else
-        captain_game = CaptainGame.create(:league => league, :captains => self)
+        captain_game = CaptainGame.create(:league => league, :captains => [self])
       end
     end
+    captain_game
   end
 
   def challenged
-    CaptainGame.first(:state => :challenged, :captains => [self])
+    games.first(:state => :challenged)
   end
 
   def challenged?

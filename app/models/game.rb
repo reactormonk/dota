@@ -176,7 +176,7 @@ class CaptainGame < Game
   # State Machine
   #
 
-  state_machine :default => :challenged do
+  state_machine :initial => :challenged do
     state :challenged
 
     event :challenge_accepted do
@@ -204,6 +204,16 @@ class CaptainGame < Game
     join_as_captain(challenged)
     reload
     scourge_set(challenged)
+  end
+
+  def accept_challenge(player)
+    if scourge.include? player
+      # :challenged => :staged
+    else
+      join_as_captain(player)
+      distribute_captains
+      # :challenged => :staged
+    end
   end
 
   def distribute_captains

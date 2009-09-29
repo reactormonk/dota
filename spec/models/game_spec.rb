@@ -75,9 +75,6 @@ describe Game do
             players.each {|p| league.vouch p}
             game = Game.gen(:league => league)
             game.join(players.first).should be_true
-            game.save
-            game.reload
-            players.first.reload
             players.first.is_playing?.should be_true
             proc {players.first.challenge(league, players[1])}.should raise_error PlayerPlaying
             players[1].is_playing?.should be_false
@@ -89,15 +86,39 @@ describe Game do
             players.each {|p| league.vouch p}
             game = Game.gen(:league => league)
             game.join(players.first).should be_true
-            game.save
-            game.reload
-            players.first.reload
             players.first.is_playing?.should be_true
             proc {players[1].challenge(league, players.first)}.should raise_error PlayerPlaying
           end
         end
 
-        it 'should accept a challenge'
+        describe 'should accept a challenge' do
+          it '[direct]' do
+            league = League.pick
+            players = 2.of {Player.gen}
+            players.each {|p| league.vouch p}
+            captain_game = players.first.challenge(league, players[1])
+            captain_game.reload
+            players[1].challenged?.should be_true
+            captain_game.captains.size.should == 2
+          end
+        end
+
+        describe 'should accept a challenge' do
+          it '[anonymous]' do
+            league = League.gen
+            players = 2.of {Player.gen}
+            players.each {|p| league.vouch p}
+            players.first.is_vouched?(league).should be_true
+            players.first.challenge(league)
+            captain_game = CaptainGame.first(:league => league)
+            players.first.challenged?.should be_true
+            players[1].challenge(league)
+            captain_game.captains.size.should == 2
+            captain_game.captains.should include players[1]
+          end
+        end
+
+        it 'should not be possible for players to join a challenge not yet accepted'
 
         it 'should destroy / transitiate depending on reaction'
 
