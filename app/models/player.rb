@@ -42,6 +42,10 @@ class Player
     game.join(self)
   end
 
+  def join_as_captain(game)
+    game.join_as_captain(self)
+  end
+
   def leave
     if is_playing?
       where_playing.leave(self)
@@ -61,5 +65,34 @@ class Player
 
   def party
     game_memberships.first(:game => where_playing).party
+  end
+
+  def challenge(league, player=nil)
+    case
+    when captain_game = challenged
+      if games.game_memberships(:league => league, :game => captain_game).party == :scourge
+        # trigger state change
+      else
+        raise PlayerPlaying, "You've challenged someone."
+      end
+    when player
+      captain_game = CaptainGame.new(:league => league)
+      captain_game.challenges(self, player)
+    else
+      # Accept a challenge or make a new one
+      if captain_game = CaptainGame.first(:state => :challenged, :league => league)
+        captain_game.accept_challenge(self)
+      else
+        captain_game = CaptainGame.create(:league => league, :captains => self)
+      end
+    end
+  end
+
+  def challenged
+    CaptainGame.first(:state => :challenged, :captains => [self])
+  end
+
+  def challenged?
+    !! challenged
   end
 end

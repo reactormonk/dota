@@ -3,14 +3,14 @@ require 'dm-sweatshop'
 player_fib = Fiber.new do
   n = 0
   loop do
-    Fiber.yield :login => "log#{n}", :qauth => "q#{n}"
+    Fiber.yield({:login => "log#{n}", :qauth => "q#{n}"})
     n +=1
   end
 end
 league_fib = Fiber.new do
   n = 0
   loop do
-    Fiber.yield :name => "n#{n}"
+    Fiber.yield({:name => "n#{n}"})
     n +=1
   end
 end

@@ -68,12 +68,38 @@ describe Game do
           Set.new([game.gm(players[0]).party, game.gm(players[1]).party]).should == Set.new([:scourge, :sentinel])
         end
 
-        it 'should not allow an already playing captain to join' do
-          l, players, game = capt_lpg
-          game = CaptainGame.gen(:captains => players[1..2])
-          (!! game.save).should == false
-          players[2].is_playing?.should be_false
+        describe 'should not allow an already playing captain' do
+          it 'to challenge' do
+            league = League.pick
+            players = 2.of{Player.gen}
+            players.each {|p| league.vouch p}
+            game = Game.gen
+            game.join(players.first).should be_true
+            game.save
+            game.reload
+            players.first.reload
+            players.first.is_playing?.should be_true
+            proc {players.first.challenge(league, players[1])}.should raise_error PlayerPlaying
+            players[1].is_playing?.should be_false
+          end
+
+          it 'to be challenged' do
+            league = League.pick
+            players = 2.of{Player.gen}
+            players.each {|p| league.vouch p}
+            game = Game.gen
+            game.join(players.first).should be_true
+            game.save
+            game.reload
+            players.first.reload
+            players.first.is_playing?.should be_true
+            proc {players[1].challenge(league, players.first)}.should raise_error PlayerPlaying
+          end
         end
+
+        it 'should accept a challenge'
+
+        it 'should destroy / transitiate depending on reaction'
 
         it 'should be able to pick' do
           l, players, game = capt_lpg
@@ -112,7 +138,8 @@ describe Game do
           l = League.pick
           players = 5.of {Player.gen}
           players.each {|p| p.vouch(l)}
-          game = CaptainGame.gen(:captains => players[0..1], :league => l)
+          game = CaptainGame.gen(:league => l)
+          players[0..1].each {|p| game.join_as_captain(p)}
           game.distribute_captains
           game.reload
           [l,players,game]

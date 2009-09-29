@@ -189,6 +189,22 @@ class CaptainGame < Game
   #
   # Logic
   #
+  def join_as_captain(player)
+    allowed_to_join(player)
+    captains << player
+    save
+  end
+
+  def challenges(challenger, challenged)
+    raise "Use only to initialize" unless captains.size == 0 and players.size == 0
+    join_as_captain(challenger)
+    reload  # I don't like this, but it seems to be needed due to DataMapper
+            # not tracking intermediates correctly
+    sentinel_set(challenger)
+    join_as_captain(challenged)
+    reload
+    scourge_set(challenged)
+  end
 
   def distribute_captains
     reload
