@@ -67,17 +67,21 @@ class Player
     game_memberships.first(:game => where_playing).party
   end
 
+  def accept_challenge
+    captain_game = challenged 
+    unless captain_game && game_memberships.first(:game => captain_game).party == :scourge
+      raise NotChallenged, "You're not challenged."
+    end
+    captain_game.accept_challenge(self)
+  end
+
   def challenge(league, player=nil)
-    case
-    when captain_game = challenged
-      if games.game_memberships(:league => league, :game => captain_game).party == :scourge
-        captain_game.accept_challenge(self)
-      else
-        raise PlayerPlaying, "You've challenged someone."
-      end
-    when player
-      captain_game = CaptainGame.new(:league => league)
+    if captain_game = challenged
+      raise PlayerPlaying, "You're playing in #{captain_game}."
+    elsif player
+      captain_game = CaptainGame.create(:league => league)
       captain_game.challenges(self, player)
+      captain_game.save
     else
       # Accept a challenge or make a new one
       if captain_game = CaptainGame.first(:state => :challenged, :league => league)

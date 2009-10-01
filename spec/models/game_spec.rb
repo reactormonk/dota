@@ -126,9 +126,20 @@ describe Game do
             players.first.challenge(league, players[1])
             players.last.is_playing?.should be_true
             players.last.leave
-            players.first.is_playing?.should be_false
-            players.last.is_playing?.should be_false
+            players.each {|p| p.is_playing?.should be_false}
           end
+
+#          it 'accept' do
+#            league = League.gen
+#            players = 2.of {Player.gen}
+#            players.each {|p| league.vouch p}
+#            captain_game = players.first.challenge(league, players.last)
+#            captain_game.save
+#            players.last.accept_challenge
+#            players.each {|p| p.is_playing?.should be_true}
+#            Set.new(captain_game.captains).should == Set.new(players)
+#            captain_game.state.should == :staged
+#          end
         end
 
         it 'should not be possible for players to join a challenge not yet accepted'

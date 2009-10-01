@@ -1,4 +1,5 @@
 require 'state_machine'
+require 'dm-types'
 
 class Game
   include DataMapper::Resource
@@ -114,11 +115,11 @@ class Game
   end
 
   def sentinel
-    game_memberships.all(:party => :sentinel)
+    game_memberships.all(:party => :sentinel).player
   end
 
   def scourge
-    game_memberships.all(:party => :scourge)
+    game_memberships.all(:party => :scourge).player
   end
 
   def sentinel_set(player)
@@ -208,11 +209,13 @@ class CaptainGame < Game
 
   def accept_challenge(player)
     if scourge.include? player
-      # :challenged => :staged
-    else
+      challenge_accepted
+    elsif captains.size == 1
       join_as_captain(player)
       distribute_captains
-      # :challenged => :staged
+      challenge_accepted
+    else
+      raise NotChallenged, "You're not challenged."
     end
   end
 
@@ -274,3 +277,4 @@ class CaptainGameException < GameException; end
 class NotYourTurn < CaptainGameException; end
 class AlreadyPicked < CaptainGameException; end
 class PlayerNotJoined < CaptainGameException; end
+class NotChallenged < CaptainGameException; end
