@@ -31,6 +31,22 @@ Game.fix {{
   :league => League.pick
 }}
 
+class Game
+  def self.gen_full_game
+    league = League.gen
+    game = new(:league => league)
+    game.league.save
+    10.times do
+      p = Player.gen
+      p.vouch league
+      p.join game
+    end
+    game.players[0..4].each {|p| game.sentinel_set p}
+    game.players[5..9].each {|p| game.scourge_set p}
+    game
+  end
+end
+
 GameMembership.fix {{
   :game => Game.pick,
   :player => Player.make,
