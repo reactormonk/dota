@@ -24,7 +24,7 @@ class League
   end
 
   def is_vouched?(player)
-    !! ((lm = lm(player)) && lm.vouched)
+    !! ((mem = lm(player)) && mem.vouched)
   end
 
   def ban(player, secs, reason)

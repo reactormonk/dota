@@ -132,6 +132,7 @@ class Game
 
   def party_set(player, party)
     gm(player).party = party
+    save
   end
 
   def gm(player)
