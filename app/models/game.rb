@@ -32,9 +32,10 @@ class Game
     state :sentinel_won
     state :aborted
 
+    after_transition :on => :start, :do => :push_start_time
+
     event :start do
       transition :staged => :running, :if => :allowed_to_start?
-      start_time = DateTime.now
     end
     event :scourge_wins do
       transition :running => :scourge_won
@@ -48,6 +49,10 @@ class Game
     event :cancel do
       transition :staged => :aborted
     end
+  end
+
+  def push_start_time
+    self.start_time = DateTime.now
   end
 
   def allowed_to_start?

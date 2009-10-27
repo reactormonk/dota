@@ -286,7 +286,11 @@ describe Game do
       game.start.should be_true
     end
 
-    it 'should set start_time'
+    it 'should set start_time' do
+      game = Game.gen_full_game
+      game.start
+      game.start_time.class.should == DateTime
+    end
 
     it 'should not allow joining/leaving players'
 
