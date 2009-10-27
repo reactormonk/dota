@@ -193,6 +193,16 @@ describe Game do
           game.pick_next.should == party
         end
 
+        it 'should apply choose_pick_next fair' do
+          l, players, game = capt_lpg
+          players[2..4].each {|p| p.join(game)}
+          game.reload
+          game.sentinel_set(players[2])
+          game.choose_pick_next.should == :sentinel
+          players[3..4].each {|player| game.scourge_set(player)}
+          game.choose_pick_next.should == :scourge
+        end
+
         it 'should start with 5 players each'
 
         def capt_lpg
