@@ -178,20 +178,20 @@ describe Game do
           proc {game.pick((game.captains.all - [game.picking_captain]).first, players[4])}.should raise_error NotYourTurn
         end
 
-        it 'should be able to repick after a leave' do
-          l, players, game = capt_lpg
-          players[2..4].each {|p| p.join(game)}
-          game.reload
-          proc {game.pick(game.picking_captain, players[2])}.should_not raise_error
-          game.reload
-          proc {game.pick(game.picking_captain, players[3])}.should_not raise_error
-          # Now both should have 2 players
-          game.reload
-          players[3].reload
-          [:sentinel, :scourge].include?(party = players[3].party).should be_true
-          players[3].leave
-          game.pick_next.should == party
-        end
+#        it 'should be able to repick after a leave' do
+#          l, players, game = capt_lpg
+#          players[2..4].each {|p| p.join(game)}
+#          game.reload
+#          proc {game.pick(game.picking_captain, players[2])}.should_not raise_error
+#          game.reload
+#          proc {game.pick(game.picking_captain, players[3])}.should_not raise_error
+#          # Now both should have 2 players
+#          game.reload
+#          players[3].reload
+#          [:sentinel, :scourge].include?(party = players[3].party).should be_true
+#          players[3].leave
+#          game.pick_next.should == party
+#        end
 
         it 'should apply choose_pick_next fair' do
           l, players, game = capt_lpg
