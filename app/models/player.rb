@@ -48,8 +48,7 @@ class Player
 
   def leave
     if is_playing?
-      where_playing.leave(self)
-      return true
+      !! where_playing.leave(self)
     else
       return false
     end

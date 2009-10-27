@@ -33,25 +33,26 @@ class Game
     state :aborted
 
     event :start do
-      transition :from => :staged, :to => :running, :if => :allowed_to_start?
+      transition :staged => :running, :if => :allowed_to_start?
       start_time = DateTime.now
     end
     event :scourge_wins do
-      transition :from => :running, :to => :scourge_won
+      transition :running => :scourge_won
     end
     event :sentinel_wins do
-      transition :from => :running, :to => :sentinel_won
+      transition :running => :sentinel_won
     end
     event :abort do
-      transition :from => :running, :to => :aborted
+      transition :running => :aborted
     end
     event :cancel do
-      transition :from => :staged, :to => :aborted
+      transition :staged => :aborted
     end
   end
 
   def allowed_to_start?
-    valid?(:starting)
+    enough_player = enough_players?
+    enough_player.first & (!! mode)
   end
 
   def allowed_to_stop?
@@ -60,17 +61,25 @@ class Game
   #
   # Validations
   #
-  validates_with_method :enough_players?, :when => [:starting]
-  validates_present :mode, :when => [:starting]
+  validates_with_method :enough_players?, :when => proc {[:running, :sentinel_wins, :scourge_wins, :abort].include? state}
+  validates_present :mode, :when => proc {[:running, :sentinel_wins, :scourge_wins, :abort].include? state}
 
+  # WARNING: This method returns [true] or [false, errors] - no simple boolean
   def enough_players?
-    unless players.all.select{|player| player.party == :sentinel}.size == 5
-      errors << "Not enough sentinel players."
+    errors_ary = []
+    case sentinel.size
+    when (0..4)
+      errors_ary << [NotEnoughPlayers, "Not enough sentinel players. #: #{sentinel.size}."]
+    when (6..1/0.0)
+      errors_ary << [TooManyPlayers, "Too many sentinel players. #: #{sentinel.size}."]
     end
-    unless players.all.select{|player| player.party == :scourge}.size == 5
-      errors << "Not enough scourge players."
+    case scourge.size
+    when (0..4)
+      errors_ary << [NotEnoughPlayers, "Not enough scourge players #: #{scourge.size}."]
+    when (6..1/0.0)
+      errors_ary << [TooManyPlayers, "Too many enough scourge players #: #{scourge.size}."]
     end
-    errors ? [false, errors.join(" ")] : true
+    [errors_ary.empty?, errors_ary]
   end
 
   #
@@ -95,7 +104,7 @@ class Game
 
   def leave(player)
     gm(player).destroy
-    destroy if game_memberships.size == 0
+    game_memberships.empty? ? destroy : save
   end
 
   def allowed_to_join?(player)
@@ -109,9 +118,9 @@ class Game
   end
 
   def allowed_to_join(player)
-    raise NotVouched, "#{player} is not vouched in #{league}." unless player.is_vouched?(league)
-    raise Banned, "#{player} is banned due to #{player.bans(league).last}." if player.is_banned?(league)
-    raise PlayerPlaying, "#{player} is playing in #{player.where_playing}." if player.is_playing?
+    raise NotVouched, "#{player.login} is not vouched in #{league.name}." unless player.is_vouched?(league)
+    raise Banned, "#{player.login} is banned due to #{player.bans(league).last.reason}." if player.is_banned?(league)
+    raise PlayerPlaying, "#{player.login} is playing in #{player.where_playing.id}." if player.is_playing?
   end
 
   def sentinel
@@ -139,6 +148,13 @@ class Game
     game_memberships.first(:player => player)
   end
 end
+
+class GameException < StandardError; end
+class NotVouched < GameException; end
+class Banned < GameException; end
+class PlayerPlaying < GameException; end
+class TooManyPlayers < GameException; end
+class NotEnoughPlayers < GameException; end
 
 class RandomGame < Game
   def random_assignment
@@ -198,7 +214,7 @@ class CaptainGame < Game
   end
 
   def challenges(challenger, challenged)
-    raise "Use only to initialize" unless captains.size == 0 and players.size == 0
+    raise "Use only to initialize" unless captains.empty? and players.empty?
     join_as_captain(challenger)
     reload  # I don't like this, but it seems to be needed due to DataMapper
             # not tracking intermediates correctly
@@ -270,10 +286,6 @@ class CaptainGame < Game
   end
 end
 
-class GameException < StandardError; end
-class NotVouched < GameException; end
-class Banned < GameException; end
-class PlayerPlaying < GameException; end
 class CaptainGameException < GameException; end
 class NotYourTurn < CaptainGameException; end
 class AlreadyPicked < CaptainGameException; end

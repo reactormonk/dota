@@ -21,11 +21,29 @@ describe Game do
 
     it 'should be possible for players to leave' do
       p,g,l = pgl_vouch
+      p2 = Player.gen
+      p2.vouch l
       p.join(g).should be_true
+      p2.join g
       p.leave.should be_true
       g.reload
       g.players.all.include?(p).should be_false
       p.is_playing?.should be_false
+    end
+
+    it 'should be possible to rejoin' do
+      p,g,l = pgl_vouch
+      p2 = Player.gen
+      p2.vouch l
+      p.join(g).should be_true
+      p2.join(g).should be_true
+      g.reload
+      p.leave
+      g.reload
+      g.players.all.include?(p).should be_false
+      g.join(p).should be_true
+      g.reload
+      g.players.all.include?(p).should be_true
     end
 
     describe 'should not allow a player to join if' do
@@ -231,7 +249,32 @@ describe Game do
 
   describe 'start' do
 
-    it 'should start only with 5 players each and a mode set'
+    it 'should start only with 5 players each and a mode set' do
+      game = Game.gen_full_game
+      game.save.should be_true
+      player = Player.gen
+      player.vouch(game.league)
+      player.join game
+      game.game_memberships.reload
+      game.party_set(player, :sentinel)
+      game.start.should be_false
+      player.leave.should be_true
+      GameMembership.all.reload
+      left_player = [game.players.first, game.players.first.party]
+      left_player.first.leave
+      game.save.should be_true
+      game = game.model.get(*game.key) # Teh brute force way
+      game.start.should be_false
+      left_player.first.join(game).should be_true
+      game.game_memberships.reload
+      game.party_set(*left_player)
+      game.enough_players?.first.should be_true
+      game.mode = nil
+      game.start.should be_false
+      game.mode = 'ar'
+      game.save
+      game.start.should be_true
+    end
 
     it 'should set start_time'
 
