@@ -56,8 +56,8 @@ class Game
   end
 
   def allowed_to_start?
-    enough_player = enough_players?
-    enough_player.first & (!! mode)
+    enough_player = enough_players
+    enough_player.first && (!! mode)
   end
 
   def allowed_to_stop?
@@ -66,11 +66,14 @@ class Game
   #
   # Validations
   #
-  validates_with_method :enough_players?, :when => proc {[:running, :sentinel_wins, :scourge_wins, :abort].include? state}
-  validates_present :mode, :when => proc {[:running, :sentinel_wins, :scourge_wins, :abort].include? state}
+  validates_with_method :enough_players, :when => proc {persistent?}
+  validates_present :mode, :when => proc {persistent?}
 
-  # WARNING: This method returns [true] or [false, errors] - no simple boolean
-  def enough_players?
+  def persistent?
+    ["running", "sentinel_wins", "scourge_wins", "abort"].include? state
+  end
+
+  def enough_players
     errors_ary = []
     case sentinel.size
     when (0..4)
@@ -102,12 +105,14 @@ class Game
   end
 
   def join(player)
+    raise GameRunning if persistent?
     allowed_to_join(player)
     players << player
     save
   end
 
   def leave(player)
+    raise GameRunning if persistent?
     gm(player).destroy
     game_memberships.empty? ? destroy : save
   end
@@ -160,6 +165,7 @@ class Banned < GameException; end
 class PlayerPlaying < GameException; end
 class TooManyPlayers < GameException; end
 class NotEnoughPlayers < GameException; end
+class GameRunning < GameException; end
 
 class RandomGame < Game
   def random_assignment

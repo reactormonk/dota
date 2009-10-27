@@ -278,7 +278,7 @@ describe Game do
       left_player.first.join(game).should be_true
       game.game_memberships.reload
       game.party_set(*left_player)
-      game.enough_players?.first.should be_true
+      game.enough_players.first.should be_true
       game.mode = nil
       game.start.should be_false
       game.mode = 'ar'
@@ -292,7 +292,18 @@ describe Game do
       game.start_time.class.should == DateTime
     end
 
-    it 'should not allow joining/leaving players'
+    it 'should not allow joining/leaving players' do
+      game = Game.gen_full_game
+      game.start
+      player1 = game.players.first
+      proc{game.players.first.leave}.should raise_error GameRunning
+      game.reload
+      player1.is_playing?.should be_true
+      game.save.should be_true
+      player = Player.gen
+      proc{game.join player}.should raise_error GameRunning
+      player.is_playing?.should be_false
+    end
 
     it 'should drop staged (not-assigned) players'
 
