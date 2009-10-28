@@ -311,7 +311,9 @@ describe Game do
 
   describe 'end' do
 
-    describe 'accept votes' do
+    describe 'accepting votes' do
+
+      it 'should accept one vote per player'
 
       it 'should be possible to abort the game'
 
