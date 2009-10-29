@@ -32,7 +32,7 @@ class Game
     state :sentinel_won
     state :aborted
 
-    after_transition :on => :start, :do => :push_start_time
+    after_transition :on => :start, :do => [:push_start_time,:drop_staged_players]
 
     event :start do
       transition :staged => :running, :if => :allowed_to_start?
@@ -53,6 +53,14 @@ class Game
 
   def push_start_time
     self.start_time = DateTime.now
+  end
+
+  def drop_staged_players
+    game_memberships.each do |gm|
+      if gm.party == :staged
+        gm.destroy
+      end
+    end
   end
 
   def allowed_to_start?

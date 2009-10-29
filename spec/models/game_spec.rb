@@ -305,7 +305,19 @@ describe Game do
       player.is_playing?.should be_false
     end
 
-    it 'should drop staged (not-assigned) players'
+    it 'should drop staged (not-assigned) players' do
+      game = Game.gen_full_game
+      players = 5.of {Player.gen}
+      players.each do |player|
+        player.vouch game.league
+        player.join game
+      end
+      game.game_memberships.reload
+      game.start
+      players.each do |player|
+        player.is_playing?.should be_false
+      end
+    end
 
   end
 
