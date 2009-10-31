@@ -20,5 +20,6 @@ Merb::BootLoader.before_app_loads do
 end
  
 Merb::BootLoader.after_app_loads do
-  # This will get executed after your app's classes have been loaded.
+  require 'app_config'
+  AppConfig.load
 end

@@ -1,0 +1,7 @@
+---
+development:
+
+  positive_factor: 1.2
+  negative_factor: 0.8
+  score_method: :elo
+  votes_needed: 7

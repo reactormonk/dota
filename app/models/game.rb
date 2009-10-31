@@ -170,11 +170,10 @@ class Game
     game_memberships.map{|gm| gm.vote}.inject(Hash.new(0)) {|hash,vote| hash[vote] +=1; hash}
   end
 
-  # TODO: config variable for votes
   def check_votes
     game_memberships.reload
     votes.each do |vote, number|
-      next if number < 7 || vote == :none
+      next if number < Merb::Config[:votes_needed] || vote == :none
       send(vote)
     end
   end
