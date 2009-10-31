@@ -1,1 +1,1 @@
---backtrace -e fails
+--backtrace -e fails -f nested
