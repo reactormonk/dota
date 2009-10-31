@@ -335,7 +335,15 @@ describe Game do
         players.each {|p| p.is_playing?.should be_false}
       end
 
-      it 'should be possible for sentinel/scourge to win the game'
+      it 'should be possible for sentinel/scourge to win the game' do
+        game = Game.gen_full_game
+        players = game.players
+        game.start
+        game.players[0..6].each {|p| p.vote :sentinel_wins}
+        game.reload
+        game.state.should == "sentinel_won"
+        players.each {|p| p.is_playing?.should be_false}
+      end
 
     end
     
