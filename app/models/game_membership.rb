@@ -8,6 +8,7 @@ class GameMembership
   property :score, Float, :nullable => false, :default => proc {|r,p| LeagueMembership.first(:player => r.player, :league => r.game.league).score}
   property :party, Enum[:staged, :scourge, :sentinel], :nullable => false, :default => :staged
   property :captain, Boolean, :default => false
+  property :vote, Enum[:none, :abort, :scourge, :sentinel], :default => :none
 
   # 
   # Associations

@@ -165,6 +165,14 @@ class Game
   def gm(player)
     game_memberships.first(:player => player)
   end
+
+  def votes
+    game_memberships.map{|gm| gm.vote}.inject(Hash.new(0)) {|hash,vote| hash[vote] +=1; hash}
+  end
+
+  def check_votes
+    game_memberships.reload
+  end
 end
 
 class GameException < StandardError; end
@@ -174,6 +182,7 @@ class PlayerPlaying < GameException; end
 class TooManyPlayers < GameException; end
 class NotEnoughPlayers < GameException; end
 class GameRunning < GameException; end
+class GameNotRunning < GameException; end
 
 class RandomGame < Game
   def random_assignment

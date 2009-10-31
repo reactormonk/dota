@@ -99,4 +99,13 @@ class Player
   def challenged?
     !! challenged
   end
+  
+  def vote(chosen)
+    game = where_playing
+    raise GameNotRunning unless game.state == "running"
+    gm = game_memberships.first(:player => self)
+    gm.vote = chosen
+    gm.save
+    game.check_votes
+  end
 end

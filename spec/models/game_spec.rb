@@ -315,9 +315,15 @@ describe Game do
 
   describe 'end' do
 
-    describe 'accepting votes' do
+    describe 'processing votes' do
 
-      it 'should accept one vote per player'
+      it "should accept vouches" do
+        game = Game.gen_full_game
+        game.start
+        game.players.first.vote :abort
+        game.game_memberships.reload
+        game.votes[:abort].should == 1
+      end
 
       it 'should be possible to abort the game'
 
