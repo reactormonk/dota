@@ -346,6 +346,8 @@ describe Game do
       end
 
     end
+
+    it 'should process score and write it to the LeagueMembership'
     
     it 'should only finish with a replay [magic file check?]'
 
