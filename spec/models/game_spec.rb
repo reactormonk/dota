@@ -325,7 +325,15 @@ describe Game do
         game.votes[:abort].should == 1
       end
 
-      it 'should be possible to abort the game'
+      it 'should be possible to abort the game' do
+        game = Game.gen_full_game
+        players = game.players
+        game.start
+        game.players[0..6].each {|p| p.vote :abort}
+        game.reload
+        game.state.should == "aborted"
+        players.each {|p| p.is_playing?.should be_false}
+      end
 
       it 'should be possible for sentinel/scourge to win the game'
 
