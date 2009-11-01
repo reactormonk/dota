@@ -108,4 +108,8 @@ class Player
     gm.save
     game.check_votes
   end
+
+  def score(league)
+    league_memberships.first(:league => league).score
+  end
 end

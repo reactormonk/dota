@@ -1,7 +1,9 @@
 ---
-development:
-
-  positive_factor: 1.2
-  negative_factor: 0.8
+development: &defaults
+  positive_factor: 1.0
+  negative_factor: -1.0
   score_method: :elo
   votes_needed: 7
+
+test:
+  <<: *defaults

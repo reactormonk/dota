@@ -32,16 +32,17 @@ class Game
     state :sentinel_won
     state :aborted
 
+    after_transition :running => any - :aborted, :do => :process_score
     after_transition :on => :start, :do => [:push_start_time,:drop_staged_players]
 
     event :start do
       transition :staged => :running, :if => :allowed_to_start?
     end
     event :scourge_wins do
-      transition :running => :scourge_won
+      transition :running => :scourge_won, :if => :allowed_to_stop?
     end
     event :sentinel_wins do
-      transition :running => :sentinel_won
+      transition :running => :sentinel_won, :if => :allowed_to_stop?
     end
     event :abort do
       transition :running => :aborted
@@ -69,6 +70,7 @@ class Game
   end
 
   def allowed_to_stop?
+    true
   end
 
   #
@@ -98,6 +100,12 @@ class Game
     [errors_ary.empty?, errors_ary]
   end
 
+  def process_score
+    PlayerScore.send(Merb::Config[:score_method], self).each {|player, score|
+      player.league_memberships.first(:league => league).score = score
+    }
+  end
+
   #
   # Logic
   #
@@ -105,9 +113,9 @@ class Game
 
   def result
     case state
-      when :scourge_won then :scourge
-      when :sentinel_won then :sentinel
-      when :aborted then :aborted
+      when "scourge_won" then :scourge
+      when "sentinel_won" then :sentinel
+      when "aborted" then :aborted
       else :undecided
     end
   end
@@ -162,6 +170,10 @@ class Game
     save
   end
 
+  def party(player)
+    gm(player).party
+  end
+
   def gm(player)
     game_memberships.first(:player => player)
   end
@@ -177,6 +189,7 @@ class Game
       send(vote)
     end
   end
+
 end
 
 class GameException < StandardError; end

@@ -347,7 +347,14 @@ describe Game do
 
     end
 
-    it 'should process score and write it to the LeagueMembership'
+    it 'should process score and write it to the LeagueMembership' do
+      game = Game.gen_full_game
+      players = game.players
+      game.start
+      game.sentinel_wins
+      game.result.should == :sentinel
+      players.each {|p| p.score(game.league).should_not == 1000.0}
+    end
     
     it 'should only finish with a replay [magic file check?]'
 
