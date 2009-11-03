@@ -6,6 +6,7 @@ class Player
   property :id,     Serial
   property :login,  String, :nullable => false, :unique => true
   property :qauth,  String, :nullable => false
+  property :admin,  Boolean, :default => false
 
   # 
   # Associations
