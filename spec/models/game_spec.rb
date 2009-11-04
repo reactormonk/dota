@@ -3,6 +3,7 @@ require 'set'
 
 describe Game do
   before(:all) do
+    $DEBUG = false
     League.gen
   end
 
@@ -39,7 +40,7 @@ describe Game do
       p2.join(g).should be_true
       g.reload
       p.leave
-      g.reload
+      g = g.model.get(*g.key) # Teh brute force way
       g.players.all.include?(p).should be_false
       g.join(p).should be_true
       g.reload
@@ -147,17 +148,17 @@ describe Game do
             players.each {|p| p.is_playing?.should be_false}
           end
 
-#          it 'accept' do
-#            league = League.gen
-#            players = 2.of {Player.gen}
-#            players.each {|p| league.vouch p}
-#            captain_game = players.first.challenge(league, players.last)
-#            captain_game.save
-#            players.last.accept_challenge
-#            players.each {|p| p.is_playing?.should be_true}
-#            Set.new(captain_game.captains).should == Set.new(players)
-#            captain_game.state.should == :staged
-#          end
+          it 'accept' do
+            league = League.gen
+            players = 2.of {Player.gen}
+            players.each {|p| league.vouch p}
+            captain_game = players.first.challenge(league, players.last)
+            captain_game.save
+            players.last.accept_challenge
+            players.each {|p| p.is_playing?.should be_true}
+            Set.new(captain_game.captains).should == Set.new(players)
+            captain_game.state.should == :staged
+          end
         end
 
         it 'should not be possible for players to join a challenge not yet accepted'
@@ -178,20 +179,20 @@ describe Game do
           proc {game.pick((game.captains.all - [game.picking_captain]).first, players[4])}.should raise_error NotYourTurn
         end
 
-#        it 'should be able to repick after a leave' do
-#          l, players, game = capt_lpg
-#          players[2..4].each {|p| p.join(game)}
-#          game.reload
-#          proc {game.pick(game.picking_captain, players[2])}.should_not raise_error
-#          game.reload
-#          proc {game.pick(game.picking_captain, players[3])}.should_not raise_error
-#          # Now both should have 2 players
-#          game.reload
-#          players[3].reload
-#          [:sentinel, :scourge].include?(party = players[3].party).should be_true
-#          players[3].leave
-#          game.pick_next.should == party
-#        end
+        it 'should be able to repick after a leave' do
+          l, players, game = capt_lpg
+          players[2..4].each {|p| p.join(game)}
+          game.reload
+          proc {game.pick(game.picking_captain, players[2])}.should_not raise_error
+          game.reload
+          proc {game.pick(game.picking_captain, players[3])}.should_not raise_error
+          # Now both should have 2 players
+          game.reload
+          players[3].reload
+          [:sentinel, :scourge].include?(party = players[3].party).should be_true
+          players[3].leave
+          game.pick_next.should == party
+        end
 
         it 'should apply choose_pick_next fair' do
           l, players, game = capt_lpg
@@ -224,6 +225,7 @@ describe Game do
         ps.each {|p| p.vouch l}
         g = RandomGame.gen(:league => l)
         ps.each {|p| p.join(g).should be_true}
+        g = g.model.get(*g.key) # Teh brute force way
         g.random_assignment.should be_true
         g.sentinel.size.should == 5
         g.scourge.size.should == 5
