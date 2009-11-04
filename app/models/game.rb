@@ -312,6 +312,11 @@ class CaptainGame < Game
     save
   end
 
+  def join(player)
+    raise ChallengeNotAccepted if state == "challenged"
+    super
+  end
+
   def pick(capt, player)
     unless capt.party == pick_next
       raise NotYourTurn, "It's not #{capt.login}'s turn."
@@ -349,3 +354,4 @@ class NotYourTurn < CaptainGameException; end
 class AlreadyPicked < CaptainGameException; end
 class PlayerNotJoined < CaptainGameException; end
 class NotChallenged < CaptainGameException; end
+class ChallengeNotAccepted < CaptainGameException; end

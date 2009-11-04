@@ -162,7 +162,13 @@ describe Game do
           end
         end
 
-        it 'should not be possible for players to join a challenge not yet accepted'
+        it 'should not be possible for players to join a challenge not yet accepted' do
+          league = League.gen
+          players = 2.of{Player.gen}
+          players.each {|p| league.vouch p}
+          captain_game = players.first.challenge league
+          proc {players.last.join captain_game}.should raise_error ChallengeNotAccepted
+        end
 
         it 'should be able to pick' do
           l, players, game = capt_lpg
