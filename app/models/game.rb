@@ -62,11 +62,7 @@ class Game
   end
 
   def drop_staged_players
-    game_memberships.each do |gm|
-      if gm.party == :staged
-        gm.destroy
-      end
-    end
+    game_memberships.select{|game_membership| game_membership.party == :staged}.each(&:destroy)
   end
 
   def allowed_to_start?
