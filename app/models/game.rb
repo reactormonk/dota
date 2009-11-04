@@ -99,6 +99,10 @@ class Game
     [errors_ary.empty?, errors_ary]
   end
 
+  def enough_players?
+    enough_player.first
+  end
+
   def process_score
     PlayerScore.send(Merb::Config[:score_method], self).each {|player, score|
       player.league_memberships.first(:league => league).score = score
@@ -212,6 +216,11 @@ end
 
 class CaptainGame < Game
 
+  def initialize(*args)
+    self.mode = Merb::Config[:captain_game_mode]
+    super
+  end
+
   property :pick_next, Enum[:sentinel, :scourge], :default => proc {|r,p| r.choose_pick_next}
   has 2, :captain_memberships, 'GameMembership', :child_key => [ :game_id ], :captain => true
   has 2, :captains, 'Player', :through => :captain_memberships, :via => :player
@@ -298,7 +307,9 @@ class CaptainGame < Game
       return true
     end
     super
-    choose_pick_next
+    game_memberships.reload
+    self.pick_next = choose_pick_next
+    save
   end
 
   def pick(capt, player)
@@ -308,21 +319,22 @@ class CaptainGame < Game
       raise PlayerNotJoined, "#{player.login} hasn't joined Game \##{self.id}." unless gm(player)
       if player.party == :staged
         gm(player).party = pick_next
-        choose_pick_next
+        self.pick_next = choose_pick_next
         save
       else
         raise AlreadyPicked, "#{player.login} has been picked."
       end
+      start if allowed_to_start?
     end
   end
 
   def choose_pick_next
     case sentinel.size <=> scourge.size
-    when 1
+    when -1
       :sentinel
     when 0
       [:sentinel, :scourge].sample
-    when -1
+    when 1
       :scourge
     end
   end

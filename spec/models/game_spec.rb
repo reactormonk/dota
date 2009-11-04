@@ -192,6 +192,7 @@ describe Game do
           players[3].reload
           [:sentinel, :scourge].include?(party = players[3].party).should be_true
           players[3].leave
+          game.reload
           game.pick_next.should == party
         end
 
@@ -200,21 +201,33 @@ describe Game do
           players[2..4].each {|p| p.join(game)}
           game.reload
           game.sentinel_set(players[2])
-          game.choose_pick_next.should == :sentinel
+          game.choose_pick_next.should == :scourge
           players[3..4].each {|player| game.scourge_set(player)}
+          game.choose_pick_next.should == :sentinel
+          players[3..4].each {|player| game.sentinel_set(player)}
           game.choose_pick_next.should == :scourge
         end
 
-        it 'should start with 5 players each'
+        it 'should start with 5 players each' do
+          l, players, game = capt_lpg
+          game.state.should == "staged"
+          players.concat 5.of {p = Player.gen; l.vouch p; p}
+          players[2..9].each do |player|
+            player.join game
+            game.game_memberships.reload
+            game.reload
+            game.pick(game.picking_captain, player)
+          end
+          game.state.should == "running"
+        end
 
         def capt_lpg
           l = League.pick
           players = 5.of {Player.gen}
           players.each {|p| p.vouch(l)}
-          game = CaptainGame.gen(:league => l)
-          players[0..1].each {|p| game.join_as_captain(p)}
-          game.distribute_captains
-          game.reload
+          players[0].challenge(l,players[1])
+          players[1].accept_challenge
+          game = players[0].games.first
           [l,players,game]
         end
       end

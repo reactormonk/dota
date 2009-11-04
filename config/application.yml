@@ -4,6 +4,7 @@ development: &defaults
   negative_factor: -1.0
   score_method: :elo
   votes_needed: 7
+  captain_game_mode: "cm"
 
 test:
   <<: *defaults
