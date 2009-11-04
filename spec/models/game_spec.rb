@@ -176,7 +176,7 @@ describe Game do
           game.reload
           proc {game.pick(game.picking_captain, players[3])}.should_not raise_error
           game.reload
-          proc {game.pick((game.captains.all - [game.picking_captain]).first, players[4])}.should raise_error NotYourTurn
+          proc {game.pick(game.captains.all.reject{|capt| capt == game.picking_captain}.first, players[4])}.should raise_error NotYourTurn
         end
 
         it 'should be able to repick after a leave' do
