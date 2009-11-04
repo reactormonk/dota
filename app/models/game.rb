@@ -50,6 +50,11 @@ class Game
     event :cancel do
       transition :staged => :aborted
     end
+
+    state :running, :scourge_win, :sentinel_won, :aborted do
+      validates_with_method :enough_players
+      validates_present :mode
+    end
   end
 
   def push_start_time
@@ -76,8 +81,6 @@ class Game
   #
   # Validations
   #
-  validates_with_method :enough_players, :when => proc {persistent?}
-  validates_present :mode, :when => proc {persistent?}
 
   def persistent?
     ["running", "sentinel_wins", "scourge_wins", "abort"].include? state
@@ -271,8 +274,10 @@ class CaptainGame < Game
 
   def accept_challenge(player)
     if scourge.include? player
+      # direct challenge
       challenge_accepted
     elsif captains.size == 1
+      # anonymous challenge
       join_as_captain(player)
       distribute_captains
       challenge_accepted
