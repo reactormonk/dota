@@ -157,7 +157,8 @@ describe Game do
             players.last.accept_challenge
             players.each {|p| p.is_playing?.should be_true}
             Set.new(captain_game.captains).should == Set.new(players)
-            captain_game.state.should == :staged
+            captain_game.reload
+            captain_game.state.should == "staged"
           end
         end
 

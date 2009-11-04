@@ -84,7 +84,7 @@ class Player
       captain_game.save
     else
       # Accept a challenge or make a new one
-      if captain_game = CaptainGame.first(:state => :challenged, :league => league)
+      if captain_game = CaptainGame.first(:state => "challenged", :league => league)
         captain_game.accept_challenge(self)
       else
         captain_game = CaptainGame.create(:league => league, :captains => [self])
