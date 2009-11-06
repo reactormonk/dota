@@ -36,7 +36,7 @@ class League
   end
 
   def is_banned?(player)
-    !! ((lm = lm(player)) && lm.bans.first(:until.gt => Time.now))
+    !! ((lm = lm(player)) && lm.banned?)
   end
 
   def bans(player)

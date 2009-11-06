@@ -23,8 +23,8 @@ class Player
     league.ban(self, *args)
   end
 
-  def is_banned?(league)
-    league.is_banned?(self)
+  def banned?(league)
+    league.banned?(self)
   end
 
   def vouch(league)

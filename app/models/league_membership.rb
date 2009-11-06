@@ -16,4 +16,8 @@ class LeagueMembership
   belongs_to :league
   has n, :bans, :model => "LeagueBan"
 
+  def banned?
+    !! bans.first(:until.gt => Time.now)
+  end
+
 end
