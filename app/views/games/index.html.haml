@@ -1,0 +1,15 @@
+%h1
+  Games
+%table
+  %tr
+    %th ID
+    %th Status
+    %th Typ
+    - for game in @games
+      %tr
+        %td
+          = link_to game.id, resource(:games) + "/" + game.id.to_s
+        %td
+          = game.state
+        %td
+          = game.type

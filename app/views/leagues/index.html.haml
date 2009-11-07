@@ -1,0 +1,15 @@
+%h1
+  Leagues
+%table
+  %tr
+    %th Name
+    %th IRC
+    %th Homepage
+  - for league in @leagues
+    %tr
+      %td
+        = link_to league.name, resource(:leagues) + "/" + league.name
+      %td
+        = link_to league.irc
+      %td
+        = link_to league.homepage

@@ -1,0 +1,19 @@
+%h1
+  Game #
+  = @game.id
+  in der League
+  = @game.league.name
+  , Status:
+  = @game.state
+%h2
+  Players
+  %table
+    %tr
+      %th Name
+      %th Score
+    - for gm in @game.game_memberships
+      %tr 
+        %td
+          = link_to gm.player.login, resource(:players) + "/" + gm.player.login
+        %td
+          = gm.score

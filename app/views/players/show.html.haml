@@ -1,0 +1,25 @@
+%h1
+  Profil von
+  = @player.login
+- if @player.is_playing?
+  %h2
+    Dieser User spielt gerade in
+    = render :partial => resource(:games) + "/" + @player.where_playing.id.to_s
+%h2
+  Mitglied bei
+  %table
+    %tr
+      %th Name
+      %th Score
+      %th vouched?
+      %th banned?
+    - for lm in @player.league_memberships
+      %tr
+        %td
+          = link_to lm.league.name, resource(:leagues) + "/" + lm.league.name
+        %td
+          = lm.score
+        %td
+          = lm.vouched?
+        %td
+          = lm.banned?

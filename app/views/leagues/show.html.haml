@@ -1,0 +1,21 @@
+%h1
+  League
+  = @league.name
+  %h2
+    Mitglieder
+    %table
+      %tr
+        %th Name
+        %th Score
+        %th vouched?
+        %th banned?
+      - for lm in @league.league_memberships
+        %tr
+          %td
+            = link_to lm.player.login, resource(:players) + "/" + lm.player.login
+          %td
+            = lm.score
+          %td
+            = lm.vouched?
+          %td
+            = lm.banned?
