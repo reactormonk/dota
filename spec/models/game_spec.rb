@@ -29,7 +29,7 @@ describe Game do
       p.leave.should be_true
       g.reload
       g.players.all.include?(p).should be_false
-      p.is_playing?.should be_false
+      p.playing?.should be_false
     end
 
     it 'should be possible to rejoin' do
@@ -94,9 +94,9 @@ describe Game do
             players.each {|p| league.vouch p}
             game = Game.gen(:league => league)
             game.join(players.first).should be_true
-            players.first.is_playing?.should be_true
+            players.first.playing?.should be_true
             proc {players.first.challenge(league, players[1])}.should raise_error PlayerPlaying
-            players[1].is_playing?.should be_false
+            players[1].playing?.should be_false
           end
 
           it 'to be challenged' do
@@ -105,7 +105,7 @@ describe Game do
             players.each {|p| league.vouch p}
             game = Game.gen(:league => league)
             game.join(players.first).should be_true
-            players.first.is_playing?.should be_true
+            players.first.playing?.should be_true
             proc {players[1].challenge(league, players.first)}.should raise_error PlayerPlaying
           end
         end
@@ -127,7 +127,7 @@ describe Game do
             league = League.gen
             players = 2.of {Player.gen}
             players.each {|p| league.vouch p}
-            players.first.is_vouched?(league).should be_true
+            players.first.vouched?(league).should be_true
             players.first.challenge(league)
             captain_game = CaptainGame.first(:league => league)
             players.first.challenged?.should be_true
@@ -143,9 +143,9 @@ describe Game do
             players = 2.of {Player.gen}
             players.each {|p| league.vouch p}
             players.first.challenge(league, players[1])
-            players.last.is_playing?.should be_true
+            players.last.playing?.should be_true
             players.last.leave
-            players.each {|p| p.is_playing?.should be_false}
+            players.each {|p| p.playing?.should be_false}
           end
 
           it 'accept' do
@@ -155,7 +155,7 @@ describe Game do
             captain_game = players.first.challenge(league, players.last)
             captain_game.save
             players.last.accept_challenge
-            players.each {|p| p.is_playing?.should be_true}
+            players.each {|p| p.playing?.should be_true}
             Set.new(captain_game.captains).should == Set.new(players)
             captain_game.reload
             captain_game.state.should == "staged"
@@ -312,11 +312,11 @@ describe Game do
       player1 = game.players.first
       proc{game.players.first.leave}.should raise_error GameRunning
       game.reload
-      player1.is_playing?.should be_true
+      player1.playing?.should be_true
       game.save.should be_true
       player = Player.gen
       proc{game.join player}.should raise_error GameRunning
-      player.is_playing?.should be_false
+      player.playing?.should be_false
     end
 
     it 'should drop staged (not-assigned) players' do
@@ -329,7 +329,7 @@ describe Game do
       game.game_memberships.reload
       game.start
       players.each do |player|
-        player.is_playing?.should be_false
+        player.playing?.should be_false
       end
     end
 
@@ -354,7 +354,7 @@ describe Game do
         game.players[0..6].each {|p| p.vote :abort}
         game.reload
         game.state.should == "aborted"
-        players.each {|p| p.is_playing?.should be_false}
+        players.each {|p| p.playing?.should be_false}
       end
 
       it 'should be possible for sentinel/scourge to win the game' do
@@ -364,7 +364,7 @@ describe Game do
         game.players[0..6].each {|p| p.vote :sentinel_wins}
         game.reload
         game.state.should == "sentinel_won"
-        players.each {|p| p.is_playing?.should be_false}
+        players.each {|p| p.playing?.should be_false}
       end
 
     end

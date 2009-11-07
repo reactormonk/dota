@@ -22,4 +22,5 @@ end
 Merb::BootLoader.after_app_loads do
   require 'app_config'
   AppConfig.load
+  require 'compat'
 end

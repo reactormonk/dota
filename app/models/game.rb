@@ -147,9 +147,9 @@ class Game
   end
 
   def allowed_to_join(player)
-    raise NotVouched, "#{player.login} is not vouched in #{league.name}." unless player.is_vouched?(league)
-    raise Banned, "#{player.login} is banned due to #{player.bans(league).last.reason}." if player.is_banned?(league)
-    raise PlayerPlaying, "#{player.login} is playing in #{player.where_playing.id}." if player.is_playing?
+    raise NotVouched, "#{player.login} is not vouched in #{league.name}." unless player.vouched?(league)
+    raise Banned, "#{player.login} is banned due to #{player.bans(league).last.reason}." if player.banned?(league)
+    raise PlayerPlaying, "#{player.login} is playing in #{player.where_playing.id}." if player.playing?
   end
 
   def sentinel

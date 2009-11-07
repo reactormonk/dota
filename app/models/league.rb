@@ -23,19 +23,19 @@ class League
     mem.save
   end
 
-  def is_vouched?(player)
+  def vouched?(player)
     !! ((mem = lm(player)) && mem.vouched)
   end
 
   def ban(player, secs, reason)
-    return false unless is_vouched?(player)
+    return false unless vouched?(player)
     ban = LeagueBan.create(:reason => reason, :until => Time.now + secs)
     lm(player).bans << ban
     ban.save
     true
   end
 
-  def is_banned?(player)
+  def banned?(player)
     !! ((lm = lm(player)) && lm.banned?)
   end
 

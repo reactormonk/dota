@@ -31,8 +31,8 @@ class Player
     league.vouch(self)
   end
 
-  def is_vouched?(league)
-    league.is_vouched?(self)
+  def vouched?(league)
+    league.vouched?(self)
   end
 
   def bans(league)
@@ -48,14 +48,14 @@ class Player
   end
 
   def leave
-    if is_playing?
+    if playing?
       !! where_playing.leave(self)
     else
       return false
     end
   end
 
-  def is_playing?
+  def playing?
     !! where_playing
   end
 
