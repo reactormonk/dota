@@ -56,7 +56,7 @@ class Game
       p.vouch league
       p.join game
     end
-    game.game_memberships.each {|gm| gm.reload}
+    game.game_memberships.reload
     game.players[0..4].each {|p| game.sentinel_set p}
     game.players[5..9].each {|p| game.scourge_set p}
     game.mode = 'ar'

@@ -170,7 +170,7 @@ class Game
 
   def party_set(player, party)
     gm(player).party = party
-    save
+    gm(player).save
   end
 
   def party(player)
@@ -269,11 +269,10 @@ class CaptainGame < Game
   def challenges(challenger, challenged)
     raise "Use only to initialize" unless captains.empty? and players.empty?
     join_as_captain(challenger)
-    reload  # I don't like this, but it seems to be needed due to DataMapper
-            # not tracking intermediates correctly
+    game_memberships.reload
     sentinel_set(challenger)
     join_as_captain(challenged)
-    reload
+    game_memberships.reload
     scourge_set(challenged)
   end
 
@@ -324,6 +323,7 @@ class CaptainGame < Game
       raise PlayerNotJoined, "#{player.login} hasn't joined Game \##{self.id}." unless gm(player)
       if player.party == :staged
         gm(player).party = pick_next
+        gm(player).save
         self.pick_next = choose_pick_next
         save
       else
