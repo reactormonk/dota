@@ -40,7 +40,7 @@ describe Game do
       p2.join(g).should be_true
       g.reload
       p.leave
-      g = g.model.get(*g.key) # Teh brute force way
+      g.reload
       g.players.all.include?(p).should be_false
       g.join(p).should be_true
       g.reload
@@ -245,7 +245,7 @@ describe Game do
         ps.each {|p| p.vouch l}
         g = RandomGame.gen(:league => l)
         ps.each {|p| p.join(g).should be_true}
-        g = g.model.get(*g.key) # Teh brute force way
+        g.reload
         g.random_assignment.should be_true
         g.sentinel.size.should == 5
         g.scourge.size.should == 5
@@ -287,7 +287,7 @@ describe Game do
       left_player = [game.players.first, game.players.first.party]
       left_player.first.leave
       game.save.should be_true
-      game = game.model.get(*game.key) # Teh brute force way
+      game.reload
       game.start.should be_false
       left_player.first.join(game).should be_true
       game.game_memberships.reload
