@@ -4,11 +4,12 @@
   %h2
     Mitglieder
     %table
-      %tr
-        %th Name
-        %th Score
-        %th vouched?
-        %th banned?
+      %thead
+        %tr
+          %th Name
+          %th Score
+          %th vouched?
+          %th banned?
       - for lm in @league.league_memberships
         %tr
           %td

@@ -8,9 +8,10 @@
 %h2
   Players
   %table
-    %tr
-      %th Name
-      %th Score
+    %thead
+      %tr
+        %th Name
+        %th Score
     - for gm in @game.game_memberships
       %tr 
         %td
