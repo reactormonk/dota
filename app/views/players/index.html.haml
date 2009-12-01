@@ -1,7 +1,6 @@
 %h1
   Players
-%table
-  %ul
-  -for player in @players
-    %li
-      = link_to player.login, resource(:players) + "/" + player.login
+%ul
+-for player in @players
+  %li
+    = link_to player.login, "#{resource(:players)}/#{player.login}"

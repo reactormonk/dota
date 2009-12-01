@@ -5,16 +5,19 @@
   = @game.league.name
   , Status:
   = @game.state
-%h2
-  Players
-  %table
-    %thead
-      %tr
-        %th Name
-        %th Score
-    - for gm in @game.game_memberships
-      %tr 
-        %td
-          = link_to gm.player.login, resource(:players) + "/" + gm.player.login
-        %td
-          = gm.score
+= unless @game.persistent?
+  %p= error_messages_for :game
+  = form_for(:game, :action => "#{resource(:games)}/join", :method => :post) do
+    %p= submit "Join"
+%table
+  %caption Players
+  %thead
+    %tr
+      %th Name
+      %th Score
+  - for gm in @game.game_memberships
+    %tr 
+      %td
+        = link_to gm.player.login, "#{resource(:players)}/#{gm.player.login}"
+      %td
+        = gm.score

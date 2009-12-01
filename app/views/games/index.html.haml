@@ -9,7 +9,7 @@
     - for game in @games
       %tr
         %td
-          = link_to game.id, resource(:games) + "/" + game.id.to_s
+          = link_to game.id, "#{resource(:games)}/#{game.id.to_s}"
         %td
           = game.state
         %td
