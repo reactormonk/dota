@@ -14,8 +14,16 @@
       %li
         = link_to "Leagues", resource(:leagues)
 
-    .content
+    - unless message.empty?
+      #message
+        - if message[:error]
+          #error
+            &= message[:error]
+        - if message[:notice]
+          #error
+            &= message[:notice]
+    #content
       = catch_content :for_layout
-  #foot
-    &copy; 2009
-    Tass
+    #foot
+      &copy; 2009
+      Tass

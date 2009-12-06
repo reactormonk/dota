@@ -6,8 +6,7 @@
   , Status:
   = @game.state
 = unless @game.persistent?
-  %p= error_messages_for :game
-  = form_for(:game, :action => "#{resource(:games)}/join", :method => :post) do
+  = form_for(:game, :action => resource(@game, :join), :method => :post) do
     %p= submit "Join"
 %table
   %caption Players
@@ -18,6 +17,6 @@
   - for gm in @game.game_memberships
     %tr 
       %td
-        = link_to gm.player.login, "#{resource(:players)}/#{gm.player.login}"
+        = link_to gm.player.login, "#{resource(gm.player)}"
       %td
         = gm.score
