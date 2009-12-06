@@ -6,7 +6,7 @@ class Leagues < Application
   end
 
   def show
-    @league = League.first(:name => params[:name])
+    @league = League.first(:name => Merb::Parse.unescape(params[:name]))
     display @league
   end
   

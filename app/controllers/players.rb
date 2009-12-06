@@ -6,7 +6,7 @@ class Players < Application
   end
   
   def show
-    @player = Player.first(:login => params[:login])
+    @player = Player.first(:login => Merb::Parse.unescape(params[:login]))
     raise NotFound unless @player
     display @player
   end
