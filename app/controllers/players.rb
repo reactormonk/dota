@@ -1,4 +1,5 @@
 class Players < Application
+  before :ensure_authenticated, :exclude => [:show, :index]
 
   def index
     @players = Player.all

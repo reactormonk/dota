@@ -1,4 +1,5 @@
 class Leagues < Application
+  before :ensure_authenticated, :exclude => [:show, :index]
 
   def index
     @leagues = League.all
