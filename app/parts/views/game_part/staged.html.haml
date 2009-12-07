@@ -1,0 +1,29 @@
+= throw_content :game_part_content do
+  .join
+    - unless @join_message
+      = form_for(:game, :action => resource(@game, :join), :method => :post) do
+        %p= submit "Join"
+    - else
+      - case @join_message
+      - when :playing
+        .playing
+          Du spielst schon in Game # #{link_to @game.id, resource(@user.where_playing)}.
+      - when :vouched
+        .vouched
+          Lass dich erstmal in #{link_to @league.name, resource(@league)} vouchen.
+      - when :banned
+        .banned
+          Du bist gebannt, sehe #{link_to "hier", resource(@ban)}.
+  .players
+    %table
+      %caption Players
+      %thead
+        %tr
+          %th Name
+          %th Score
+      - for gm in @game.game_memberships
+        %tr 
+          %td
+            = link_to gm.player.login, resource(gm.player)
+          %td
+            = gm.score

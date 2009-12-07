@@ -4,7 +4,7 @@
 - if @player.playing?
   .game
     Dieser User spielt gerade in
-    = part GamePart => :index, :id => @player.where_playing
+    = part GamePart => :index, :game => @player.where_playing
 %table
   %caption Mitglied bei
   %thead
@@ -16,7 +16,7 @@
   - for lm in @player.league_memberships
     %tr
       %td
-        = link_to lm.league.name, "#{resource(:leagues)}/#{lm.league.name}"
+        = link_to lm.league.name, resource(lm.league)
       %td
         = lm.score
       %td
