@@ -3,4 +3,4 @@
 %ul
 -for player in @players
   %li
-    = link_to player.login, "#{resource(:players)}/#{player.login}"
+    = link_to player.login, resource(player)

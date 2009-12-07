@@ -9,7 +9,7 @@
   - for league in @leagues
     %tr
       %td
-        = link_to league.name, "#{resource(:leagues)}/#{league.name}"
+        = link_to league.name, resource(league)
       %td
         = link_to league.irc
       %td

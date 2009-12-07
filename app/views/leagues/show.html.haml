@@ -12,7 +12,7 @@
   - for lm in @league.league_memberships
     %tr
       %td
-        = link_to lm.player.login, resource(:players) + "/" + lm.player.login
+        = link_to lm.player.login, resource(lm.player)
       %td
         = lm.score
       %td
