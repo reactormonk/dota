@@ -5,7 +5,7 @@ class League
   # Properties
   #
   property :id, Serial
-  property :name, String, :nullable => false, :unique => true
+  property :name, String, :required => true, :unique => true
   property :irc, String
   property :homepage, String
 
