@@ -20,7 +20,7 @@
         - if session.user.playing?
           #actual_game
             = link_to "Aktuelles Game", resource(session.user.where_playing)
-            = link_to "Leave", resource(session.user.where_playing)
+            = link_to "Leave", resource(session.user.where_playing, :leave)
         = link_to "Logout", "/logout"
       - else
         = link_to "Login", "/login"
