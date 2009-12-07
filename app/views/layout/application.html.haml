@@ -17,10 +17,10 @@
     - unless message.empty?
       #message
         - if message[:error]
-          #error
+          .error
             &= message[:error]
         - if message[:notice]
-          #error
+          .notice
             &= message[:notice]
     #content
       = catch_content :for_layout
