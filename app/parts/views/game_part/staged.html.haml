@@ -1,8 +1,7 @@
 = throw_content :game_part_content do
   .join
     - if ! @join_message and @user
-      = form_for(:game, :action => resource(@game, :join), :method => :post) do
-        %p= submit "Join"
+      = link_to "Join", resource(@game, :join)
     - elsif ! @user
       Erstelle einen Player, um einem Game beitreten zu können.
     - else
