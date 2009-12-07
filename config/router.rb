@@ -31,6 +31,7 @@ Merb::Router.prepare do
   resources :leagues, :identify => :name
   resources :games do
     member :join    
+    member :leave
   end
   
   # Adds the required routes for merb-auth using the password slice

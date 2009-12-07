@@ -24,5 +24,11 @@ class Games < Application
     end
     redirect resource(@game), :message => message
   end
+
+  def leave
+    @game = Game.first(:id => params[:id])
+    @game.leave(session.user)
+    redirect resource(@game), :message => "Du hast #{@game} verlassen."
+  end
   
 end
