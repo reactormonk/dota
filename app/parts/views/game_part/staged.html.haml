@@ -3,6 +3,8 @@
     - if ! @join_message and @user
       = form_for(:game, :action => resource(@game, :join), :method => :post) do
         %p= submit "Join"
+    - elsif ! @user
+      Erstelle einen Player, um einem Game beitreten zu können.
     - else
       - case @join_message
       - when :playing
