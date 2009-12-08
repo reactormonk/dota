@@ -43,6 +43,43 @@ class Games < Application
     state([:aborted, :sentinel_won, :scourge_won])
   end
 
+  def new
+    @user = session.user
+    @leagues = @user.league_memberships(:vouched => true).leagues
+    @types = TYPES.values.map {|value| value.to_s.chomp("Game")}
+    @captains = LeagueMembership.all(:captain => true)
+  end
+
+  def create
+    user = session.user
+    type = TYPES[params[:type].to_s.downcase.chomp("game")]
+    raise ArgumentError unless league = League.first(params[:league])
+    # Suggestions are welcome
+    case type.object_id
+    when RandomGame.object_id
+      game = RandomGame.new(:league => league)
+      game.join user
+    when CaptainGame.object_id
+      if player = Player.first(params[:challenged])
+        unless player.captain?
+          game = user.challenge(league, player)
+        else
+          message[:error] = "The challenged player is no Captain."
+        end
+      else
+        game = user.challenge(league)
+      end
+    else
+      raise ArgumentError
+    end
+    redirect resource(game)
+  end
+
+  TYPES = {
+    "random" => RandomGame,
+    "captain" => CaptainGame
+  }
+
   private
   def state(states)
     @games = Game.all(:state => states)
