@@ -1,1 +1,5 @@
---backtrace -e fails -f nested
+--colour
+--format
+progress
+--loadby
+mtime
