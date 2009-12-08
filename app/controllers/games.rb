@@ -1,5 +1,5 @@
 class Games < Application
-  before :ensure_authenticated, :exclude => [:show, :index]
+  before :ensure_authenticated, :exclude => [:show, :index, :staged, :running, :finished]
 
   def index
     @games = Game.all
@@ -29,6 +29,24 @@ class Games < Application
     @game = Game.first(:id => params[:id])
     @game.leave(session.user)
     redirect resource(@game), :message => "Du hast #{@game} verlassen."
+  end
+
+  def staged
+    state(:staged)
+  end
+
+  def running
+    state(:running)
+  end
+
+  def finished
+    state([:aborted, :sentinel_won, :scourge_won])
+  end
+
+  private
+  def state(states)
+    @games = Game.all(:state => states)
+    display @games, :template => "games/show"
   end
   
 end

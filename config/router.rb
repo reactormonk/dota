@@ -32,6 +32,9 @@ Merb::Router.prepare do
   resources :games do
     member :join    
     member :leave
+    collection :staged
+    collection :running
+    collection :finished
   end
   
   # Adds the required routes for merb-auth using the password slice
