@@ -17,18 +17,14 @@ class League
   has n, :games
 
   def vouch(player)
-    mem = league_memberships.first_or_create(:player => player)
     # I don't like this.
-    if mem.permissions
-      mem.permissions << [:vouched]
-    else
-      mem.permissions = [:vouched]
-    end
+    mem = league_memberships.first_or_create(:player => player)
+    mem.vouched = true
     mem.save
   end
 
   def vouched?(player)
-    !! ((mem = lm(player)) and mem.permissions.include?(:vouched))
+    !! ((mem = lm(player)) && mem.vouched)
   end
 
   def ban(player, secs, reason)
