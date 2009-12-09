@@ -22,4 +22,6 @@ module Dota
 
 end
 
-require_relative "controllers/*.rb"
+require "rubyexts"
+
+acquire_relative "controllers/*.rb"

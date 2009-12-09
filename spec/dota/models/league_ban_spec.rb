@@ -1,5 +1,3 @@
-require File.join( File.dirname(__FILE__), '..', "spec_helper" )
-
-describe LeagueBan do
-
+describe "LeagueBan" do
+  include Dota
 end

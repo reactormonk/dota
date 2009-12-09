@@ -1,7 +1,5 @@
-require File.join( File.dirname(__FILE__), '..', "spec_helper" )
-
-describe Player do
-
+describe "Player" do
+  include Dota
   it "should have specs"
 
 end

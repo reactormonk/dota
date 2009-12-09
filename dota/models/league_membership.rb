@@ -1,3 +1,4 @@
+module Dota
 class LeagueMembership
   include DataMapper::Resource
   
@@ -20,4 +21,5 @@ class LeagueMembership
     !! bans.first(:until.gt => Time.now)
   end
 
+end
 end

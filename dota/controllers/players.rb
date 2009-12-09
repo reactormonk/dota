@@ -1,3 +1,4 @@
+module Dota
 class Players < Application
   before :ensure_authenticated, :exclude => [:show, :index]
 
@@ -12,4 +13,5 @@ class Players < Application
     display @player
   end
 
+end
 end

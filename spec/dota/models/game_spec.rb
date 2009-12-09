@@ -1,7 +1,7 @@
-require File.join( File.dirname(__FILE__), '..', "spec_helper" )
 require 'set'
 
-describe Game do
+describe "Game" do
+  include Dota
   before(:all) do
     $DEBUG = false
     League.gen

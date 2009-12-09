@@ -3,3 +3,5 @@
 progress
 --loadby
 mtime
+-e fails
+--debugger

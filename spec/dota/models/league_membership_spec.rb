@@ -1,5 +1,3 @@
-require File.join( File.dirname(__FILE__), '..', "spec_helper" )
-
-describe LeagueMembership do
-
+describe "LeagueMembership" do
+  include Dota
 end

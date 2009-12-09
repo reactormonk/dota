@@ -1,3 +1,4 @@
+module Dota
 class Leagues < Application
   before :ensure_authenticated, :exclude => [:show, :index]
 
@@ -11,4 +12,5 @@ class Leagues < Application
     display @league
   end
   
+end
 end

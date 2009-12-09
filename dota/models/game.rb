@@ -1,6 +1,6 @@
 require 'state_machine'
-require 'dm-types'
 
+module Dota
 class Game
   include DataMapper::Resource
   
@@ -104,7 +104,7 @@ class Game
   end
 
   def process_score
-    PlayerScore.send(Merb::Config[:score_method], self).each {|player, score|
+    PlayerScore.send(:elo, self).each {|player, score| # TODO: find rango config
       player.league_memberships.first(:league => league).score = score
     }
   end
@@ -188,7 +188,7 @@ class Game
   def check_votes
     game_memberships.reload
     votes.each do |vote, number|
-      next if number < Merb::Config[:votes_needed] || vote == :none
+      next if number < 7 || vote == :none # TODO votes_needed
       send(vote)
     end
   end
@@ -217,7 +217,7 @@ end
 class CaptainGame < Game
 
   def initialize(*args)
-    self.mode = Merb::Config[:captain_game_mode]
+    self.mode = "cd" # TODO config captain_mode
     super
   end
 
@@ -355,3 +355,4 @@ class AlreadyPicked < CaptainGameException; end
 class PlayerNotJoined < CaptainGameException; end
 class NotChallenged < CaptainGameException; end
 class ChallengeNotAccepted < CaptainGameException; end
+end

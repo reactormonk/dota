@@ -7,6 +7,8 @@
 RANGO_ENV = "test"
 require_relative "../init.rb"
 
+require 'rango/utils'
+
 # load config.ru
 Rango::Utils.load_rackup
 
@@ -14,6 +16,8 @@ Rango::Utils.load_rackup
 Webrat.configure do |config|
   config.mode = :rack
 end
+
+require_relative 'spec_fixtures.rb'
 
 # rspec
 Spec::Runner.configure do |config|
@@ -26,6 +30,7 @@ Spec::Runner.configure do |config|
   #config.before(:each) do
   #  DataMapper.auto_migrate!
   #end
+  DataMapper.auto_migrate!
 
   # for rack-test
   def app

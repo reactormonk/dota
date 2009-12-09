@@ -1,7 +1,5 @@
-require File.join( File.dirname(__FILE__), '..', "spec_helper" )
-
-describe League do
-
+describe "League" do
+  include Dota
   it 'should be possible for players to be vouched' do
     league = League.gen
     player = Player.gen

@@ -1,3 +1,4 @@
+module Dota
 class League
   include DataMapper::Resource
   
@@ -51,4 +52,5 @@ class League
   def lm(player)
     league_memberships.first(:player => player)
   end
+end
 end

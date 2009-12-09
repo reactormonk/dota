@@ -1,10 +1,11 @@
+module Dota
 module PlayerScore
   class << self
     def elo(game)
       return false if game.state == "aborted"
 
-      positive_factor = (Merb::Config[:positive_factor]) 
-      negative_factor = (Merb::Config[:negative_factor])
+      positive_factor = (1.0) # TODO config
+      negative_factor = (1.0)
 
       average = {}
       average[:sentinel] = game.sentinel.inject(0.0) {|sum, player| sum + game.gm(player).score} / game.sentinel.size
@@ -21,4 +22,4 @@ module PlayerScore
     end
   end
 end
-
+end

@@ -1,3 +1,4 @@
+module Dota
 class Games < Application
   before :ensure_authenticated, :exclude => [:show, :index, :staged, :running, :finished]
 
@@ -86,4 +87,5 @@ class Games < Application
     display @games, :template => "games/show"
   end
   
+end
 end
