@@ -1,2 +1,4 @@
 gems
 bin
+*.swp
+settings_local.rb

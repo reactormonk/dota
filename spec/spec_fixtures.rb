@@ -18,6 +18,7 @@ end
 League.fix {league_fib.resume}
 
 Player.fix {{
+  :password => "sekrit"
 }.merge player_fib.resume}
 
 LeagueMembership.fix {{

@@ -8,6 +8,12 @@ class Player
   property :login,  String, :required => true, :unique => true
   property :qauth,  String
   property :admin,  Boolean, :default => false
+  property :encrypted_password, BCryptHash, :required => true
+
+  #
+  # Validations
+  #
+  validates_is_confirmed :password
 
   # 
   # Associations
@@ -114,5 +120,11 @@ class Player
   def score(league)
     league_memberships.first(:league => league).score
   end
+
+  def password=(pass)
+    @password = pass
+    self.encrypted_password = pass
+  end
+
 end
 end

@@ -16,6 +16,7 @@ gem "rack"#, git: "git://github.com/rack/rack.git"
 
 # router
 gem "usher"#, git: "git://github.com/joshbuddy/usher.git"
+gem "fancyroutes", git: "git://github.com/tred/fancyroutes.git"
 
 # template engine
 gem "haml"#, git: "git://github.com/nex3/haml.git"
@@ -23,7 +24,12 @@ gem "haml"#, git: "git://github.com/nex3/haml.git"
 # ORM
 gem "dm-core"#, git: "git://github.com/datamapper/dm-core.git"
 gem "dm-timestamps"#, git: "git://github.com/datamapper/dm-more.git"
+gem "dm-types"#, git: "git://github.com/datamapper/dm-more.git"
+gem "dm-validations"#, git: "git://github.com/datamapper/dm-more.git"
 gem "dm-aggregates"#, git: "git://github.com/datamapper/dm-more.git" # for count etc
+
+gem "state_machine", git: "git://github.com/pluginaweek/state_machine.git"
+gem "bcrypt-ruby"
 
 gem "thin", require_as: nil#, git: "git://github.com/macournoyer/thin.git" # there seems to be some problems with latest thin
 #gem "unicorn", require_as: nil#, git: "git://repo.or.cz/unicorn.git"
@@ -46,11 +52,14 @@ only(:test, :cucumber) do
   gem "rspec"#, git: "git://github.com/dchelimsky/rspec.git"
   gem "rack-test", require_as: "rack/test"#, git: "git://github.com/brynary/rack-test.git"
   gem "webrat"#, git: "git://github.com/brynary/webrat.git"
-  gem "ruby-debug19"
 end
 
 only(:cucumber) do
   gem "cucumber"#, git: "git://github.com/aslakhellesoy/cucumber.git"
+end
+
+only(:test, :cucumber, :development) do
+  gem "ruby-debug19"
 end
 
 # === Bundler Setup === #
