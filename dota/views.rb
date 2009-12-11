@@ -4,6 +4,7 @@
 
 require "rango/controller"
 require "rango/mixins/render"
+require "rango/mixins/rendering"
 require "rango/mixins/filters"
 require "rango/mixins/message"
 
@@ -12,6 +13,7 @@ module Dota
     include Rango::FiltersMixin
     include Rango::MessageMixin
     include Rango::RenderMixin
+    include Rango::ExplicitRendering
   end
 
   class ShowCase < Application
