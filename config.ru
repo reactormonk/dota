@@ -1,4 +1,4 @@
-#!./init.rb -p 4000 -s thin
+#\ -p 4000 -s thin
 # encoding: utf-8
 
 require "rango/rack/middlewares/basic"
