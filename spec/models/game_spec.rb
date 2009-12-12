@@ -238,17 +238,21 @@ describe Game do
         end
       end
 
-      it '(intelligent) random assignment' do
+      describe '(intelligent) random assignment' do
         # Not intelligent yet :)
-        l = League.gen
-        ps = 12.of {Player.gen}
-        ps.each {|p| p.vouch l}
-        g = RandomGame.gen(:league => l)
-        ps.each {|p| p.join(g).should be_true}
-        g.reload
-        g.random_assignment.should be_true
-        g.sentinel.size.should == 5
-        g.scourge.size.should == 5
+        it 'should disribute correctly' do
+          l = League.gen
+          ps = 10.of {Player.gen}
+          ps.each {|p| p.vouch l}
+          g = RandomGame.gen(:league => l)
+          ps.each {|p| p.join(g).should be_true}
+          g.reload
+          g.random_assignment.should be_true
+          g.sentinel.size.should == 5
+          g.scourge.size.should == 5
+        end
+
+        it 'should start with 5 players each'
       end
 
     end
