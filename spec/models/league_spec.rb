@@ -42,4 +42,15 @@ describe League do
     league.banned?(player).should be_false
   end
 
+  describe 'new game' do
+    describe 'should create a new game based on type:' do
+      it 'RandomGame'
+      it 'CaptainGame'
+    end
+    describe 'should handle vouching correctly:' do
+      it 'if allowed to join'
+      it 'if not allowed to join'
+    end
+  end
+
 end
