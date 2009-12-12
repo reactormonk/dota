@@ -1,29 +1,39 @@
-require "rubygems"
-require 'ruby-debug'
+# encoding: utf-8
 
-# Add the local gems dir if found within the app root; any dependencies loaded
-# hereafter will try to load from the local gems before loading system gems.
-if (local_gem_dir = File.join(File.dirname(__FILE__), '..', 'gems')) && $BUNDLE.nil?
-  $BUNDLE = true; Gem.clear_paths; Gem.path.unshift(local_gem_dir)
+# NOTE: we don't have to require spec, webrat,
+# rack/test or whatever, it's bundler job to do it
+
+# load test environment include dependencies
+RANGO_ENV = "test"
+require_relative "../init.rb"
+
+require 'rango/utils'
+
+# load config.ru
+Rango::Utils.load_rackup
+
+# webrat
+Webrat.configure do |config|
+  config.mode = :rack
 end
 
-require "merb-core"
-require "spec" # Satisfies Autotest and anyone else not using the Rake tasks
+require_relative 'spec_fixtures.rb'
 
-# this loads all plugins required in your init file so don't add them
-# here again, Merb will do it for you
-Merb.start_environment(:testing => true, :adapter => 'runner', :environment => ENV['MERB_ENV'] || 'test')
-
-require 'dm-sweatshop'
-require File.join(File.dirname(__FILE__), 'spec_fixtures')
-
+# rspec
 Spec::Runner.configure do |config|
-  config.include(Merb::Test::ViewHelper)
-  config.include(Merb::Test::RouteHelper)
-  config.include(Merb::Test::ControllerHelper)
-  
-  config.before(:all) do
-    DataMapper.auto_migrate! if Merb.orm == :datamapper
+  config.include Rack::Test::Methods
+  config.include Webrat::Matchers
+
+  # automigrate database
+  # TODO: with this setup it runs after custom block, so
+  # if you create a record, it will be destroyed immediately
+  #config.before(:each) do
+  #  DataMapper.auto_migrate!
+  #end
+  DataMapper.auto_migrate!
+
+  # for rack-test
+  def app
+    Project.router
   end
-  
 end

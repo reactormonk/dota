@@ -1,40 +1,25 @@
 require 'dm-sweatshop'
-
-case RUBY_VERSION 
-when "1.9.1" then
-  player_fib = Fiber.new do
-    n = 0
-    loop do
-      Fiber.yield({:login => "log#{n}", :qauth => "q#{n}"})
-      n +=1
-    end
+module Dota
+player_fib = Fiber.new do
+  n = 0
+  loop do
+    Fiber.yield({:login => "log#{n}", :qauth => "q#{n}"})
+    n +=1
   end
-  league_fib = Fiber.new do
-    n = 0
-    loop do
-      Fiber.yield({:name => "n#{n}"})
-      n +=1
-    end
-  end
-
-  League.fix {league_fib.resume}
-
-  Player.fix {{
-    :password => "sekrit",
-    :password_confirmation => "sekrit"
-  }.merge player_fib.resume}
-when "1.8.7"
-  include DataMapper::Sweatshop::Unique
-  League.fix {{
-    :name => /\w{5,15}/.gen
-  }}
-  Player.fix {{
-    :login => /\w{5,15}/.gen,
-    :qauth => /\w{5,15}/.gen,
-    :password => "sekrit",
-    :password_confirmation => "sekrit"
-  }}
 end
+league_fib = Fiber.new do
+  n = 0
+  loop do
+    Fiber.yield({:name => "n#{n}"})
+    n +=1
+  end
+end
+
+League.fix {league_fib.resume}
+
+Player.fix {{
+  :password => "sekrit"
+}.merge player_fib.resume}
 
 LeagueMembership.fix {{
   :player => Player.make,
@@ -70,3 +55,4 @@ GameMembership.fix {{
   :player => Player.make,
   :party => proc {[:staged, :scourge, :sentinel].choice}
 }}
+end
