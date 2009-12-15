@@ -1,4 +1,4 @@
-#!ruby --disable-gems
+#!/usr/bin/ruby --disable-gems
 # encoding: utf-8
 
 # This file should set Rango environment
@@ -12,13 +12,7 @@ rescue LoadError => exception
   abort "LoadError during loading gems/environment: #{exception.message}\nRun gem bundle to fix it."
 end
 
-# settings
-require_relative "settings"
-require_relative "settings_local"
-
-require "rango"
-require "rango/helpers"
-require "rango/environments"
+require "rango/stacks/controller"
 
 # http://wiki.github.com/botanicus/rango/environments-support
 require "rango/environments"
@@ -38,8 +32,8 @@ Rango.boot(environment: environment)
 # register applications
 require_relative "dota/init.rb"
 
-# database connection
-DataMapper.setup(:default, "sqlite3:#{Rango.environment}.db")
+# load settings
+require_relative "settings_local"
 
 # if you will run this script with -i argument, interactive session will begin
 Rango.interactive if ARGV.delete("-i")

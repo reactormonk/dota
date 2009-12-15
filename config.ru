@@ -13,9 +13,9 @@ require_relative "init.rb" unless $0.eql?(__FILE__)
 Rango::Router.use(:usher)
 
 # http://github.com/joshbuddy/usher
-Project.router = Usher::Interface.for(:rack) do
+Rango::Router.app = Usher::Interface.for(:rack) do
   get("/").to(Dota::ShowCase.dispatcher(:index)).name(:showcase)
 end
 
 use Rango::Middlewares::Basic
-run Project.router
+run Rango::Router.app

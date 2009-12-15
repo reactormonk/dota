@@ -34,6 +34,6 @@ Spec::Runner.configure do |config|
 
   # for rack-test
   def app
-    Project.router
+    Rango::Router.app
   end
 end

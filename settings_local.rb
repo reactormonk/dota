@@ -1,6 +1,10 @@
 # encoding: utf-8
 
-# these settings will be merged with settings in main settings file
-Project.configure do
-  # TODO
+# database connection
+case
+when Rango.development?
+  DataMapper.setup(:default, "sqlite3:db/#{Rango.environment}.db")
+when Rango.testing?
+  DataMapper.setup(:default, "sqlite3::memory:")
 end
+

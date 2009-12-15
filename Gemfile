@@ -13,6 +13,8 @@
 # it will download rango as well as all of rango' dependencies
 gem "rango"#, git: "git://github.com/botanicus/rango.git"
 gem "rack"#, git: "git://github.com/rack/rack.git"
+gem "rubyexts"
+gem "media-path"
 
 # router
 gem "usher"#, git: "git://github.com/joshbuddy/usher.git"
@@ -20,6 +22,7 @@ gem "fancyroutes", git: "git://github.com/tred/fancyroutes.git"
 
 # template engine
 gem "haml"#, git: "git://github.com/nex3/haml.git"
+gem "tilt"
 
 # ORM
 gem "dm-core"#, git: "git://github.com/datamapper/dm-core.git"
