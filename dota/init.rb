@@ -2,7 +2,7 @@
 
 require "rango/mixins/application"
 
-module Dota
+module DotA
   extend Rango::ApplicationMixin
 end
 

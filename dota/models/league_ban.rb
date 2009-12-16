@@ -1,4 +1,4 @@
-module Dota
+module DotA
 class LeagueBan
   include DataMapper::Resource
   

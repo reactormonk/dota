@@ -1,4 +1,4 @@
-module Dota
+module DotA
 module PlayerScore
   class << self
     def elo(game)

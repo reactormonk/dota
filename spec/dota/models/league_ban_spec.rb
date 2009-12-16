@@ -1,3 +1,3 @@
 describe "LeagueBan" do
-  include Dota
+  include DotA
 end

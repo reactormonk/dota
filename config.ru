@@ -14,7 +14,7 @@ Rango::Router.use(:usher)
 
 # http://github.com/joshbuddy/usher
 Rango::Router.app = Usher::Interface.for(:rack) do
-  get("/").to(Dota::ShowCase.dispatcher(:index)).name(:showcase)
+  get("/").to(DotA::ShowCase.dispatcher(:index)).name(:showcase)
 end
 
 use Rango::Middlewares::Basic

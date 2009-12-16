@@ -1,5 +1,5 @@
 describe "GameMembership" do
-  include Dota
+  include DotA
   it "should grab the player's score from his LeagueMembership" do
     p,g,l = pgl_vouch
     p.league_memberships.first(:league => l).score = 1200.0

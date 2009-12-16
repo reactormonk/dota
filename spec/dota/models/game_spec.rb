@@ -1,7 +1,7 @@
 require 'set'
 
 describe "Game" do
-  include Dota
+  include DotA
   before(:all) do
     $DEBUG = false
     League.gen

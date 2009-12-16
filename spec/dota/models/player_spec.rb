@@ -1,5 +1,5 @@
 describe "Player" do
-  include Dota
+  include DotA
   it "should have specs"
 
 end

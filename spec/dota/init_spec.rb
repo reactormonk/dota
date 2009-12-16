@@ -2,6 +2,6 @@
 
 require_relative "../spec_helper.rb"
 
-describe Dota do
+describe DotA do
   # TODO: write specs
 end

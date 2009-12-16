@@ -1,4 +1,4 @@
-module Dota
+module DotA
 class LeagueMembership
   include DataMapper::Resource
   

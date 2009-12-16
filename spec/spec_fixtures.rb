@@ -1,5 +1,5 @@
 require 'dm-sweatshop'
-module Dota
+module DotA
 player_fib = Fiber.new do
   n = 0
   loop do

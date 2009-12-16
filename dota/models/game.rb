@@ -1,6 +1,6 @@
 require 'state_machine'
 
-module Dota
+module DotA
 class Game
   include DataMapper::Resource
   

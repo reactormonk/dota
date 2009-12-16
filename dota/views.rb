@@ -9,7 +9,7 @@ require "rango/mixins/rendering"
 require "rango/mixins/filters"
 require "rango/mixins/message"
 
-module Dota
+module DotA
   class Application < Rango::Controller
     include Rango::FiltersMixin
     include Rango::MessageMixin

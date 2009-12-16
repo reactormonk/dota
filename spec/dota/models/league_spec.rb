@@ -1,5 +1,5 @@
 describe "League" do
-  include Dota
+  include DotA
   it 'should be possible for players to be vouched' do
     league = League.gen
     player = Player.gen

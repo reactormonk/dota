@@ -1,4 +1,4 @@
-module Dota
+module DotA
 class Leagues < Application
   before :ensure_authenticated, :exclude => [:show, :index]
 

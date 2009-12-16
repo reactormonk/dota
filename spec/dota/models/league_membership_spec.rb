@@ -1,3 +1,3 @@
 describe "LeagueMembership" do
-  include Dota
+  include DotA
 end

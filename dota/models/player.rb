@@ -1,4 +1,4 @@
-module Dota
+module DotA
 class Player
   include DataMapper::Resource
   #

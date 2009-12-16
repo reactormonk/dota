@@ -1,4 +1,4 @@
-module Dota
+module DotA
 class Games < Application
   before :ensure_authenticated, :exclude => [:show, :index, :staged, :running, :finished]
 
