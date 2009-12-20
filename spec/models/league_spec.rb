@@ -44,8 +44,21 @@ describe League do
 
   describe 'new game' do
     describe 'should create a new game based on type:' do
-      it 'RandomGame'
-      it 'CaptainGame'
+      before(:each) do
+        @players = 5.of {Player.gen}
+        @league = League.gen
+        @players.each{|p| p.vouch @league}
+      end
+      it 'RandomGame' do
+        (game = @league.new_game("RandomGame", @players.first)).class.should == RandomGame
+        @players.first.where_playing.should == game
+      end
+      it 'CaptainGame' do
+        (game = @league.new_game("CaptainGame", @players[1])).class.should == CaptainGame
+        @players[1].where_playing.should == game
+        (game = @league.new_game("CaptainGame", *@players[2..3])).class.should == CaptainGame
+        @players[2..3].each {|p| p.where_playing.should == game}
+      end
     end
     describe 'should handle vouching correctly:' do
       it 'if allowed to join'

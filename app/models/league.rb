@@ -74,7 +74,23 @@ class League
 
   # raises NotCaptain if the players is not a captain
   def captain?(player)
+    vouched?(player)
     lm(player).captain or raise NotCaptain.new(player, self)
+  end
+
+  def new_game(type, player, *args)
+    case type.downcase.to_sym
+    when :randomgame
+      RandomGame.create(:league => self, :players => [player])
+    when :captaingame
+      if challenged = args.first
+        direct_challenge(player, challenged)
+      else
+        anonymous_challenge(player)
+      end
+    else
+      raise ArgumentError, "This game type doesn not exist."
+    end
   end
 
   private
