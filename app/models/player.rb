@@ -75,20 +75,14 @@ class Player
     captain_game.accept_challenge(self)
   end
 
+  # I'm not even sure if you should use this method... it's just for spec backwards compability ;-)
   def challenge(league, player=nil)
     if captain_game = challenged
       raise PlayerPlaying, "You're playing in #{captain_game}."
     elsif player
-      captain_game = CaptainGame.create(:league => league)
-      captain_game.challenges(self, player)
-      captain_game.save
+      captain_game = league.direct_challenge(self, player)
     else
-      # Accept a challenge or make a new one
-      if captain_game = CaptainGame.first(:state => "challenged", :league => league)
-        captain_game.accept_challenge(self)
-      else
-        captain_game = CaptainGame.create(:league => league, :captains => [self])
-      end
+      captain_game = league.anonymous_challenge(self)
     end
     captain_game
   end

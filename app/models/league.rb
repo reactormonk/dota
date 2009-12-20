@@ -51,8 +51,43 @@ class League
     end
   end
 
+  # Returns the anonymous challenge to that league (game) or nil
+  def pending_challenge
+    CaptainGame.all(:state => "challenged").select{|game| game.captains.size == 1}.first
+  end
+
+  def anonymous_challenge(challenger)
+    captain?(challenger)
+    if game = pending_challenge
+      game.accept_challenge(challenger)
+    else
+      game = CaptainGame.anonymous_challenge(self, challenger)
+    end
+    game
+  end
+
+  def direct_challenge(challenger, challenged)
+    captain?(challenger)
+    captain?(challenged)
+    CaptainGame.direct_challenge(self, challenger, challenged)
+  end
+
+  # raises NotCaptain if the players is not a captain
+  def captain?(player)
+    lm(player).captain or raise NotCaptain.new(player, self)
+  end
+
   private
   def lm(player)
     league_memberships.first(:player => player)
   end
+end
+
+class NotAuthorized < StandardError; end
+class NotCaptain < NotAuthorized
+  def initalize(player, league)
+    @player = player
+    @league = league
+  end
+  attr_reader :player, :league
 end

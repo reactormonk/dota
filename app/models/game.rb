@@ -266,14 +266,25 @@ class CaptainGame < Game
     save
   end
 
-  def challenges(challenger, challenged)
-    raise "Use only to initialize" unless captains.empty? and players.empty?
-    join_as_captain(challenger)
-    game_memberships.reload
-    sentinel_set(challenger)
-    join_as_captain(challenged)
-    game_memberships.reload
-    scourge_set(challenged)
+  def self.direct_challenge(league, challenger, challenged)
+    game = new(:league => league)
+    game.join_as_captain(challenger)
+    game.game_memberships.reload
+    game.sentinel_set(challenger)
+    game.join_as_captain(challenged)
+    game.game_memberships.reload
+    game.scourge_set(challenged)
+    game.save
+    game
+  end
+
+  def self.anonymous_challenge(league, challenger)
+    game = new(:league => league)
+    game.join_as_captain(challenger)
+    game.game_memberships.reload
+    game.sentinel_set(challenger)
+    game.save
+    game
   end
 
   def accept_challenge(player)

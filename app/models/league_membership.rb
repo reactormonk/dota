@@ -8,6 +8,9 @@ class LeagueMembership
   property :id, Serial
   property :score, Float, :required => true, :default => 1000.0
   property :permissions, Flag[:vouched, :voucher, :captain, :admin]
+  property :admin, Boolean, :default => false
+  property :voucher, Boolean, :default => false
+  property :captain, Boolean, :default => true
 
   # 
   # Associations
