@@ -260,7 +260,7 @@ class CaptainGame < Game
     return true unless new?
     captains.all? do |capt|
       if allowed_to_join?(capt)
-        # add other checks here
+        league.captain?(capt)
         true
       else
         false
