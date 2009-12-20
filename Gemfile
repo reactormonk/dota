@@ -38,3 +38,6 @@ gem "merb_parts", :git => "git://github.com/merb/merb_parts.git"
 
 gem "state_machine"#, :git => "git://github.com/pluginaweek/state_machine.git"
 gem "rango"#, :git => "git://github.com/botanicus/rango.git"
+
+bundle_path "gems"
+bin_path "bin"
