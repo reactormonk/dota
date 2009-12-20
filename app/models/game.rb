@@ -286,13 +286,13 @@ class CaptainGame < Game
   # Logic
   #
   def join_as_captain(player)
-    allowed_to_join(player)
+    __allowed_to_join(player)
     captains << player
     save
   end
 
   def self.direct_challenge(league, challenger, challenged)
-    game = new(:league => league)
+    game = create(:league => league)
     game.join_as_captain(challenger)
     game.game_memberships.reload
     game.sentinel_set(challenger)
@@ -304,7 +304,7 @@ class CaptainGame < Game
   end
 
   def self.anonymous_challenge(league, challenger)
-    game = new(:league => league)
+    game = create(:league => league)
     game.join_as_captain(challenger)
     game.game_memberships.reload
     game.sentinel_set(challenger)
@@ -347,7 +347,8 @@ class CaptainGame < Game
     save
   end
 
-  def join(player)
+  alias :__allowed_to_join :allowed_to_join
+  def allowed_to_join(player)
     raise ChallengeNotAccepted.new(self) if state == "challenged"
     super
   end
