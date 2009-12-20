@@ -86,15 +86,15 @@ class Game
     errors_ary = []
     case sentinel.size
     when (0..4)
-      errors_ary << [NotEnoughPlayers, "Not enough sentinel players. #: #{sentinel.size}."]
+      errors_ary << [NotEnoughPlayers.new(self), "Not enough sentinel players. #: #{sentinel.size}."]
     when (6..1/0.0)
-      errors_ary << [TooManyPlayers, "Too many sentinel players. #: #{sentinel.size}."]
+      errors_ary << [TooManyPlayers.new(self), "Too many sentinel players. #: #{sentinel.size}."]
     end
     case scourge.size
     when (0..4)
-      errors_ary << [NotEnoughPlayers, "Not enough scourge players #: #{scourge.size}."]
+      errors_ary << [NotEnoughPlayers.new(self), "Not enough scourge players #: #{scourge.size}."]
     when (6..1/0.0)
-      errors_ary << [TooManyPlayers, "Too many enough scourge players #: #{scourge.size}."]
+      errors_ary << [TooManyPlayers.new(self), "Too many enough scourge players #: #{scourge.size}."]
     end
     [errors_ary.empty?, errors_ary]
   end
@@ -124,14 +124,14 @@ class Game
   end
 
   def join(player)
-    raise GameRunning if persistent?
+    raise GameRunning.new(self) if persistent?
     allowed_to_join(player)
     players << player
     save
   end
 
   def leave(player)
-    raise GameRunning if persistent?
+    raise GameRunning.new(self) if persistent?
     gm(player).destroy
     game_memberships.empty? ? destroy : save
   end
@@ -147,9 +147,11 @@ class Game
   end
 
   def allowed_to_join(player)
-    raise NotVouched, "#{player.login} is not vouched in #{league.name}." unless player.vouched?(league)
-    raise Banned, "#{player.login} is banned due to #{player.bans(league).last.reason}." if player.banned?(league)
-    raise PlayerPlaying, "#{player.login} is playing in #{player.where_playing.id}." if player.playing?
+    raise NotVouched.new(player, league), "#{player.login} is not vouched in #{league.name}." unless player.vouched?(league)
+    raise Banned.new(player, league), "#{player.login} is banned due to #{player.bans(league).last.reason}." if player.banned?(league)
+    if other_game = player.where_playing
+      raise PlayerPlaying.new(player, other_game), "#{player.login} is playing in #{other_game.id}."
+    end
   end
 
   def sentinel
@@ -196,13 +198,36 @@ class Game
 end
 
 class GameException < StandardError; end
-class NotVouched < GameException; end
-class Banned < GameException; end
-class PlayerPlaying < GameException; end
-class TooManyPlayers < GameException; end
-class NotEnoughPlayers < GameException; end
-class GameRunning < GameException; end
-class GameNotRunning < GameException; end
+class PlayerPlaying < GameException
+  def initialize(player, game)
+    @player, @game = player, game
+  end
+  attr_reader :player, :game
+end
+class TooManyPlayers < GameException
+  def initialize(game)
+    @game = game
+  end
+  attr_reader :game
+end
+class NotEnoughPlayers < GameException
+  def initialize(game)
+    @game = game
+  end
+  attr_reader :game
+end
+class GameRunning < GameException
+  def initialize(game)
+    @game = game
+  end
+  attr_reader :game
+end
+class GameNotRunning < GameException
+  def initialize(game)
+    @game = game
+  end
+  attr_reader :game
+end
 
 class RandomGame < Game
   def random_assignment
@@ -297,7 +322,7 @@ class CaptainGame < Game
       distribute_captains
       challenge_accepted
     else
-      raise NotChallenged, "You're not challenged."
+      raise NotChallenged.new(self), "You're not challenged."
     end
   end
 
@@ -323,22 +348,22 @@ class CaptainGame < Game
   end
 
   def join(player)
-    raise ChallengeNotAccepted if state == "challenged"
+    raise ChallengeNotAccepted.new(self) if state == "challenged"
     super
   end
 
   def pick(capt, player)
     unless capt.party == pick_next
-      raise NotYourTurn, "It's not #{capt.login}'s turn."
+      raise NotYourTurn.new(self, capt), "It's not #{capt.login}'s turn."
     else
-      raise PlayerNotJoined, "#{player.login} hasn't joined Game \##{self.id}." unless gm(player)
+      raise PlayerNotJoined.new(self, capt, player), "#{player.login} hasn't joined Game \##{self.id}." unless gm(player)
       if player.party == :staged
         gm(player).party = pick_next
         gm(player).save
         self.pick_next = choose_pick_next
         save
       else
-        raise AlreadyPicked, "#{player.login} has been picked."
+        raise AlreadyPicked.new(self, capt, player), "#{player.login} has been picked."
       end
       start if allowed_to_start?
     end
@@ -361,8 +386,33 @@ class CaptainGame < Game
 end
 
 class CaptainGameException < GameException; end
-class NotYourTurn < CaptainGameException; end
-class AlreadyPicked < CaptainGameException; end
-class PlayerNotJoined < CaptainGameException; end
-class NotChallenged < CaptainGameException; end
-class ChallengeNotAccepted < CaptainGameException; end
+class NotYourTurn < CaptainGameException
+  def initialize(game, captain)
+    @game, @captain = game, captain
+  end
+  attr_reader :game, :captain
+end
+class AlreadyPicked < CaptainGameException
+  def initialize(game, captain, player)
+    @game, @captain, @player = game, captain, player
+  end
+  attr_reader :game, :captain, :player
+end
+class PlayerNotJoined < CaptainGameException
+  def initialize(game, captain, player)
+    @game, @captain, @player = game, captain, player
+  end
+  attr_reader :game, :captain, :player
+end
+class NotChallenged < CaptainGameException
+  def initialize(captain)
+    @captain = captain
+  end
+  attr_reader :captain
+end
+class ChallengeNotAccepted < CaptainGameException
+  def initialize(game)
+    @game = game
+  end
+  attr_reader :game
+end

@@ -91,3 +91,17 @@ class NotCaptain < NotAuthorized
   end
   attr_reader :player, :league
 end
+
+class LeagueException < StandardError; end
+class NotVouched < LeagueException
+  def initialize(player, league)
+    @player, @league = player, league
+  end
+  attr_reader :player, :league
+end
+class Banned < LeagueException
+  def initialize(player, league)
+    @player, @league = player, league
+  end
+  attr_reader :player, :league
+end
