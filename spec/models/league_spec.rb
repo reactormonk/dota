@@ -61,8 +61,18 @@ describe League do
       end
     end
     describe 'should handle vouching correctly:' do
-      it 'if allowed to join'
-      it 'if not allowed to join'
+      before(:each) do
+        @player = Player.gen
+        @league = League.gen
+        @game = Game.create(:league => @league)
+      end
+      it 'if allowed to join' do
+        @player.vouch @league
+        proc {@game.allowed_to_join(@player)}.should_not raise_error
+      end
+      it 'if not allowed to join' do
+        proc {@game.allowed_to_join(@player)}.should raise_error NotVouched
+      end
     end
   end
 
