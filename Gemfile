@@ -1,5 +1,5 @@
 # dependencies are generated using a strict version, don't forget to edit the gem versions when upgrading.
-merb_gems_version = "1.0.15"
+merb_gems_version = '1.1.0.pre'
 dm_gems_version   = "0.10.2"
 do_gems_version   = "0.10.1"
 
@@ -33,7 +33,8 @@ gem "dm-types", dm_gems_version
 gem "dm-validations", dm_gems_version  
 gem "dm-serializer", dm_gems_version   
 
-gem "merb_datamapper", merb_gems_version
-gem "merb_parts", "0.9.14"
+gem "merb_datamapper", :git => "git://github.com/merb/merb_datamapper.git"
+gem "merb_parts", :git => "git://github.com/merb/merb_parts.git"
 
-gem "state_machine", git => "git://github.com/pluginaweek/state_machine.git"
+gem "state_machine"#, :git => "git://github.com/pluginaweek/state_machine.git"
+gem "rango"#, :git => "git://github.com/botanicus/rango.git"

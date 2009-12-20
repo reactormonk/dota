@@ -1,5 +1,6 @@
 require 'rake/rdoctask'
 
+require 'vendor/gems/environment'
 require 'merb-core'
 require 'ruby-debug'
 
