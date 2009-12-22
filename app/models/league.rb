@@ -17,18 +17,29 @@ class League
   has n, :games
 
   def vouch(player)
-    mem = league_memberships.first_or_create(:player => player)
-    # I don't like this.
-    if mem.permissions
-      mem.permissions << [:vouched]
-    else
-      mem.permissions = [:vouched]
-    end
-    mem.save
+    give_permission(:vouched, player)
   end
 
   def vouched?(player)
-    !! ((mem = lm(player)) and mem.permissions.include?(:vouched))
+    !! ((mem = lm(player)) and mem.vouched)
+  end
+
+  def give_permission(permission, player)
+    raise ArgumentError, "#{permission} is not a permission" unless permission?(permission)
+    mem = lm(player)
+    mem.send("#{permission}=", true)
+    mem.save
+  end
+
+  def take_permission(permission, player)
+    raise ArgumentError, "#{permission} is not a permission" unless permission?(permission)
+    mem = lm(player)
+    mem.send("#{permission}=", false)
+    mem.save
+  end
+
+  def permission?(permission)
+    [:admin, :voucher, :captain, :vouched].include? permission
   end
 
   def ban(player, secs, reason)
@@ -95,7 +106,7 @@ class League
 
   private
   def lm(player)
-    league_memberships.first(:player => player)
+    league_memberships.first_or_create(:player => player)
   end
 end
 

@@ -3,12 +3,12 @@ class Leagues < Application
 
   def index
     @leagues = League.all
-    display @leagues
+    render "leagues/index"
   end
 
   def show
     @league = League.first(:name => Merb::Parse.unescape(params[:name]))
-    display @league
+    render "leagues/show"
   end
   
 end
