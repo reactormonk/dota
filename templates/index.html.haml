@@ -1,0 +1,10 @@
+/ render into layout or render just content block if request is AJAX
+- extends "base.html" unless request.ajax?
+
+/ head
+- block(:title, "Welcome to Rango!")
+- block(:description, "This is just a welcome screen.")
+- block(:keywords, "example")
+
+/ body
+= block(:content)

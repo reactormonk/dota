@@ -1,0 +1,16 @@
+- extends "games/show.html"
+- includes "games/actions/join.html"
+- block(:game_content) do
+  .players
+    %table
+      %caption Players
+      %thead
+        %tr
+          %th Name
+          %th Score
+      - for gm in @game.game_memberships
+        %tr 
+          %td
+            = link_to gm.player.login, resource(gm.player)
+          %td
+            = gm.score

@@ -1,0 +1,19 @@
+- extends "base.html" unless request.ajax?
+- block(:head_title) do
+  Game ##{@game.id}
+= block(:title) do
+  = block(:game_title) do
+    %span(class="desc")
+      Game #
+      = @game.id
+      in der League
+      = @game.league.name
+    %span(class="state #{@game.state}")
+      Status:
+      = @game.state
+= block(:content) do
+  %div[@game, :id]
+    .game_actions
+      = block(:game_actions)
+    .game_content
+      = block(:game_content)

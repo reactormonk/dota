@@ -1,0 +1,17 @@
+- block(:head_title, "Games")
+- block(:title, "Games")
+= block(:content) do
+  %table
+    %thead
+      %tr
+        %th ID
+        %th Status
+        %th Typ
+      - for game in @games
+        %tr
+          %td
+            = link_to game.id, resource(game)
+          %td
+            = game.state
+          %td
+            = game.type

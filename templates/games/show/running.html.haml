@@ -1,0 +1,25 @@
+- extends "show.html"
+.players
+  %table
+    %caption Sentinel
+    %thead
+      %tr
+        %th Name
+        %th Score
+    - for gm in @game.game_memberships(:party => :sentinel)
+      %tr 
+        %td
+          = link_to gm.player.login, resource(gm.player)
+        %td
+          = gm.score
+    %caption Scourge
+    %thead
+      %tr
+        %th Name
+        %th Score
+    - for gm in @game.game_memberships(:party => :scourge)
+      %tr 
+        %td
+          = link_to gm.player.login, resource(gm.player)
+        %td
+          = gm.score

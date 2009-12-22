@@ -3,22 +3,22 @@ class Games < Application
 
   def index
     @games = Game.all
-    display @games
+    render 'games/index'
   end
 
   def show
     @game = Game.first(:id => params[:id])
-    display @game
+    render "games/show/#{template_for_state(@game.state)}"
   end
 
   def join
     @game = Game.first(:id => params[:id])
     begin
       @game.join(session.user)
-    rescue PlayerPlaying
-      message[:error] = "Du spielt schon in Game ##{session.user.where_playing.id}"
-    rescue NotVouched
-      message[:error] = "Lass ich erstmal in #{@game.league} vouchen"
+    rescue PlayerPlaying => e
+      message[:error] = "Du spielt schon in Game ##{e.game}"
+    rescue NotVouched => e
+      message[:error] = "Lass ich erstmal in #{e.league} vouchen"
     else
       message[:notice] = "Alles paletti, du bist in Game ##{@game.id}."
     end
@@ -27,7 +27,11 @@ class Games < Application
 
   def leave
     @game = Game.first(:id => params[:id])
-    @game.leave(session.user)
+    begin
+      @game.leave(session.user)
+    rescue GameRunning => e
+      message[:error] = "Du kannst Game ##{e.game} nicht verlassen, es befindet sich im Status #{e.game.state}."
+    end
     redirect resource(@game), :message => "Du hast #{@game} verlassen."
   end
 
@@ -51,6 +55,7 @@ class Games < Application
   end
 
   def create
+    # TODO we got better things now
     user = session.user
     type = TYPES[params[:type].to_s.downcase.chomp("game")]
     raise ArgumentError unless league = League.first(params[:league])
@@ -84,6 +89,15 @@ class Games < Application
   def state(states)
     @games = Game.all(:state => states)
     display @games, :template => "games/show"
+  end
+
+  def template_for_state(state)
+    templates = Hash.new {|h,k| k }
+    templates.merge({
+      "scourge_won" => "finished",
+      "sentinel_won" => "finished",
+    })
+    templates[state]
   end
   
 end
