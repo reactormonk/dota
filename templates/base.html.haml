@@ -1,4 +1,6 @@
 !!! 1.0 Strict
+- includes "menu/personal.html"
+- includes "menu/global.html"
 %html{html_attrs("en")}
   %head
     / http://wiki.github.com/botanicus/rango/template-inheritance
@@ -13,5 +15,11 @@
     = block(:head)
   %body
     .container
-      %h1= block(:title)
-      = block(:content)
+      .menu
+        .global
+          = block(:global_menu)
+        .personal
+          = block(:personal_menu)
+      .content
+        %h1= block(:title)
+        = block(:content)
