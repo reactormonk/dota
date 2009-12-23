@@ -107,4 +107,12 @@ class Player
   def score(league)
     league_memberships.first(:league => league).score
   end
+
+  def give_permission(permission, league)
+    league.give_permission(permission, self)
+  end
+
+  def take_permission(permission, league)
+    league.take_permission(permission, self)
+  end
 end

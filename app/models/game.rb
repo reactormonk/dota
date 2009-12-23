@@ -287,6 +287,7 @@ class CaptainGame < Game
   #
   def join_as_captain(player)
     __allowed_to_join(player)
+    league.captain?(player)
     captains << player
     save
   end

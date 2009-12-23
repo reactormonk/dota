@@ -112,9 +112,8 @@ end
 
 class NotAuthorized < StandardError; end
 class NotCaptain < NotAuthorized
-  def initalize(player, league)
-    @player = player
-    @league = league
+  def initialize(player, league)
+    @player, @league = player, league
   end
   attr_reader :player, :league
 end

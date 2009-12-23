@@ -47,7 +47,7 @@ describe League do
       before(:each) do
         @players = 5.of {Player.gen}
         @league = League.gen
-        @players.each{|p| p.vouch @league}
+        @players.each{|p| p.vouch @league; p.give_permission(:captain, @league)}
       end
       it 'RandomGame' do
         (game = @league.new_game("RandomGame", @players.first)).class.should == RandomGame

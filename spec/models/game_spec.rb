@@ -80,6 +80,25 @@ describe Game do
     describe 'various player distribution mechanism:' do
 
       describe 'captains' do
+        
+        describe 'should only allow captains' do
+          
+          it 'to challenge' do
+            league = League.gen
+            player = Player.gen
+            league.vouch(player)
+            proc {CaptainGame.anonymous_challenge(league, player)}.should raise_error NotCaptain
+          end
+
+          it 'to be challenged' do
+            league = League.gen
+            players = 2.of{Player.gen}
+            players.each {|p| p.vouch league}
+            players.first.give_permission(:captain, league)
+            proc {CaptainGame.direct_challenge(league, *players)}.should raise_error NotCaptain
+          end
+
+        end
 
         it 'should be assigned' do
           l,players,game = capt_lpg
@@ -91,7 +110,7 @@ describe Game do
           it 'to challenge' do
             league = League.pick
             players = 2.of{Player.gen}
-            players.each {|p| league.vouch p}
+            players.each {|p| league.vouch p; league.give_permission(:captain, p)}
             game = Game.gen(:league => league)
             game.join(players.first).should be_true
             players.first.playing?.should be_true
@@ -102,7 +121,7 @@ describe Game do
           it 'to be challenged' do
             league = League.pick
             players = 2.of{Player.gen}
-            players.each {|p| league.vouch p}
+            players.each {|p| league.vouch p; league.give_permission(:captain, p)}
             game = Game.gen(:league => league)
             game.join(players.first).should be_true
             players.first.playing?.should be_true
@@ -114,7 +133,7 @@ describe Game do
           it '[direct]' do
             league = League.pick
             players = 2.of {Player.gen}
-            players.each {|p| league.vouch p}
+            players.each {|p| league.vouch p; league.give_permission(:captain, p)}
             captain_game = players.first.challenge(league, players[1])
             captain_game.reload
             players[1].challenged?.should be_true
@@ -126,7 +145,7 @@ describe Game do
           it '[anonymous]' do
             league = League.gen
             players = 2.of {Player.gen}
-            players.each {|p| league.vouch p}
+            players.each {|p| league.vouch p; league.give_permission(:captain, p)}
             players.first.vouched?(league).should be_true
             players.first.challenge(league)
             captain_game = CaptainGame.first(:league => league)
@@ -141,7 +160,7 @@ describe Game do
           it 'reject' do
             league = League.gen
             players = 2.of {Player.gen}
-            players.each {|p| league.vouch p}
+            players.each {|p| league.vouch p; league.give_permission(:captain, p)}
             players.first.challenge(league, players[1])
             players.last.playing?.should be_true
             players.last.leave
@@ -151,7 +170,7 @@ describe Game do
           it 'accept' do
             league = League.gen
             players = 2.of {Player.gen}
-            players.each {|p| league.vouch p}
+            players.each {|p| league.vouch p; league.give_permission(:captain, p)}
             captain_game = players.first.challenge(league, players.last)
             captain_game.save
             players.last.accept_challenge
@@ -165,7 +184,7 @@ describe Game do
         it 'should not be possible for players to join a challenge not yet accepted' do
           league = League.gen
           players = 2.of{Player.gen}
-          players.each {|p| league.vouch p}
+          players.each {|p| league.vouch p; league.give_permission(:captain, p)}
           captain_game = players.first.challenge league
           proc {players.last.join captain_game}.should raise_error ChallengeNotAccepted
         end
@@ -231,6 +250,7 @@ describe Game do
           l = League.pick
           players = 5.of {Player.gen}
           players.each {|p| p.vouch(l)}
+          players[0..1].each {|c| c.give_permission(:captain, l)}
           players[0].challenge(l,players[1])
           players[1].accept_challenge
           game = players[0].games.first
