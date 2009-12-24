@@ -1,0 +1,4 @@
+- extends "base.html" unless request.ajax?
+- block(:title, "Not Acceptable")
+= block(:content) do
+  Your Request is not acceptable.

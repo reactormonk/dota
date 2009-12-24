@@ -1,0 +1,4 @@
+- extends "base.html" unless request.ajax?
+- block(:title, "Not Found")
+= block(:content) do
+  Page not found.

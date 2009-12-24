@@ -1,0 +1,25 @@
+- extends "base.html" unless  request.ajax?
+- block(:title, "Profil von#{@player.login}")
+= block(:content) do
+  - if @game
+    .game
+      Dieser User spielt gerade in
+      -#= render "games/widget/running"
+  %table
+    %caption Mitglied bei
+    %thead
+      %tr
+        %th Name
+        %th Score
+        %th vouched?
+        %th banned?
+    - for lm in @player.league_memberships
+      %tr
+        %td
+          = link_to lm.league.name, resource(lm.league)
+        %td
+          = lm.score
+        %td
+          = lm.vouched?
+        %td
+          = lm.banned?
