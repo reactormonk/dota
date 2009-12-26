@@ -1,0 +1,5 @@
+bin/
+gems/
+*.db
+doc/
+log/
