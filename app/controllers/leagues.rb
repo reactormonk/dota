@@ -2,13 +2,11 @@ class Leagues < Application
   before :ensure_authenticated, :exclude => [:show, :index]
 
   def index
-    @leagues = League.all
-    render "leagues/index"
+    render "leagues/index", leagues: League.all
   end
 
   def show
-    @league = League.first(:name => Merb::Parse.unescape(params[:name]))
-    render "leagues/show"
+    render "leagues/show", league: League.first(:name => Merb::Parse.unescape(params[:name]))
   end
   
 end

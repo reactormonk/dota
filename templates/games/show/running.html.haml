@@ -6,7 +6,7 @@
       %tr
         %th Name
         %th Score
-    - for gm in @game.game_memberships(:party => :sentinel)
+    - for gm in game.game_memberships(:party => :sentinel)
       %tr 
         %td
           = link_to gm.player.login, resource(gm.player)
@@ -17,7 +17,7 @@
       %tr
         %th Name
         %th Score
-    - for gm in @game.game_memberships(:party => :scourge)
+    - for gm in game.game_memberships(:party => :scourge)
       %tr 
         %td
           = link_to gm.player.login, resource(gm.player)

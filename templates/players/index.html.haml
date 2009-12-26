@@ -6,7 +6,7 @@
   %table
     %thead
       %th Player
-  - for player in @players
+  - for player in players
     %tr
       %td
         = link_to player.login, resource(player)

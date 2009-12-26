@@ -37,7 +37,7 @@ gem "merb_datamapper", :git => "git://github.com/merb/merb_datamapper.git"
 gem "merb_parts", :git => "git://github.com/merb/merb_parts.git"
 
 gem "state_machine"#, :git => "git://github.com/pluginaweek/state_machine.git"
-gem "rango", "0.2.pre" #, :git => "git://github.com/botanicus/rango.git"
+gem "rango" #, :git => "git://github.com/botanicus/rango.git"
 
 gem "thin"
 

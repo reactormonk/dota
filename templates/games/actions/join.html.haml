@@ -1,17 +1,17 @@
 - enhance_block(:game_actions) do
   .join
-    - if ! @join_message and @user
-      = link_to "Join", resource(@game, :join)
-    - elsif ! @user
+    - if ! join_message and user
+      = link_to "Join", resource(game, :join)
+    - elsif ! user
       Erstelle einen Player, um einem Game beitreten zu können.
     - else
-      - case @join_message
+      - case join_message
       - when :playing
         .playing
-          Du spielst schon in Game # #{link_to @game.id, resource(@user.where_playing)}.
+          Du spielst schon in Game # #{link_to game.id, resource(user.where_playing)}.
       - when :vouched
         .vouched
-          Lass dich erstmal in #{link_to @league.name, resource(@league)} vouchen.
+          Lass dich erstmal in #{link_to league.name, resource(league)} vouchen.
       - when :banned
         .banned
-          Du bist gebannt, sehe #{link_to "hier", resource(@ban)}.
+          Du bist gebannt.
