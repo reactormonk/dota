@@ -20,7 +20,6 @@ gem "merb-auth-more", merb_gems_version
 gem "merb-auth-slice-password", merb_gems_version
 gem "merb-param-protection", merb_gems_version
 gem "merb-exceptions", merb_gems_version
-gem "merb-gen", merb_gems_version 
 gem "merb-haml", merb_gems_version
 
 gem "data_objects", do_gems_version
