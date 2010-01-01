@@ -92,15 +92,30 @@ class League
   def new_game(type, player, *args)
     case type.downcase.to_sym
     when :randomgame
-      RandomGame.create(:league => self, :players => [player])
+      new_random_game(player)
     when :captaingame
-      if challenged = args.first
-        direct_challenge(player, challenged)
-      else
-        anonymous_challenge(player)
-      end
+      new_captain_game(player, args.first)
     else
       raise ArgumentError, "This game type doesn not exist."
+    end
+  end
+
+  def new_random_game(player)
+    game = RandomGame.create(:league => self)
+    begin
+      game.join player
+    rescue => e
+      game.destroy
+      raise e
+    end
+    game
+  end
+
+  def new_captain_game(challenger, challenged=nil)
+    if challenged
+      direct_challenge(challenger, challenged)
+    else
+      anonymous_challenge(challenger)
     end
   end
 
