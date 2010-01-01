@@ -8,7 +8,7 @@
         %th ID
         %th Status
         %th Typ
-      - for game in games
+      - for game in @games
         %tr
           %td
             = link_to game.id, resource(game)

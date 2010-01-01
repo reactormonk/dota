@@ -1,9 +1,9 @@
 - extends "base.html" unless request.ajax?
-- block(:title, league.name)
+- block(:title, @league.name)
 = block(:content) do
   %h1
     League
-    = league.name
+    = @league.name
   %table
     %caption Mitglieder
     %thead
@@ -12,7 +12,7 @@
         %th Score
         %th vouched?
         %th banned?
-    - for lm in league.league_memberships
+    - for lm in @league.league_memberships
       %tr
         %td
           = link_to lm.player.login, resource(lm.player)
