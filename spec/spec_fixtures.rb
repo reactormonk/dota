@@ -1,5 +1,5 @@
+require 'extlib'
 require 'dm-sweatshop'
-module DotA
 player_fib = Fiber.new do
   n = 0
   loop do
@@ -56,4 +56,3 @@ GameMembership.fix {{
   :player => Player.make,
   :party => proc {[:staged, :scourge, :sentinel].choice}
 }}
-end

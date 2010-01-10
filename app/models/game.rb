@@ -1,7 +1,5 @@
 require 'state_machine'
-require 'dm-types'
 
-module DotA
 class Game
   include DataMapper::Resource
   
@@ -105,7 +103,7 @@ class Game
   end
 
   def process_score
-    PlayerScore.send(Merb::Config[:score_method], self).each {|player, score|
+    PlayerScore.send(Rango::AppConfig[:score_method], self).each {|player, score|
       player.league_memberships.first(:league => league).score = score
     }
   end
@@ -191,7 +189,7 @@ class Game
   def check_votes
     game_memberships.reload
     votes.each do |vote, number|
-      next if number < Merb::Config[:votes_needed] || vote == :none
+      next if number < Rango::AppConfig[:votes_needed] || vote == :none
       send(vote)
     end
   end
@@ -243,7 +241,7 @@ end
 class CaptainGame < Game
 
   def initialize(*args)
-    self.mode = Merb::Config[:captain_game_mode]
+    self.mode = Rango::AppConfig[:captain_game_mode]
     super
   end
 
@@ -386,7 +384,6 @@ class CaptainGame < Game
   def picking_captain
     game_memberships.first(:party => pick_next).player
   end
-end
 end
 
 class CaptainGameException < GameException; end

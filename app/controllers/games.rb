@@ -1,4 +1,3 @@
-module DotA
 class Games < Application
   before :ensure_authenticated, :exclude => [:show, :index, :staged, :running, :finished]
 
@@ -101,5 +100,4 @@ class Games < Application
     templates[state]
   end
   
-end
 end

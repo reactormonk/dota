@@ -1,4 +1,3 @@
-module DotA
 class GameMembership
   include DataMapper::Resource
   
@@ -18,5 +17,4 @@ class GameMembership
   has 1, :league, :through => :game
   belongs_to :player
 
-end
 end

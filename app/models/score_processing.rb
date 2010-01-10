@@ -1,11 +1,10 @@
-module DotA
 module PlayerScore
   class << self
     def elo(game)
       return false if game.state == "aborted"
 
-      positive_factor = (Merb::Config[:positive_factor]) 
-      negative_factor = (Merb::Config[:negative_factor])
+      positive_factor = (Rango::AppConfig[:positive_factor]) 
+      negative_factor = (Rango::AppConfig[:negative_factor])
 
       average = {}
       average[:sentinel] = game.sentinel.inject(0.0) {|sum, player| sum + game.gm(player).score} / game.sentinel.size
@@ -21,5 +20,4 @@ module PlayerScore
       return score
     end
   end
-end
 end

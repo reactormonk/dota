@@ -3,7 +3,6 @@
 require_relative "../spec_helper.rb"
 
 describe "URL /" do
-  include DotA
   before(:each) do
     @response = get("/")
   end

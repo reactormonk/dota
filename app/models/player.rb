@@ -1,4 +1,3 @@
-module DotA
 class Player
   include DataMapper::Resource
   #
@@ -130,5 +129,4 @@ class Player
     @password = pass
     self.encrypted_password = pass
   end
-end
 end

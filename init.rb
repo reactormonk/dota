@@ -1,6 +1,10 @@
 #!/usr/bin/ruby --disable-gems
 # encoding: utf-8
 
+# default encoding setup
+Encoding.default_internal = "utf-8"
+Encoding.default_external = "utf-8"
+
 # This file should set Rango environment
 # You can run your scripts with ./init.rb my-script.rb
 # See http://wiki.github.com/botanicus/rango/rango-boot-process
@@ -14,26 +18,22 @@ end
 
 require "rango/stacks/controller"
 
-# http://wiki.github.com/botanicus/rango/environments-support
-require "rango/environments"
-
-environment = (ENV["RANGO_ENV"] || (RANGO_ENV if defined?(RANGO_ENV)) || "development").to_s
-RACK_ENV = environment
-unless %w[test development stage production].include?(environment)
-  abort "Unknown environment: #{environment}"
+unless %w[test development stage production].include?(Rango.environment)
+  abort "Unknown environment: #{Rango.environment}"
 end
 
 # we need to load dependencies before boot, so bootloaders will be called
-Rango.logger.info("Loading dependencies for #{environment}")
-Bundler.require_env(environment)
+Rango.logger.info("Loading dependencies for #{Rango.environment}")
+Bundler.require_env(Rango.environment)
 
-Rango.boot(environment: environment)
+Rango.boot
+
+# environment-specific settings
+require_relative "environments"
 
 # register applications
-require_relative "dota/init.rb"
-
-# load settings
-require_relative "settings_local"
+require_relative "app/models.rb"
+require_relative "app/views.rb"
 
 # if you will run this script with -i argument, interactive session will begin
 Rango.interactive if ARGV.delete("-i")

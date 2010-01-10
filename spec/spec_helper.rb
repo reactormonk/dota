@@ -9,11 +9,10 @@ end
 
 require "spec" # Satisfies Autotest and anyone else not using the Rake tasks
 
-# this loads all plugins required in your init file so don't add them
-# here again, Merb will do it for you
-
-require 'dm-sweatshop'
-require File.join(File.dirname(__FILE__), 'spec_fixtures')
+RACK_ENV = "test"
+require_relative "../init"
+require_relative "spec_fixtures"
+DataMapper.auto_migrate!
 
 Spec::Runner.configure do |config|
   # for rack-test

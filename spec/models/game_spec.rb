@@ -2,10 +2,13 @@ require_relative '../spec_helper'
 require 'set'
 
 describe "Game" do
-  include DotA
   before(:all) do
     $DEBUG = false
     League.gen
+  end
+
+  before(:each) do
+    DataMapper.auto_migrate!
   end
 
   describe 'stage' do
@@ -43,7 +46,7 @@ describe "Game" do
       p.leave
       g.reload
       g.players.all.include?(p).should be_false
-      g.join(p).should be_true
+      p.join(g).should be_true
       g.reload
       g.players.all.include?(p).should be_true
     end
@@ -147,7 +150,6 @@ describe "Game" do
             league = League.gen
             players = 2.of {Player.gen}
             players.each {|p| league.vouch p; league.give_permission(:captain, p)}
-            players.first.vouched?(league).should be_true
             players.first.challenge(league)
             captain_game = CaptainGame.first(:league => league)
             players.first.challenged?.should be_true
@@ -248,7 +250,7 @@ describe "Game" do
         end
 
         def capt_lpg
-          l = League.pick
+          l = League.gen
           players = 5.of {Player.gen}
           players.each {|p| p.vouch(l)}
           players[0..1].each {|c| c.give_permission(:captain, l)}
@@ -288,7 +290,7 @@ describe "Game" do
 
     def pgl_vouch
       p = Player.gen
-      g = Game.gen
+      g = Game.gen(:league => League.gen)
       l = g.league
       p.vouch(l)
       [p,g,l]

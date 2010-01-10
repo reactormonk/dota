@@ -34,6 +34,10 @@ gem "dm-aggregates"#, git: "git://github.com/datamapper/dm-more.git" # for count
 gem "state_machine", git: "git://github.com/pluginaweek/state_machine.git"
 gem "bcrypt-ruby"
 
+gem "rspec"
+gem "nake"
+gem "simple-logger"
+
 gem "thin", require_as: nil#, git: "git://github.com/macournoyer/thin.git" # there seems to be some problems with latest thin
 #gem "unicorn", require_as: nil#, git: "git://repo.or.cz/unicorn.git"
 gem "racksh", require_as: nil#, git: "git://github.com/sickill/racksh.git"

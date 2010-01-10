@@ -1,15 +1,13 @@
 require 'yaml'
 
-class AppConfig  
-  def self.load
-    config_file = File.join(Merb.root, "config", "application.yml")
+config_file = File.join(Rango.root, "config", "application.yml")
 
-    if File.exists?(config_file)
-      config = YAML.load(File.read(config_file))[Merb.environment]
+if File.exists?(config_file)
+  config = YAML.load(File.read(config_file))[Rango.environment]
 
-      config.keys.each do |key|
-        Merb::Config[key.to_sym] = config[key]
-      end
-    end
+  Rango::AppConfig = {}
+
+  config.keys.each do |key|
+    Rango::AppConfig[key.to_sym] = config[key]
   end
 end
