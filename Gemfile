@@ -1,43 +1,51 @@
-# dependencies are generated using a strict version, don't forget to edit the gem versions when upgrading.
-merb_gems_version = '1.1.0.pre'
-dm_gems_version   = "0.10.2"
-do_gems_version   = "0.10.1"
+# encoding: utf-8
 
-# For more information about each component, please read http://wiki.merbivore.com/faqs/merb_components
-gem "merb-core", merb_gems_version 
-#gem "merb-action-args", merb_gems_version
-gem "merb-assets", merb_gems_version  
-gem("merb-cache", merb_gems_version) do
-  Merb::Cache.setup do
-    register(Merb::Cache::FileStore) unless Merb.cache
-  end
+# === Usage === #
+# Run gem bundle for installation. You have to have bundler gem installed.
+
+# http://github.com/wycats/bundler
+# http://litanyagainstfear.com/blog/2009/10/14/gem-bundler-is-the-future
+# http://yehudakatz.com/2009/11/03/using-the-new-gem-bundler-today
+# http://www.engineyard.com/blog/2009/using-the-rubygems-bundler-for-your-app
+
+# === Shared Gems === #
+# Specify a dependency on rango. When the bundler downloads gems,
+# it will download rango as well as all of rango' dependencies
+gem "rango"#, git: "git://github.com/botanicus/rango.git"
+gem "rack"#, git: "git://github.com/rack/rack.git"
+gem "rubyexts"
+gem "media-path"
+
+# router
+gem "usher"#, git: "git://github.com/joshbuddy/usher.git"
+gem "fancyroutes", git: "git://github.com/tred/fancyroutes.git"
+
+# template engine
+gem "haml"#, git: "git://github.com/nex3/haml.git"
+gem "tilt"
+
+# ORM
+gem "dm-core"#, git: "git://github.com/datamapper/dm-core.git"
+gem "dm-timestamps"#, git: "git://github.com/datamapper/dm-more.git"
+gem "dm-types"#, git: "git://github.com/datamapper/dm-more.git"
+gem "dm-validations"#, git: "git://github.com/datamapper/dm-more.git"
+gem "dm-aggregates"#, git: "git://github.com/datamapper/dm-more.git" # for count etc
+
+gem "state_machine", git: "git://github.com/pluginaweek/state_machine.git"
+gem "bcrypt-ruby"
+
+gem "thin", require_as: nil#, git: "git://github.com/macournoyer/thin.git" # there seems to be some problems with latest thin
+#gem "unicorn", require_as: nil#, git: "git://repo.or.cz/unicorn.git"
+gem "racksh", require_as: nil#, git: "git://github.com/sickill/racksh.git"
+
+# === Environment-Specific Setup === #
+only(:development) do
+  gem "shotgun", require_as: nil#, git: "git://github.com/rtomayko/shotgun.git"
 end
-gem "merb-helpers", merb_gems_version 
-gem "merb-mailer", merb_gems_version  
-gem "merb-slices", merb_gems_version  
-gem "merb-param-protection", merb_gems_version
-gem "merb-exceptions", merb_gems_version
-gem "merb-haml", merb_gems_version
 
-gem "data_objects", do_gems_version
-gem "do_sqlite3", do_gems_version # If using another database, replace this
-gem "dm-core", dm_gems_version         
-gem "dm-aggregates", dm_gems_version   
-gem "dm-migrations", dm_gems_version   
-gem "dm-timestamps", dm_gems_version   
-gem "dm-types", dm_gems_version        
-gem "dm-validations", dm_gems_version  
-gem "dm-serializer", dm_gems_version   
-
-gem "merb_datamapper", :git => "git://github.com/merb/merb_datamapper.git"
-gem "merb_parts", :git => "git://github.com/merb/merb_parts.git"
-
-gem "state_machine"#, :git => "git://github.com/pluginaweek/state_machine.git"
-gem "rango", "0.2.1.pre" #:git => "git://github.com/botanicus/rango.git"
-gem "bureaucrat"
-gem "warden"
-
-gem "thin"
+except(:stage, :production) do
+  gem "do_sqlite3"#, git: "git://github.com/datamapper/do.git"
+end
 
 bundle_path "gems"
 bin_path "bin"

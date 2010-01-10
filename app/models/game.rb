@@ -1,6 +1,7 @@
 require 'state_machine'
 require 'dm-types'
 
+module DotA
 class Game
   include DataMapper::Resource
   
@@ -385,6 +386,7 @@ class CaptainGame < Game
   def picking_captain
     game_memberships.first(:party => pick_next).player
   end
+end
 end
 
 class CaptainGameException < GameException; end
