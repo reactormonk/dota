@@ -16,6 +16,7 @@ end
 Merb::BootLoader.before_app_loads do
   require 'logger'
   Rango.logger = Logger.new(STDOUT)
+  require 'merb_warden'
 end
  
 Merb::BootLoader.after_app_loads do

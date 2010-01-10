@@ -28,7 +28,9 @@
 Merb.logger.info("Compiling routes...")
 Merb::Router.prepare do
   resources :players, :identify => :login
-  resources :leagues, :identify => :name
+  resources :leagues, :identify => :name do
+    member :new_random_game, :method => :post
+  end
   resources :games do
     member :join    
     member :leave
@@ -36,9 +38,11 @@ Merb::Router.prepare do
     collection :running
     collection :finished
   end
-  
-  # Adds the required routes for merb-auth using the password slice
-  slice(:merb_auth_slice_password, :name_prefix => nil, :path_prefix => "")
+
+  match("/login").to(:controller => "players") do
+    match(:method => :get).to(:action => :login)
+    match(:method => :post).to(:action => :login!)
+  end
 
   # This is the default route for /:controller/:action/:id
   # This is fine for most cases.  If you're heavily using resource-based

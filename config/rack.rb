@@ -8,5 +8,14 @@ end
 # that serves static files
 use Merb::Rack::Static, Merb.dir_for(:public)
 
+use Rack::Session::Cookie
+
+# Warden Authentification
+use Warden::Manager do |m|
+  m.default_serializers :cookie
+  m.default_strategies :password
+  m.failure_app = proc {|env| raise NotAuthenticated}
+end
+
 # this is our main merb application
 run Merb::Rack::Application.new

@@ -4,6 +4,8 @@
   %h1
     League
     = @league.name
+  .actions
+    = partial "leagues/actions/new_random_game", league: @league
   %table
     %caption Mitglieder
     %thead

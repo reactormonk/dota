@@ -115,4 +115,18 @@ class Player
   def take_permission(permission, league)
     league.take_permission(permission, self)
   end
+
+  #
+  # warden
+  #
+  property :encrypted_password, BCryptHash, :required => true
+  
+  validates_is_confirmed :password
+
+  attr_accessor :password, :password_confirmation
+  
+  def password=(pass)
+    @password = pass
+    self.encrypted_password = pass
+  end
 end

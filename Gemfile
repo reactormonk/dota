@@ -15,9 +15,6 @@ end
 gem "merb-helpers", merb_gems_version 
 gem "merb-mailer", merb_gems_version  
 gem "merb-slices", merb_gems_version  
-gem "merb-auth-core", merb_gems_version
-gem "merb-auth-more", merb_gems_version
-gem "merb-auth-slice-password", merb_gems_version
 gem "merb-param-protection", merb_gems_version
 gem "merb-exceptions", merb_gems_version
 gem "merb-haml", merb_gems_version
@@ -36,7 +33,9 @@ gem "merb_datamapper", :git => "git://github.com/merb/merb_datamapper.git"
 gem "merb_parts", :git => "git://github.com/merb/merb_parts.git"
 
 gem "state_machine"#, :git => "git://github.com/pluginaweek/state_machine.git"
-gem "rango", "0.2.pre" #, :git => "git://github.com/botanicus/rango.git"
+gem "rango", "0.2.1.pre" #:git => "git://github.com/botanicus/rango.git"
+gem "bureaucrat"
+gem "warden"
 
 gem "thin"
 

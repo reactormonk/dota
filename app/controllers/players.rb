@@ -1,5 +1,5 @@
 class Players < Application
-  before :ensure_authenticated, :exclude => [:show, :index]
+  #before :ensure_authenticated, :exclude => [:show, :index, :login, :login!]
 
   def index
     @players = Player.all
@@ -12,6 +12,15 @@ class Players < Application
     raise NotFound unless @player
     @game = @player.where_playing
     render "players/show"
+  end
+
+  def login
+    render "login"
+  end
+  
+  def login!
+    warden.authenticate(:password)
+    redirect("/")
   end
 
 end
