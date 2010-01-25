@@ -2,10 +2,14 @@
 
 # http://wiki.github.com/botanicus/rango/environments-support
 require "rango/environments"
+require 'ruby-debug'
 
 # database connection
 case Rango.environment
-when "development", "production", "staging"
+when "production", "staging"
+  raise "Not ready to use yet"
+when "development"
+  DataMapper::Logger.new(STDOUT, :debug)
   DataMapper.setup(:default, "sqlite3:db/#{Rango.environment}.db")
 when "test", "spec", "cucumber"
   DataMapper.setup(:default, "sqlite3::memory:")

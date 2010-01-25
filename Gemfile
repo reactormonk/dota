@@ -11,14 +11,14 @@
 # === Shared Gems === #
 # Specify a dependency on rango. When the bundler downloads gems,
 # it will download rango as well as all of rango' dependencies
-gem "rango"#, git: "git://github.com/botanicus/rango.git"
+gem "rango"#, git: "git://github.com/botanicus/rango.git", branch: "master"
 gem "rack"#, git: "git://github.com/rack/rack.git"
 gem "rubyexts"
 gem "media-path"
 
 # router
 gem "usher"#, git: "git://github.com/joshbuddy/usher.git"
-gem "fancyroutes", git: "git://github.com/tred/fancyroutes.git"
+gem "CRUDtree", git: "git://github.com/Tass/CRUDtree.git"
 
 # template engine
 gem "haml"#, git: "git://github.com/nex3/haml.git"

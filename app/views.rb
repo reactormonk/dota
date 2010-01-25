@@ -7,11 +7,13 @@ require "rango/controller"
 require "rango/mixins/filters"
 require "rango/mixins/rendering"
 require "rango/mixins/message"
+require "rango/router/adapters/crudtree"
 
 class Application < Rango::Controller
   include Rango::FiltersMixin
   include Rango::MessageMixin
-  include Rango::ExplicitRendering
+  include Rango::ImplicitRendering
+  include Rango::Helpers
 
   # http://wiki.github.com/botanicus/rango/errors-handling
   def render_http_error(exception)
