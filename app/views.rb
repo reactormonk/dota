@@ -7,6 +7,7 @@ require "rango/controller"
 require "rango/mixins/filters"
 require "rango/mixins/rendering"
 require "rango/mixins/message"
+require "rango/mixins/action_args"
 require "rango/router/adapters/crudtree"
 
 class Application < Rango::Controller

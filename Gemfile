@@ -15,6 +15,7 @@ gem "rango"#, git: "git://github.com/botanicus/rango.git", branch: "master"
 gem "rack"#, git: "git://github.com/rack/rack.git"
 gem "rubyexts"
 gem "media-path"
+gem "methopara"
 
 # router
 gem "usher"#, git: "git://github.com/joshbuddy/usher.git"
@@ -32,7 +33,11 @@ gem "dm-validations"#, git: "git://github.com/datamapper/dm-more.git"
 gem "dm-aggregates"#, git: "git://github.com/datamapper/dm-more.git" # for count etc
 
 gem "state_machine", git: "git://github.com/pluginaweek/state_machine.git"
+
+# auth
 gem "bcrypt-ruby"
+gem "warden"
+gem "bureaucrat"
 
 gem "rspec"
 gem "nake"

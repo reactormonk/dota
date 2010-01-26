@@ -55,27 +55,22 @@ class Games < Application
   end
 
   def create
-    # TODO we got better things now
-    user = session.user
-    type = TYPES[params[:type].to_s.downcase.chomp("game")]
-    raise ArgumentError unless league = League.first(params[:league])
+    user = session.user # TODO warden
+    type = TYPES[type.to_s.downcase.chomp("game")]
+    raise(ArgumentError, "No League found.") unless league = League.first(:name => params[:league])
     # Suggestions are welcome
     case type.object_id
     when RandomGame.object_id
       game = RandomGame.new(:league => league)
       game.join user
     when CaptainGame.object_id
-      if player = Player.first(params[:challenged])
-        unless player.captain?
-          game = user.challenge(league, player)
-        else
-          message[:error] = "The challenged player is no Captain."
-        end
+      if challenged = Player.first(:id => params[:challenged]) # can we do this better?
+        game = league.direct_challenge(user, challenged)
       else
-        game = user.challenge(league)
+        game = league.anonymous_challenge(user)
       end
     else
-      raise ArgumentError
+      raise ArgumentError, "Invalid game type."
     end
     redirect resource(game)
   end
@@ -88,7 +83,7 @@ class Games < Application
   private
   def state(states)
     @games = Game.all(:state => states)
-    display @games, :template => "games/show"
+    render "games/index"
   end
 
   def template_for_state(state)
