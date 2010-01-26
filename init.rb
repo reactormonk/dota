@@ -33,7 +33,7 @@ require_relative "environments"
 
 # register applications
 require_relative "app/models.rb"
-require_relative "app/views.rb"
+require_relative "app/controllers.rb"
 
 # if you will run this script with -i argument, interactive session will begin
 Rango.interactive if ARGV.delete("-i")
