@@ -96,12 +96,7 @@ class Player
   end
   
   def vote(chosen)
-    game = where_playing
-    raise GameNotRunning unless game.state == "running"
-    gm = game_memberships.first(:player => self)
-    gm.vote = chosen
-    gm.save
-    game.check_votes
+    where_playing.vote(self, chosen)
   end
 
   def score(league)

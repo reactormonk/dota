@@ -182,6 +182,14 @@ class Game
     game_memberships.first(:player => player)
   end
 
+  def vote(player, chosen)
+    raise GameNotRunning unless state == "running"
+    gm = game_memberships.first(:player => player)
+    gm.vote = chosen
+    gm.save
+    check_votes
+  end
+
   def votes
     game_memberships.map{|gm| gm.vote}.inject(Hash.new(0)) {|hash,vote| hash[vote] +=1; hash}
   end
