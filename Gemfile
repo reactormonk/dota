@@ -15,7 +15,6 @@ gem "rango"#, git: "git://github.com/botanicus/rango.git", branch: "master"
 gem "rack"#, git: "git://github.com/rack/rack.git"
 gem "rubyexts"
 gem "media-path"
-gem "methopara"
 
 # router
 gem "usher"#, git: "git://github.com/joshbuddy/usher.git"

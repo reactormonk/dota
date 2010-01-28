@@ -1,6 +1,7 @@
 require 'state_machine'
 
 class Game
+  include ModelBasics
   include DataMapper::Resource
   
   #

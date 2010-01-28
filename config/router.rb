@@ -7,7 +7,7 @@ Rango::Router.app = Usher::Interface.for(:rack) do
     collection(call: :staged)
     collection(call: :running)
   end
-  resource(klass: Players, model: Player)
+  resource(klass: Players, model: Player, identifier: :login)
   resource(klass: Leagues, model: League)
   get("/").to(ShowCase.dispatcher(:index)).name(:showcase)
   get("/login").to(Players.dispatcher(:login)).name(:login)

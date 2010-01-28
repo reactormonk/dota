@@ -8,7 +8,7 @@ class Games < Application
 
   def show
     @game = Game.first(:id => params[:id])
-    render "games/show/#{template_for_state(@game.state)}"
+    render 'games/show'
   end
 
   def join
@@ -86,13 +86,4 @@ class Games < Application
     render "games/index"
   end
 
-  def template_for_state(state)
-    templates = Hash.new {|h,k| k }
-    templates.merge({
-      "scourge_won" => "finished",
-      "sentinel_won" => "finished",
-    })
-    templates[state]
-  end
-  
 end

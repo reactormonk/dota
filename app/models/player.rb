@@ -1,4 +1,5 @@
 class Player
+  include ModelBasics
   include DataMapper::Resource
   #
   # Properties

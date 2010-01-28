@@ -8,7 +8,6 @@ class Players < Application
   
   def show
     @player = Player.first(:login => params[:login])
-    puts @player
     raise NotFound unless @player
     @game = @player.where_playing
     render "players/show"

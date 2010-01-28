@@ -1,4 +1,5 @@
 class LeagueBan
+  include ModelBasics
   include DataMapper::Resource
   
   property :id, Serial
