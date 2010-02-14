@@ -1,5 +1,4 @@
 class League
-  include ModelBasics
   include DataMapper::Resource
   
   #

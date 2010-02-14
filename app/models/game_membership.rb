@@ -1,5 +1,4 @@
 class GameMembership
-  include ModelBasics
   include DataMapper::Resource
   
   #

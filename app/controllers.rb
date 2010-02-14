@@ -5,14 +5,14 @@
 require "rango/helpers"
 require "rango/controller"
 require "rango/mixins/filters"
-require "rango/mixins/rendering"
 require "rango/mixins/message"
 require "rango/router/adapters/crudtree"
+require "styler/mixins/rango"
 
 class Application < Rango::Controller
   include Rango::FiltersMixin
   include Rango::MessageMixin
-  include Rango::ImplicitRendering
+  include Styler::RangoMixin
   include Rango::Helpers
 
   # http://wiki.github.com/botanicus/rango/errors-handling
@@ -31,6 +31,11 @@ class Application < Rango::Controller
   def warden
     env['warden']
   end
+
+  def player
+    warden.user(:player)
+  end
+
 end
 
 class ShowCase < Application
@@ -40,4 +45,4 @@ class ShowCase < Application
 end
 
 
-%w(exceptions.rb games.rb leagues.rb players.rb).each {|file| require_relative("controllers/" + file)}
+%w(exceptions games leagues players).each {|file| require_relative("controllers/" + file)}
