@@ -7,6 +7,7 @@
 # http://litanyagainstfear.com/blog/2009/10/14/gem-bundler-is-the-future
 # http://yehudakatz.com/2009/11/03/using-the-new-gem-bundler-today
 # http://www.engineyard.com/blog/2009/using-the-rubygems-bundler-for-your-app
+source :gemcutter
 
 # === Shared Gems === #
 # Specify a dependency on rango. When the bundler downloads gems,
@@ -23,6 +24,7 @@ gem "CRUDtree", git: "git://github.com/Tass/CRUDtree.git"
 # template engine
 gem "haml"#, git: "git://github.com/nex3/haml.git"
 gem "tilt"
+gem "styler", git: "git://github.com/Tass/styler.git"
 
 # ORM
 gem "dm-core"#, git: "git://github.com/datamapper/dm-core.git"
@@ -42,18 +44,15 @@ gem "rspec"
 gem "nake"
 gem "simple-logger"
 
-gem "thin", require_as: nil#, git: "git://github.com/macournoyer/thin.git" # there seems to be some problems with latest thin
-#gem "unicorn", require_as: nil#, git: "git://repo.or.cz/unicorn.git"
-gem "racksh", require_as: nil#, git: "git://github.com/sickill/racksh.git"
+gem "thin", require: nil#, git: "git://github.com/macournoyer/thin.git" # there seems to be some problems with latest thin
+#gem "unicorn", require: nil#, git: "git://repo.or.cz/unicorn.git"
+gem "racksh", require: nil#, git: "git://github.com/sickill/racksh.git"
 
 # === Environment-Specific Setup === #
-only(:development) do
-  gem "shotgun", require_as: nil#, git: "git://github.com/rtomayko/shotgun.git"
+group(:development) do
+  gem "shotgun", require: nil#, git: "git://github.com/rtomayko/shotgun.git"
 end
 
-except(:stage, :production) do
+group(:development, :test) do
   gem "do_sqlite3"#, git: "git://github.com/datamapper/do.git"
 end
-
-bundle_path "gems"
-bin_path "bin"
