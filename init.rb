@@ -11,9 +11,12 @@ Encoding.default_external = "utf-8"
 
 # bundler
 begin
-  require_relative "gems/environment.rb"
-rescue LoadError => exception
-  abort "LoadError during loading gems/environment: #{exception.message}\nRun gem bundle to fix it."
+  # Try to require the preresolved locked set of gems.
+  require File.expand_path('../.bundle/environment', __FILE__)
+rescue LoadError
+  # Fall back on doing an unlocked resolve at runtime.
+  require "bundler"
+  Bundler.setup(:default, :development)
 end
 
 require "rango/stacks/controller"
@@ -24,16 +27,15 @@ end
 
 # we need to load dependencies before boot, so bootloaders will be called
 Rango.logger.info("Loading dependencies for #{Rango.environment}")
-Bundler.require_env(Rango.environment)
 
 Rango.boot
-
-# environment-specific settings
-require_relative "environments"
 
 # register applications
 require_relative "app/models.rb"
 require_relative "app/controllers.rb"
+
+# environment-specific settings
+require_relative "environments"
 
 # if you will run this script with -i argument, interactive session will begin
 Rango.interactive if ARGV.delete("-i")

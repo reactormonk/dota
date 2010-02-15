@@ -12,19 +12,19 @@ source :gemcutter
 # === Shared Gems === #
 # Specify a dependency on rango. When the bundler downloads gems,
 # it will download rango as well as all of rango' dependencies
-gem "rango"#, git: "git://github.com/botanicus/rango.git", branch: "master"
+gem "rango", "0.3.pre"#, git: "git://github.com/botanicus/rango.git"
 gem "rack"#, git: "git://github.com/rack/rack.git"
 gem "rubyexts"
 gem "media-path"
 
 # router
 gem "usher"#, git: "git://github.com/joshbuddy/usher.git"
-gem "CRUDtree", git: "git://github.com/Tass/CRUDtree.git"
+gem "crudtree"#, git: "git://github.com/Tass/CRUDtree.git"
 
 # template engine
 gem "haml"#, git: "git://github.com/nex3/haml.git"
 gem "tilt"
-gem "styler", git: "git://github.com/Tass/styler.git"
+gem "styler"#, git: "git://github.com/Tass/styler.git"
 
 # ORM
 gem "dm-core"#, git: "git://github.com/datamapper/dm-core.git"
@@ -51,6 +51,7 @@ gem "racksh", require: nil#, git: "git://github.com/sickill/racksh.git"
 # === Environment-Specific Setup === #
 group(:development) do
   gem "shotgun", require: nil#, git: "git://github.com/rtomayko/shotgun.git"
+  gem "ruby-debug19"
 end
 
 group(:development, :test) do
