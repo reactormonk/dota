@@ -21,6 +21,7 @@ end
 
 require "rango/stacks/controller"
 
+Rango.environment = "test" if $0 =~ /baretest/
 unless %w[test development stage production].include?(Rango.environment)
   abort "Unknown environment: #{Rango.environment}"
 end
@@ -29,6 +30,9 @@ end
 Rango.logger.info("Loading dependencies for #{Rango.environment}")
 
 Rango.boot
+
+# load AppConfig
+require_relative "load_config"
 
 # register applications
 require_relative "app/models.rb"

@@ -8,6 +8,7 @@ class League
   property :name, String, :required => true, :unique => true
   property :irc, String
   property :homepage, String
+  property :vouch_required?, Boolean
 
   # 
   # Associations
@@ -16,50 +17,17 @@ class League
   has n, :players, :through => :league_memberships
   has n, :games
 
-  def vouch(player)
-    give_permission(:vouched, player)
-  end
-
   def vouched?(player)
-    !! ((mem = lm(player)) and mem.vouched)
-  end
-
-  def give_permission(permission, player)
-    raise ArgumentError, "#{permission} is not a permission" unless permission?(permission)
-    mem = lm(player)
-    mem.send("#{permission}=", true)
-    mem.save
-  end
-
-  def take_permission(permission, player)
-    raise ArgumentError, "#{permission} is not a permission" unless permission?(permission)
-    mem = lm(player)
-    mem.send("#{permission}=", false)
-    mem.save
-  end
-
-  def permission?(permission)
-    [:admin, :voucher, :captain, :vouched].include? permission
-  end
-
-  def ban(player, secs, reason)
-    return false unless vouched?(player)
-    ban = LeagueBan.create(:reason => reason, :until => Time.now + secs)
-    lm(player).bans << ban
-    ban.save
-    true
+    return true unless vouch_required?
+    (lm = lm(player)) and lm.vouched?
   end
 
   def banned?(player)
-    !! ((lm = lm(player)) && lm.banned?)
+    (lm = lm(player)) and lm.banned?
   end
 
-  def bans(player)
-    if lm = lm(player)
-      lm.bans
-    else
-      false
-    end
+  def captain?(player)
+    vouched?(player) and lm(player).captain?
   end
 
   # Returns the anonymous challenge to that league (game) or nil
@@ -77,18 +45,6 @@ class League
     game
   end
 
-  def direct_challenge(challenger, challenged)
-    captain?(challenger)
-    captain?(challenged)
-    CaptainGame.direct_challenge(self, challenger, challenged)
-  end
-
-  # raises NotCaptain if the players is not a captain
-  def captain?(player)
-    vouched?(player)
-    lm(player).captain or raise NotCaptain.new(player, self)
-  end
-
   def new_game(type, player, *args)
     case type.downcase.to_sym
     when :randomgame
@@ -96,19 +52,12 @@ class League
     when :captaingame
       new_captain_game(player, args.first)
     else
-      raise ArgumentError, "This game type doesn not exist."
+      raise ArgumentError, "This game type does not exist."
     end
   end
 
   def new_random_game(player)
-    game = RandomGame.create(:league => self)
-    begin
-      game.join player
-    rescue => e
-      game.destroy
-      raise e
-    end
-    game
+    RandomGame.create(:league => self)
   end
 
   def new_captain_game(challenger, challenged=nil)
@@ -121,28 +70,6 @@ class League
 
   private
   def lm(player)
-    league_memberships.first_or_create(:player => player)
+    league_memberships.first(:player => player)
   end
-end
-
-class NotAuthorized < StandardError; end
-class NotCaptain < NotAuthorized
-  def initialize(player, league)
-    @player, @league = player, league
-  end
-  attr_reader :player, :league
-end
-
-class LeagueException < StandardError; end
-class NotVouched < LeagueException
-  def initialize(player, league)
-    @player, @league = player, league
-  end
-  attr_reader :player, :league
-end
-class Banned < LeagueException
-  def initialize(player, league)
-    @player, @league = player, league
-  end
-  attr_reader :player, :league
 end

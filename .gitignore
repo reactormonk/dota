@@ -3,3 +3,4 @@ gems/
 *.db
 doc/
 log/
+.baretest*

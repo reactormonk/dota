@@ -18,13 +18,13 @@ end
 League.fix {league_fib.resume}
 
 Player.fix {{
-  :password => "sekrit",
-  :password_confirmation => "sekrit"
+#   :password => "sekrit",
+#   :password_confirmation => "sekrit"
 }.merge player_fib.resume}
 
 LeagueMembership.fix {{
   :player => Player.make,
-  :league => League.pick
+  :league => League.make
 }}
 
 Game.fix {{

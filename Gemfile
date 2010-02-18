@@ -52,8 +52,10 @@ gem "racksh", require: nil#, git: "git://github.com/sickill/racksh.git"
 group(:development) do
   gem "shotgun", require: nil#, git: "git://github.com/rtomayko/shotgun.git"
   gem "ruby-debug19"
+  gem "baretest", "0.4.0.pre2"
 end
 
 group(:development, :test) do
   gem "do_sqlite3"#, git: "git://github.com/datamapper/do.git"
+  gem "dm-sweatshop"#, git: "git://github.com/datamapper/dm-more.git" # for count etc
 end

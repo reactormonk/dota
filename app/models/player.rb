@@ -17,18 +17,23 @@ class Player
   has n, :games, :through => :game_memberships
 
   #
+  # Hooks
+  #
+  before :save, :generate_lm
+
+  def generate_lm
+    if new?
+      League.all.each {|league| self.leagues << league} 
+    else
+      true
+    end
+  end
+
+  #
   # Logic
   #
-  def ban(league, *args)
-    league.ban(self, *args)
-  end
-
   def banned?(league)
     league.banned?(self)
-  end
-
-  def vouch(league)
-    league.vouch(self)
   end
 
   def vouched?(league)
@@ -67,12 +72,16 @@ class Player
     game_memberships.first(:game => where_playing).party
   end
 
+  def check_playing
+    where_playing or PlayerPlaying.new(self)
+  end
+
   def accept_challenge
     captain_game = challenged 
     unless captain_game && game_memberships.first(:game => captain_game).party == :scourge
       raise NotChallenged, "You're not challenged."
     end
-    captain_game.accept_challenge(self)
+    # TODO
   end
 
   # I'm not even sure if you should use this method... it's just for spec backwards compability ;-)
@@ -103,25 +112,4 @@ class Player
     league_memberships.first(:league => league).score
   end
 
-  def give_permission(permission, league)
-    league.give_permission(permission, self)
-  end
-
-  def take_permission(permission, league)
-    league.take_permission(permission, self)
-  end
-
-  #
-  # warden
-  #
-  property :encrypted_password, BCryptHash, :required => true
-  
-  validates_is_confirmed :password
-
-  attr_accessor :password, :password_confirmation
-  
-  def password=(pass)
-    @password = pass
-    self.encrypted_password = pass
-  end
 end
