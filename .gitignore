@@ -1,6 +1,5 @@
-bin/
-gems/
 *.db
 doc/
 log/
 .baretest*
+vendor/
