@@ -2,17 +2,28 @@ BareTest.suite "DotA" do
   suite "Models", :use => :datamapper do
     suite "League" do
       suite "rights" do
-        setup do
+        setup :lm, "admin" do
+          @right = :admin
         end
-        suite "#vouched?" do
-          setup :vouch do
-          end
+        setup :lm, "voucher" do
+          @right = :voucher
         end
-        suite "#banned?" do
+        setup :given, "given" do
+          @given = true
         end
-        suite "#captain?" do
+        setup :given, "not given" do
+          @given = false
         end
-        suite "#admin?" do
+        setup :league do
+          @lm = Factory.lm @right
+          @league = @lm.league
+          @player = @lm.player
+          decret = @lm.received_decrets.first
+          decret.given = @given
+          decret.save
+        end
+        assert "if the rights for :lm are :given, it should respond adequate" do
+          equal(@given, @league.send("#{@right}?", @player))
         end
       end
     end

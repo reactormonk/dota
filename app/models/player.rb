@@ -22,7 +22,7 @@ class Player
 
   def generate_lm
     if new?
-      League.all.each {|league| self.leagues << league unless self.leagues.include?(leagues)}
+      League.all.each {|league| self.leagues << league unless self.leagues.include?(league)}
     else
       true
     end
@@ -31,18 +31,6 @@ class Player
   #
   # Logic
   #
-  def banned?(league)
-    league.banned?(self)
-  end
-
-  def vouched?(league)
-    league.vouched?(self)
-  end
-
-  def bans(league)
-    league.bans(self)
-  end
-
   def join(game)
     game.join(self)
   end

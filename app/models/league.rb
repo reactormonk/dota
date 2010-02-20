@@ -22,16 +22,10 @@ class League
     lm(player).vouched?
   end
 
-  def banned?(player)
-    lm(player).banned?
-  end
-
-  def captain?(player)
-    lm(player).captain?
-  end
-
-  def admin?(player)
-    lm(player).admin?
+  %w(banned? captain? admin? voucher?).each do |right|
+    define_method(right) {|player|
+      lm(player).send(right)
+    }
   end
 
   # Returns the anonymous challenge to that league (game) or nil
