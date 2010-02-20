@@ -19,15 +19,19 @@ class League
 
   def vouched?(player)
     return true unless vouch_required?
-    (lm = lm(player)) and lm.vouched?
+    lm(player).vouched?
   end
 
   def banned?(player)
-    (lm = lm(player)) and lm.banned?
+    lm(player).banned?
   end
 
   def captain?(player)
-    vouched?(player) and lm(player).captain?
+    lm(player).captain?
+  end
+
+  def admin?(player)
+    lm(player).admin?
   end
 
   # Returns the anonymous challenge to that league (game) or nil
@@ -71,5 +75,11 @@ class League
   private
   def lm(player)
     league_memberships.first(:player => player)
+  end
+
+  before :save, :generate_lm
+  def generate_lm
+    return true if new?
+    Player.all.each {|player| self.players << player unless self.players.include?(player)}
   end
 end

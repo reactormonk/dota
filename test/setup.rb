@@ -1,3 +1,5 @@
 require_relative "../init.rb"
-require_relative "helper/fixtures.rb"
+Bundler.require(:test)
+require 'factory_girl'
+require_relative "helper/fixtures/fixtures"
 require_relative "datamapper"

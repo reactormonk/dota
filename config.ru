@@ -15,5 +15,13 @@ Rango::Router.use(:usher)
 # http://github.com/joshbuddy/usher
 require_relative "config/router"
 
+# Warden
+require_relative "config/warden"
+
+use Rack::Session::Cookie
+use Warden::Manager do |manager|
+  manager.default_strategies :dsde_cookie, :bot, :password
+  manager.failure_app = proc { raise NotAuthenticated }
+end
 use Rango::Middlewares::Basic
 run Rango::Router.app

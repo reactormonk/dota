@@ -6,7 +6,6 @@ class Player
   property :id,     Serial
   property :login,  String, :required => true, :unique => true
   property :qauth,  String
-  property :admin,  Boolean, :default => false
 
   # 
   # Associations
@@ -23,7 +22,7 @@ class Player
 
   def generate_lm
     if new?
-      League.all.each {|league| self.leagues << league} 
+      League.all.each {|league| self.leagues << league unless self.leagues.include?(leagues)}
     else
       true
     end

@@ -2,24 +2,17 @@ BareTest.suite "DotA" do
   suite "Models", :use => :datamapper do
     suite "LeagueMembership" do
       suite "rights" do
-        setup do
-          @lm = LeagueMembership.gen
-        end
         setup :right, "admin" do
-          @right  = :admin?
-          @decret_class = AdminDecret
+          @right = :admin
         end
         setup :right, "voucher" do
-          @right  = :voucher?
-          @decret_class = VoucherDecret
+          @right = :voucher
         end
         setup :right, "vouched" do
-          @right  = :vouched?
-          @decret_class = VouchedDecret
+          @right = :vouched
         end
         setup :right, "captain" do
-          @right  = :captain?
-          @decret_class = CaptainDecret
+          @right = :captain
         end
         setup :given, "given" do
           @given = true
@@ -27,39 +20,32 @@ BareTest.suite "DotA" do
         setup :given, "not given" do
           @given = false
         end
-        setup :noise do
-          @lm.decrets << @decret_class.new(:target => @lm, :given => !@given, :issuer => @lm, :reason => "foo", :created_at => Time.now - 50)
-          @lm.decrets << @decret_class.new(:target => LeagueMembership.gen, :given => !@given, :issuer => @lm, :reason => "foo", :created_at => Time.now)
-          @lm.decrets << BanDecret.new(:target => LeagueMembership.gen, :issuer => @lm, :reason => "foo", :until => Time.now - 60*30, :created_at => Time.now - 60*30)
-          @lm.save!
-        end
         setup :decret do
-          @lm.decrets << @decret_class.new(:target => @lm, :given => @given, :issuer => @lm, :reason => "foo", :created_at => Time.now)
-          @lm.save!
+          @lm = Factory(@right)
+          decret = @lm.received_decrets.first
+          decret.given = @given
+          decret.save
+          @issuer = decret.issuer
+        end
+        setup :noise do
+          Factory("#{@right}_decret", :receiver => @issuer, :issuer => @lm)
         end
         assert "when :right :given, it should behave correctly." do
-          equal(@given,@lm.send(@right))
+          equal(@given, @lm.send("#{@right}?"))
         end
       end
       suite "banned" do
-        setup do
-          @lm = LeagueMembership.gen
-        end
         setup :ban, "still valid ban" do
-          @lm.decrets << BanDecret.new(:target => @lm, :issuer => @lm, :reason => "foo", :until => Time.now + 60*30, :created_at => Time.now - 60*30)
           @banned = true
         end
         setup :ban, "not valid anymore ban" do
-          @lm.decrets << BanDecret.new(:target => @lm, :issuer => @lm, :reason => "foo", :until => Time.now - 60*30, :created_at => Time.now - 60*30)
           @banned = false
         end
-        setup :noise do
-          @lm.decrets << BanDecret.new(:target => LeagueMembership.gen, :issuer => @lm, :reason => "foo", :until => Time.now - 60*30, :created_at => Time.now - 60*30)
-          @lm.save!
-        end
-        setup :save do
-          @lm.save!
-          @lm.reload
+        setup :decret do
+          @lm = Factory(:ban)
+          decret = @lm.received_decrets.first
+          decret.until = Time.now.send((@banned ? :+ : :-), 60)
+          decret.save
         end
         assert "returns the correct boolean based on a :ban" do
           equal(@banned, @lm.banned?)

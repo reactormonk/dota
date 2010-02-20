@@ -4,12 +4,12 @@ BareTest.suite "DotA" do
       suite "constructors" do
         setup do
           @player = Player.new(:login => "foo")
-          @leagues = 2.of {League.gen}
+          2.times {Factory(:league)}
           @player.save
           @player.reload
         end
         assert "league_memberships are created" do
-          equal(2,@player.leagues.size)
+          equal_unordered(League.all, @player.leagues)
         end
       end
     end

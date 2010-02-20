@@ -40,22 +40,20 @@ gem "bcrypt-ruby"
 gem "warden"
 gem "bureaucrat"
 
-gem "rspec"
 gem "nake"
 gem "simple-logger"
-
-gem "thin", require: nil#, git: "git://github.com/macournoyer/thin.git" # there seems to be some problems with latest thin
-#gem "unicorn", require: nil#, git: "git://repo.or.cz/unicorn.git"
-gem "racksh", require: nil#, git: "git://github.com/sickill/racksh.git"
 
 # === Environment-Specific Setup === #
 group(:development) do
   gem "shotgun", require: nil#, git: "git://github.com/rtomayko/shotgun.git"
-  gem "ruby-debug19"
-  gem "baretest", "0.4.0.pre2"
+  gem "thin", require: nil#, git: "git://github.com/macournoyer/thin.git" # there seems to be some problems with latest thin
+  #gem "unicorn", require: nil#, git: "git://repo.or.cz/unicorn.git"
+  gem "racksh", require: nil#, git: "git://github.com/sickill/racksh.git"
 end
 
 group(:development, :test) do
   gem "do_sqlite3"#, git: "git://github.com/datamapper/do.git"
-  gem "dm-sweatshop"#, git: "git://github.com/datamapper/dm-more.git" # for count etc
+  gem "dm-factory_girl", git: "git://github.com/sickill/factory_girl.git", :require => 'factory_girl'
+  gem "baretest", "0.4.0.pre2"
+  gem "ruby-debug19"
 end

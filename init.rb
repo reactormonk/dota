@@ -5,10 +5,6 @@
 Encoding.default_internal = "utf-8"
 Encoding.default_external = "utf-8"
 
-# This file should set Rango environment
-# You can run your scripts with ./init.rb my-script.rb
-# See http://wiki.github.com/botanicus/rango/rango-boot-process
-
 # bundler
 begin
   # Try to require the preresolved locked set of gems.
