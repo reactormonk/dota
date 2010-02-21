@@ -15,19 +15,18 @@ Factory.define :league_membership do |lm|
   lm.association :player
 end
 
-Factory.define :root, :parent => :league_membership do |lm|
-  lm.association :player
+Factory.define :root, :class => "LeagueMembership" do |lm|
   lm.admin true
 end
 
 Factory.define :decret do |d|
   d.reason "Entirely no reason at all."
   d.given true
-  d.after_build {|d| d.issuer = Factory(:root, :league => d.receiver.league)}
+  d.after_build {|d| Factory(:player); d.issuer = Factory.pick(:root, :league => d.receiver.league)}
 end
 
 %w(admin voucher vouched captain).each do |right|
-  Factory.define right, :parent => :league_membership do |lm|
+  Factory.define right, :class => "LeagueMembership" do |lm|
     lm.after_build {|lm| Factory("#{right}_decret", :receiver => lm)}
   end
   Factory.define "#{right}_decret", :parent => :decret, :class => "#{right.capitalize}Decret" do |d|

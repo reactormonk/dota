@@ -1,8 +1,10 @@
 class Factory
   class Proxy #:nodoc:
-    class Pick < Create # :nodoc:
+    class Pick < Build # :nodoc:
       def initialize(klass)
-        @instance = klass.all.sample or raise "No instance of #{klass} found."
+        @instance = klass.all.reject{|i| i.respond_to? :__picked}.first or raise "No instance of #{klass} found."
+        def @instance.__picked
+        end
       end
     end
   end

@@ -21,7 +21,7 @@ BareTest.suite "DotA" do
           @given = false
         end
         setup :decret do
-          @lm = Factory(@right)
+          @lm = Factory.lm(@right)
           decret = @lm.received_decrets.first
           decret.given = @given
           decret.save
