@@ -26,11 +26,11 @@ class Decret
 
   def self.can_be_issued_by(role)
     validates_with_block :issuer do
-    if @issuer.admin? || @issuer.send("#{role}?")
-      true
-    else
-      [false, "is not allowed to issue this decret, must be at least #{role}."]
-    end
+      if issuer.admin? || issuer.send("#{role}?")
+        true
+      else
+        [false, "is not allowed to issue this decret, must be at least #{role}."]
+      end
     end
   end
   default_scope(:default).update(:order => [:created_at.desc])
@@ -46,7 +46,7 @@ class VoucherDecret < Decret
   can_be_issued_by :admin
 end
 class CaptainDecret < Decret
-  can_be_issued_by :admin
+  can_be_issued_by :voucher
 end
 class BanDecret < Decret
   can_be_issued_by :voucher
