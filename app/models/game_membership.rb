@@ -1,6 +1,6 @@
 class GameMembership
   include DataMapper::Resource
-  
+
   #
   # Properties
   #

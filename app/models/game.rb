@@ -2,7 +2,7 @@ require 'state_machine'
 
 class Game
   include DataMapper::Resource
-  
+
   #
   # Properties
   #
@@ -14,7 +14,7 @@ class Game
   property :state, String
   property :replay, Text
   property :type, Discriminator
-  
+
   #
   # Associations
   #

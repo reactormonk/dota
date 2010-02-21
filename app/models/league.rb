@@ -1,6 +1,6 @@
 class League
   include DataMapper::Resource
-  
+
   #
   # Properties
   #
