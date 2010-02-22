@@ -1,10 +1,10 @@
 class Factory
   class Proxy #:nodoc:
     class Pick < Build # :nodoc:
+      REGISTER = {}
       def initialize(klass)
-        @instance = klass.all.reject{|i| i.respond_to? :__picked}.first or raise "No instance of #{klass} found."
-        def @instance.__picked
-        end
+        @instance = klass.all.reject{|i| REGISTER["#{i.class}#{i.id}"]}.first or raise "No instance of #{klass} found."
+        REGISTER["#{@instance.class}#{@instance.id}"] = @instance
       end
     end
   end
@@ -16,4 +16,7 @@ class Factory
     Factory.create(:player)
     Factory.pick(right)
   end
+end
+BareTest.toplevel_suite.teardown do
+  defined?(Factory::Proxy::Pick::REGISTER) && Factory::Proxy::Pick::REGISTER.clear
 end

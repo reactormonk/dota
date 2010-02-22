@@ -53,7 +53,8 @@ end
 
 group(:development, :test) do
   gem "do_sqlite3"#, git: "git://github.com/datamapper/do.git"
-  gem "dm-factory_girl", git: "git://github.com/sickill/factory_girl.git", :require => 'factory_girl'
+  gem "activesupport"
+  gem "dm-factory_girl", git: "git://github.com/Tass/factory_girl.git", :require => 'factory_girl'
   gem "baretest", "0.4.0.pre2"
   gem "ruby-debug19"
 end

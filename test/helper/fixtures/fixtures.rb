@@ -39,3 +39,25 @@ end
 Factory.define :ban_decret, :parent => :decret, :class => BanDecret do |d|
   d.until Time.now
 end
+
+Factory.define :game_membership do |gm|
+end
+
+Factory.define :game do |g|
+  g.association :league
+  g.mode "ap"
+end
+
+Factory.define :full_game, :parent => :game do |g|
+  g.after_build do |game|
+    10.times {Factory(:game_membership, :game => game, :league => game.league)}
+  end
+end
+
+Factory.define :valid_full_game, :parent => :full_game do |g|
+  g.after_build do |game|
+    [[game.game_memberships], [:sentinel, :scourge]*5].transpose {|gm, party|
+      gm.party = party
+    }
+  end
+end
