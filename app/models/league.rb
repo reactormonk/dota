@@ -73,7 +73,7 @@ class League
 
   before :save, :generate_lm
   def generate_lm
-    return true if new?
+    return true unless new?
     Player.all.each {|player| self.players << player unless self.players.include?(player)}
   end
 end

@@ -21,11 +21,8 @@ class Player
   before :save, :generate_lm
 
   def generate_lm
-    if new?
-      League.all.each {|league| self.leagues << league unless self.leagues.include?(league)}
-    else
-      true
-    end
+    return true unless new?
+    League.all.each {|league| self.leagues << league unless self.leagues.include?(league)}
   end
 
   #
