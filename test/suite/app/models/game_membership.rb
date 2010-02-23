@@ -2,7 +2,7 @@ BareTest.suite "DotA" do
   suite "Models", :use => :datamapper do
     suite "GameMembership" do
       suite "validations" do
-        setup :lm do
+        setup do
           @league = Factory(:league)
           @player = Factory(:player)
           @lm = LeagueMembership.first(:league => @league, :player => @player)
@@ -10,7 +10,7 @@ BareTest.suite "DotA" do
           @gm = Factory.build(:game_membership, :game => @game, :player => @player)
         end
         suite "generic" do
-          suite "playing?" do
+          suite "not_playing?" do
             setup :gm, "valid" do
               @result = true
             end
@@ -24,8 +24,22 @@ BareTest.suite "DotA" do
             end
           end
           suite "vouched?" do
+            setup do
+              @league.vouch_required = true
+              @league.save
+            end
+            setup :gm, "valid" do
+              Factory(:vouched_decret, :receiver => @lm, :issuer => Factory(:root, :league => @league, :player => Factory(:player)))
+              @result = true
+            end
+            setup :gm, "invalid" do
+              @result = false
+            end
+            assert ":gm" do
+              equal(@result, @gm.save)
+            end
           end
-          suite "banned?" do
+          suite "not_banned?" do
           end
         end
         suite "CaptainGame" do

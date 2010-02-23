@@ -8,7 +8,7 @@ class League
   property :name, String, :required => true, :unique => true
   property :irc, String
   property :homepage, String
-  property :vouch_required?, Boolean
+  property :vouch_required, Boolean
 
   # 
   # Associations
@@ -18,7 +18,7 @@ class League
   has n, :games
 
   def vouched?(player)
-    return true unless vouch_required?
+    return true unless vouch_required
     lm(player).vouched?
   end
 
