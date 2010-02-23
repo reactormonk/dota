@@ -1,6 +1,6 @@
 BareTest.suite "DotA" do
   suite "Models", :use => :datamapper do
-    suite "LeagueMembershipDecret" do
+    suite "Decret" do
       suite "AdminDecret" do
         suite "#can_be_issued_by" do
           setup :right, "admin" do

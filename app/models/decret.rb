@@ -19,6 +19,7 @@ class Decret
   belongs_to :receiver, :model => "LeagueMembership"
 
   validates_with_method :receiver, :same_league?, :message => "No cross-league stuff!"
+  validates_with_block :receiver, :message => "No self-referencing." do |r,p| r.receiver != r.issuer end
 
   def same_league?
     issuer.league == receiver.league

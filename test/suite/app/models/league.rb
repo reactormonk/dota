@@ -26,6 +26,16 @@ BareTest.suite "DotA" do
           equal(@given, @league.send("#{@right}?", @player))
         end
       end
+      suite "constructors" do
+        setup do
+          2.times {Factory(:player)}
+          @league = Factory(:league)
+          @league.reload
+        end
+        assert "league_memberships are created" do
+          equal_unordered(Player.all, @league.players)
+        end
+      end
     end
   end
 end

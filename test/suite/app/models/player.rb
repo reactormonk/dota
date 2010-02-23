@@ -3,9 +3,8 @@ BareTest.suite "DotA" do
     suite "Player" do
       suite "constructors" do
         setup do
-          @player = Player.new(:login => "foo")
           2.times {Factory(:league)}
-          @player.save
+          @player = Factory(:player)
           @player.reload
         end
         assert "league_memberships are created" do
