@@ -37,7 +37,7 @@ Factory.define :ban, :parent => :league_membership do |lm|
   lm.after_build {|lm| Factory(:ban_decret, :receiver => lm)}
 end
 Factory.define :ban_decret, :parent => :decret, :class => BanDecret do |d|
-  d.until Time.now
+  d.until Time.now + 30
 end
 
 Factory.define :game_membership do |gm|

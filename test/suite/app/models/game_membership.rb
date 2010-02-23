@@ -40,6 +40,16 @@ BareTest.suite "DotA" do
             end
           end
           suite "not_banned?" do
+            setup :gm, "valid" do
+              @result = true
+            end
+            setup :gm, "invalid" do
+              Factory(:ban_decret, :receiver => @lm, :issuer => Factory(:root, :league => @league, :player => Factory(:player)))
+              @result = false
+            end
+            assert ":gm" do
+              equal(@result, @gm.save)
+            end
           end
         end
         suite "CaptainGame" do
