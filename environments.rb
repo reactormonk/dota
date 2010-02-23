@@ -6,7 +6,7 @@ require 'ruby-debug'
 
 # database connection
 case Rango.environment
-when "production", "staging"
+when "production", "stage"
   raise "Not ready to use yet"
 when "development"
   DataMapper::Logger.new(STDOUT, :debug)
