@@ -50,13 +50,13 @@ end
 
 Factory.define :full_game, :parent => :game do |g|
   g.after_build do |game|
-    10.times {Factory(:game_membership, :game => game, :league => game.league)}
+    10.times {Factory(:game_membership, :game => game, :player => Factory(:player))}
   end
 end
 
 Factory.define :valid_full_game, :parent => :full_game do |g|
   g.after_build do |game|
-    [[game.game_memberships], [:sentinel, :scourge]*5].transpose {|gm, party|
+    [[*game.game_memberships], [:sentinel, :scourge]*5].transpose.each {|gm, party|
       gm.party = party
     }
   end

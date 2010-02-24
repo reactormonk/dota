@@ -27,16 +27,15 @@ class Game
     state :staged
     state :running, :scourge_won, :sentinel_won, :aborted do
       validates_present :mode
-      validates_length :players, :equals => 10
-      validates_length :sentinel, :equals => 5
-      validates_length :scourge, :equals => 5
+      validates_size :sentinel, :size => 5
+      validates_size :scourge, :size => 5
     end
     state :aborted, :scourge_won, :sentinel_won do
       validates_with_method :state, :valid_votes
     end
 
     before_transition :running => any - :aborted, :do => :process_score
-    before_transition :on => :start, :do => [:push_start_time,:drop_staged_players]
+    before_transition :on => :start, :do => [:push_start_time, :drop_staged_players]
 
     event :start do
       transition :staged => :running
