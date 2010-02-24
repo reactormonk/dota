@@ -52,6 +52,30 @@ BareTest.suite "DotA" do
             end
           end
         end
+        suite "leave" do
+          setup do
+            @game = Factory(:valid_full_game)
+            @player = @game.players.sample
+          end
+          setup :game, "a staged game" do
+            @result = true
+          end
+          suite "checks for game persistence" do
+            setup :game, "a running game" do
+              @game.start
+              @result = false
+            end
+            assert "a player may or may not leave :game" do
+              equal(@result, @player.leave)
+            end
+          end
+          suite "the gm gets destroyed" do
+            assert "it's dead" do
+              @player.leave
+              equal(nil, @player.where_playing)
+            end
+          end
+        end
         suite "CaptainGame" do
         end
       end

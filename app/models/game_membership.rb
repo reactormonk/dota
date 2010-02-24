@@ -61,7 +61,7 @@ class GameMembership
   end
 
   before :destroy do
-    !game.persistent?
+    throw :halt if game.persistent?
   end
 
   def may_pick?

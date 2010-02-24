@@ -37,8 +37,8 @@ class Player
   end
 
   def leave
-    if playing?
-      !! where_playing.leave(self)
+    if (game = where_playing)
+      game_memberships(game: game).destroy
     else
       return false
     end
