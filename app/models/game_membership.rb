@@ -97,7 +97,7 @@ class GameMembership
     game.check_votes
   end
 
-  def vote
+  def clean_vote
     mapping = Hash.new {|h,k| h[k] = k}
     if party == :sentinel
       mapping.merge!({:win => :sentinel, :fail => :scourge})

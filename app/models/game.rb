@@ -64,9 +64,10 @@ class Game
   #
 
   def process_score
-    PlayerScore.send(Rango::AppConfig[:score_method], self).each {|player, score|
-      player.league_memberships.first(:league => league).score = score
-    }
+#     PlayerScore.send(Rango::AppConfig[:score_method], self).each {|player, score|
+#       player.league_memberships.first(:league => league).score = score
+#     }
+    true
   end
 
   def valid_votes
@@ -104,9 +105,8 @@ class Game
   end
 
   def count_votes
-#     game_memberships.reload
     result = game_memberships.reduce(Hash.new(0)) do |hsh, gm|
-      hsh[gm.vote] += 1 unless gm.vote == :none ; hsh
+      hsh[gm.clean_vote] += 1 unless gm.vote == :none ; hsh
     end.find do |vote, number|
       number >= Rango::AppConfig[:votes_needed]
     end
