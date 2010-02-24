@@ -67,6 +67,15 @@ BareTest.suite "DotA" do
           end
         end
         suite "finish" do
+          setup :exercise do
+            @game.game_memberships.first(7).each {|gm| gm.vote = ((gm.party == :sentinel) ? :win : :fail); gm.save}
+          end
+          assert "all players are not considered playing anymore" do
+            @game.players.all? {|player| !player.playing?}
+          end
+          assert "their score is changed" do
+            @game.game_memberships.map(&:league_membership).all? {|lm| lm.score != 1000.0}
+          end
         end
       end
     end
