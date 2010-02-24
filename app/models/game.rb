@@ -9,7 +9,7 @@ class Game
   property :id, Serial
   property :start_time, DateTime
   property :end_time, DateTime
-  property :mode, String, :default => Rango::AppConfig[:game_mode]
+  property :mode, String, :default => Rango::AppConfig[:game_mode], :required => true
   property :state, String
   property :type, Discriminator
 
@@ -25,12 +25,12 @@ class Game
   #
   state_machine :initial => :staged do
     state :staged
-    state :running, :scourge_won, :sentinel_won, :aborted do
+    state :running, :scourge, :sentinel, :aborted do
       validates_present :mode
       validates_size :sentinel, :size => 5
       validates_size :scourge, :size => 5
     end
-    state :aborted, :scourge_won, :sentinel_won do
+    state :aborted, :scourge, :sentinel do
       validates_with_method :state, :valid_votes
     end
 
@@ -40,17 +40,14 @@ class Game
     event :start do
       transition :staged => :running
     end
-    event :scourge_wins do
-      transition :running => :scourge_won
+    event :vote_scourge do
+      transition :running => :scourge
     end
-    event :sentinel_wins do
-      transition :running => :sentinel_won
+    event :vote_sentinel do
+      transition :running => :sentinel
     end
-    event :abort do
+    event :vote_abort do
       transition :running => :aborted
-    end
-    event :cancel do
-      transition :staged => :aborted
     end
   end
 
@@ -72,18 +69,21 @@ class Game
     }
   end
 
+  def valid_votes
+    if (result = count_votes) == :abort
+      state == "aborted"
+    else
+      result.to_s == state
+    end
+  end
+
   #
   # Logic
   #
   default_scope(:default).update(:order => [:start_time.desc])
 
-  def result
-    case state
-      when "scourge_won" then :scourge
-      when "sentinel_won" then :sentinel
-      when "aborted" then :aborted
-      else :undecided
-    end
+  def persistent?
+    ["sentinel", "scourge", "aborted", "running"].include? state
   end
 
   def sentinel
@@ -99,7 +99,17 @@ class Game
   end
 
   def check_votes
-    game_memberships.reload
+    result = count_votes
+    send("vote_#{result}") if result
   end
 
+  def count_votes
+#     game_memberships.reload
+    result = game_memberships.reduce(Hash.new(0)) do |hsh, gm|
+      hsh[gm.vote] += 1 unless gm.vote == :none ; hsh
+    end.find do |vote, number|
+      number >= Rango::AppConfig[:votes_needed]
+    end
+    result && result.first
+  end
 end

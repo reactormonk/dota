@@ -8,7 +8,7 @@ class GameMembership
   property :score, Float, :required => true
   property :party, Enum[:staged, :scourge, :sentinel], :required => true, :default => :staged
   property :captain, Boolean, :default => false
-  property :vote, Enum[:none, :abort, :scourge_wins, :sentinel_wins], :default => :none
+  property :vote, Enum[:none, :abort, :win, :fail], :default => :none
 
   # 
   # Associations
@@ -60,7 +60,7 @@ class GameMembership
     league.captain?(player)
   end
 
-  def before_destroy
+  before :destroy do
     !game.persistent?
   end
 
@@ -84,5 +84,26 @@ class GameMembership
   def fetch_score
     raise "No LeagueMembership found, probably :game association missing." unless league_membership
     self.score = league_membership.score
+  end
+
+  after :vote= do
+    @note_check_votes = true
+  end
+
+  after :save, :check_votes
+
+  def check_votes
+    return true unless @note_check_votes
+    game.check_votes
+  end
+
+  def vote
+    mapping = Hash.new {|h,k| h[k] = k}
+    if party == :sentinel
+      mapping.merge!({:win => :sentinel, :fail => :scourge})
+    else
+      mapping.merge!({:fail => :sentinel, :win => :scourge})
+    end
+    mapping[attribute_get(:vote)]
   end
 end

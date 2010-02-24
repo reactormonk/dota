@@ -40,6 +40,27 @@ BareTest.suite "DotA" do
           equal(@state, @game.state)
         end
       end
+      suite "stop" do
+        setup :game do
+          @game = Factory(:valid_full_game)
+          @game.start
+        end
+        suite "abort" do
+          setup :votes, "not enough votes to abort" do
+            @game.game_memberships.first(6).each {|gm| gm.vote = :abort; gm.save}
+            @state = "running"
+          end
+          setup :votes, "enough votes to abort" do
+            @game.game_memberships.first(7).each {|gm| gm.vote = :abort; gm.save}
+            @state = "aborted"
+          end
+          assert "it behaves correctly with :votes" do
+            equal(@state, @game.state)
+          end
+        end
+        suite "finish" do
+        end
+      end
     end
   end
 end
