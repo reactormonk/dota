@@ -34,7 +34,7 @@ class Game
       validates_with_method :state, :valid_votes
     end
 
-    before_transition :running => any - :aborted, :do => :process_score
+    after_transition :running => any - :aborted, :do => :process_score
     before_transition :on => :start, :do => [:push_start_time, :drop_staged_players]
 
     event :start do
@@ -64,9 +64,10 @@ class Game
   #
 
   def process_score
-#     PlayerScore.send(Rango::AppConfig[:score_method], self).each {|player, score|
-#       player.league_memberships.first(:league => league).score = score
-#     }
+    PlayerScore.send(Rango::AppConfig[:score_method], self).each do |gm, score|
+      gm.league_membership.score = score
+      gm.league_membership.save
+    end
     true
   end
 
