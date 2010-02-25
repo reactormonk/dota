@@ -113,4 +113,11 @@ class Game
     end
     result && result.first
   end
+
+  #
+  # Helper
+  #
+  def free_parties
+    [[:sentinel, :scourge], [:scourge], [:sentinel]][sentinel.size <=> scourge.size]
+  end
 end

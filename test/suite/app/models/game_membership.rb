@@ -76,6 +76,37 @@ BareTest.suite "DotA" do
             end
           end
         end
+      end
+      suite "RandomGame" do
+        suite "distributes every player correctly when joining" do
+          setup do
+            @game = Factory(:random_game)
+          end
+          setup :game, "with equal player each side" do
+            @player = Factory(:player)
+            @parties = [:sentinel, :scourge]
+          end
+          setup :game, "with more on sentinel" do
+            gm = GameMembership.create(:player => Factory(:player), :game => @game)
+            gm.party = :sentinel
+            gm.save
+            @player = Factory(:player)
+            @parties = [:scourge]
+          end
+          setup :game, "with more on scourge" do
+            gm = GameMembership.create(:player => Factory(:player), :game => @game)
+            gm.party = :scourge
+            gm.save
+            @player = Factory(:player)
+            @parties = [:sentinel]
+          end
+          setup :exercise do
+            @gm = GameMembership.create(:player => @player, :game => @game)
+          end
+          assert "the correct party gets assigned :game" do
+            @parties.include? @gm.party
+          end
+        end
         suite "CaptainGame" do
         end
       end

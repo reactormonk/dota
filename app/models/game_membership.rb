@@ -100,6 +100,7 @@ class GameMembership
   before :valid?, :fetch_score
 
   def fetch_score
+    raise "No Player found." unless player
     raise "No LeagueMembership found, probably :game association missing." unless league_membership
     self.score = league_membership.score
   end
@@ -113,6 +114,13 @@ class GameMembership
   def check_votes
     return unless @note_check_votes
     game.check_votes
+  end
+
+  before :save, :randomize_party
+
+  def randomize_party
+    return unless game.respond_to? :randomize_party
+    self.party = game.randomize_party
   end
 
 end

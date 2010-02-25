@@ -48,6 +48,9 @@ Factory.define :game do |g|
   g.mode "ap"
 end
 
+Factory.define :random_game, :parent => :game, :class => RandomGame  do |g|
+end
+
 Factory.define :full_game, :parent => :game do |g|
   g.after_build do |game|
     10.times {Factory(:game_membership, :game => game, :player => Factory(:player))}
