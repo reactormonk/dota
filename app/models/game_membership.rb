@@ -44,6 +44,10 @@ class GameMembership
   # Should be set only if CaptainGame
   attr_accessor :picked
 
+  #
+  # Accessors
+  #
+
   def not_playing?
     !(player.playing? && player.where_playing != game)
   end
@@ -59,6 +63,20 @@ class GameMembership
   def captain?
     league.captain?(player)
   end
+
+  def clean_vote
+    mapping = Hash.new {|h,k| h[k] = k}
+    if party == :sentinel
+      mapping.merge!({:win => :sentinel, :fail => :scourge})
+    else
+      mapping.merge!({:fail => :sentinel, :win => :scourge})
+    end
+    mapping[attribute_get(:vote)]
+  end
+
+  #
+  # Callbacks
+  #
 
   before :destroy do
     throw :halt if game.persistent?
@@ -97,13 +115,4 @@ class GameMembership
     game.check_votes
   end
 
-  def clean_vote
-    mapping = Hash.new {|h,k| h[k] = k}
-    if party == :sentinel
-      mapping.merge!({:win => :sentinel, :fail => :scourge})
-    else
-      mapping.merge!({:fail => :sentinel, :win => :scourge})
-    end
-    mapping[attribute_get(:vote)]
-  end
 end
