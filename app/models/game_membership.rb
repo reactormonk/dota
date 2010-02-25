@@ -93,7 +93,7 @@ class GameMembership
   after :save, :check_votes
 
   def check_votes
-    return true unless @note_check_votes
+    return unless @note_check_votes
     game.check_votes
   end
 
