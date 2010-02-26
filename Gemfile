@@ -12,7 +12,7 @@ source :gemcutter
 # === Shared Gems === #
 # Specify a dependency on rango. When the bundler downloads gems,
 # it will download rango as well as all of rango' dependencies
-gem "rango", "0.3.pre"#, git: "git://github.com/botanicus/rango.git"
+gem "rango", git: "git://github.com/Tass/rango.git"
 gem "rack"#, git: "git://github.com/rack/rack.git"
 gem "rubyexts"
 gem "media-path"
@@ -24,9 +24,10 @@ gem "crudtree"#, git: "git://github.com/Tass/CRUDtree.git"
 # template engine
 gem "haml"#, git: "git://github.com/nex3/haml.git"
 gem "tilt"
-gem "styler"#, git: "git://github.com/Tass/styler.git"
+gem "styler", git: "git://github.com/Tass/styler.git"
 
 # ORM
+gem "data_objects"
 gem "dm-core", git: "git://github.com/datamapper/dm-core.git"
 gem "dm-timestamps", git: "git://github.com/Tass/dm-more.git"
 gem "dm-types", git: "git://github.com/Tass/dm-more.git"
@@ -55,6 +56,6 @@ group(:development, :test) do
   gem "do_sqlite3"#, git: "git://github.com/datamapper/do.git"
   gem "activesupport"
   gem "dm-factory_girl", git: "git://github.com/Tass/factory_girl.git", :require => 'factory_girl'
-  gem "baretest", "0.4.0.pre2"
+  gem "baretest", "0.4.0.pre3"#, git: "git://github.com/apeiros/baretest.git"
   gem "ruby-debug19"
 end
