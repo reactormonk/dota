@@ -12,7 +12,7 @@ source :gemcutter
 # === Shared Gems === #
 # Specify a dependency on rango. When the bundler downloads gems,
 # it will download rango as well as all of rango' dependencies
-gem "rango", git: "git://github.com/Tass/rango.git"
+gem "rango", git: "git://github.com/botanicus/rango.git"
 gem "rack"#, git: "git://github.com/rack/rack.git"
 gem "rubyexts"
 gem "media-path"
