@@ -1,11 +1,4 @@
-Warden::Manager.serialize_into_session do
-  user.id
-end
-
-Warden::Manager.serialize_from_session do
-  Player.get(id)
-end
-
+require 'warden'
 module Authenticable
   module ClassMethods
   end
@@ -25,16 +18,15 @@ end
 
 Warden::Strategies.add(:password) do
   def valid?
-    params[:login] || params[:password]
+    !! params['player']['login'] || params['player']['password']
   end
 
   def authenticate!
-    return fail! unless user = Player.first(:login => params[:login])
+    return fail! unless user = Player.first(:login => params['player']['login'])
 
-    if user.encrypted_password == params[:password]
+    if user.encrypted_password == params['player']['password']
       success!(user)
     else
-      errors.add(:login, "Username or Password incorrect")
       fail!
     end
   end

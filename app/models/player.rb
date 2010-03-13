@@ -65,4 +65,15 @@ class Player
     !! challenged
   end
 
+  #
+  # Auth
+  #
+  property :encrypted_password, BCryptHash, :required => true
+
+  validates_is_confirmed :password
+
+  def password=(pass)
+    @password = pass
+    self.encrypted_password = pass
+  end
 end

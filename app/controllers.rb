@@ -2,16 +2,19 @@
 
 # http://wiki.github.com/botanicus/rango/controllers
 
-require "rango/helpers"
 require "rango/controller"
 require "rango/mixins/filters"
-require "rango/mixins/message"
 require "rango/router/adapters/crudtree"
 require "styler/mixins/rango"
 
+module Rango::Helpers
+  def flash
+    env['x-rack.flash']
+  end
+end
+
 class Application < Rango::Controller
   include Rango::FiltersMixin
-  include Rango::MessageMixin
   include Styler::RangoMixin
   include Rango::Helpers
 
@@ -45,4 +48,4 @@ class ShowCase < Application
 end
 
 
-%w(exceptions games leagues players).each {|file| require_relative("controllers/" + file)}
+%w(exceptions games leagues players menu).each {|file| require_relative("controllers/" + file)}

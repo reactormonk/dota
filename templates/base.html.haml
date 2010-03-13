@@ -21,4 +21,12 @@
         .personal
           = Menu.new(env).personal_menu
       .content
+        - if (notice = flash.notice) || (error = flash.error)
+          .flash
+            - if notice
+              .notice
+                = notice
+            - if error
+              .error
+                = error
         = block(:content)

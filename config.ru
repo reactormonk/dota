@@ -18,10 +18,12 @@ require_relative "config/router"
 # Warden
 require_relative "config/warden"
 
+use Rango::Middlewares::Basic
 use Rack::Session::Cookie
+use Rack::Flash, :accessorize => [:notice, :error]
 use Warden::Manager do |manager|
   manager.default_strategies :password
-  manager.failure_app = proc { raise NotAuthenticated }
+  manager.serialize_into_session {|player| player.id}
+  manager.serialize_from_session {|id| Player.get(id)}
 end
-use Rango::Middlewares::Basic
 run Rango::Router.app

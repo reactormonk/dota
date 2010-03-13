@@ -12,10 +12,11 @@ source :gemcutter
 # === Shared Gems === #
 # Specify a dependency on rango. When the bundler downloads gems,
 # it will download rango as well as all of rango' dependencies
-gem "rango", git: "git://github.com/botanicus/rango.git"
+gem "rango", git: "git://github.com/Tass/rango.git"
 gem "rack"#, git: "git://github.com/rack/rack.git"
 gem "rubyexts"
 gem "media-path"
+gem "rack-flash"
 
 # router
 gem "usher"#, git: "git://github.com/joshbuddy/usher.git"
@@ -58,4 +59,5 @@ group(:development, :test) do
   gem "dm-factory_girl", git: "git://github.com/Tass/factory_girl.git", :require => 'factory_girl'
   gem "baretest", "0.4.0.pre3"#, git: "git://github.com/apeiros/baretest.git"
   gem "ruby-debug19"
+  gem "hirb"
 end
