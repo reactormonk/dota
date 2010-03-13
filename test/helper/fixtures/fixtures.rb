@@ -1,8 +1,10 @@
 ENV['DATAMAPPER'] = "true"
 require 'factory_girl'
+require_relative 'pick'
 
 Factory.define :player do |p|
   p.sequence(:login) {|n| "login#{n}"}
+  p.encrypted_password "sekrit"
 end
 
 Factory.define :league do |l|

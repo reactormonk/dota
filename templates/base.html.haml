@@ -17,8 +17,8 @@
     .container
       .menu
         .global
-          = block(:global_menu)
+          = Menu.new(env).global_menu
         .personal
-          = block(:personal_menu)
+          = Menu.new(env).personal_menu
       .content
         = block(:content)

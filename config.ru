@@ -20,7 +20,7 @@ require_relative "config/warden"
 
 use Rack::Session::Cookie
 use Warden::Manager do |manager|
-  manager.default_strategies :dsde_cookie, :bot, :password
+  manager.default_strategies :password
   manager.failure_app = proc { raise NotAuthenticated }
 end
 use Rango::Middlewares::Basic
