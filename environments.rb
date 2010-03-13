@@ -11,6 +11,7 @@ when "production", "stage"
 when "development"
   DataMapper::Logger.new(STDOUT, :debug)
   DataMapper.setup(:default, "sqlite3:db/#{Rango.environment}.db")
+  require_relative 'test/helper/fixtures/fixtures'
 when "test", "spec", "cucumber"
   DataMapper.setup(:default, "sqlite3::memory:")
 end
