@@ -17,6 +17,8 @@ class Factory
     Factory.pick(right)
   end
 end
-BareTest.toplevel_suite.teardown do
-  defined?(Factory::Proxy::Pick::REGISTER) && Factory::Proxy::Pick::REGISTER.clear
+if defined? Baretest
+  BareTest.toplevel_suite.teardown do
+    defined?(Factory::Proxy::Pick::REGISTER) && Factory::Proxy::Pick::REGISTER.clear
+  end
 end
