@@ -14,6 +14,7 @@ rescue LoadError
   require "bundler"
   Bundler.setup(:default, :development)
 end
+Bundler.require(:default)
 
 require "rango/stacks/controller"
 
