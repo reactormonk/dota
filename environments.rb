@@ -24,5 +24,7 @@ else
   Rango.logger.auto_flush = false
 end
 
+require_relative "lib/helpers"
+
 # write log at exit
 at_exit { Rango.logger.close }
