@@ -65,3 +65,7 @@ group(:test) do
   gem "baretest", git: "git://github.com/apeiros/baretest.git", branch: "development"
   gem "rack-test"
 end
+
+group(:production) do
+  gem "do_postgres"
+end

@@ -7,7 +7,7 @@ require 'ruby-debug'
 # database connection
 case Rango.environment
 when "production", "stage"
-  raise "Not ready to use yet"
+  DataMapper.setup(:default, ENV['DATABASE_URL'])
 when "development"
   DataMapper::Logger.new(STDOUT, :debug)
   DataMapper.setup(:default, "sqlite3:db/#{Rango.environment}.db")
