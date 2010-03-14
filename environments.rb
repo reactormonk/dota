@@ -2,7 +2,6 @@
 
 # http://wiki.github.com/botanicus/rango/environments-support
 require "rango/environments"
-require 'ruby-debug'
 
 # database connection
 case Rango.environment
@@ -17,6 +16,7 @@ when "test", "spec", "cucumber"
 end
 
 if Rango.development?
+  require 'ruby-debug'
   Rango.logger = SimpleLogger::Logger.new(STDOUT)
   Rango.logger.auto_flush = true
 else
