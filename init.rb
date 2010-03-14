@@ -34,6 +34,7 @@ require_relative "load_config"
 # register applications
 require_relative "app/models.rb"
 require_relative "app/controllers.rb"
+require_relative "app/styles.rb"
 
 # environment-specific settings
 require_relative "environments"

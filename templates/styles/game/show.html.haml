@@ -2,4 +2,4 @@
 - block(:title) do
   Game ##{@game.id}
 = block(:content) do
-  = @game.present
+  = @game.present.with(player: @player)

@@ -3,10 +3,5 @@
 = block(:content) do
   %h1
     Players
-  %table
-    %thead
-      %th Player
   - for player in @players
-    %tr
-      %td
-        = link_to player.login, resource(player)
+    = player

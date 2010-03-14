@@ -1,6 +1,5 @@
 module Styles
-  class Game
-    include Styler::Style
+  class Game < CustomStyle
     style_for(::Game)
 
     def prepare

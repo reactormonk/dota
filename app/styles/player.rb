@@ -1,9 +1,8 @@
 module Styles
-  class Game
-    include Styler::Style
-    style_for(::Game)
+  class Player < CustomStyle
+    style_for(::Player)
 
-    delegate :login, :party, :where_playing, :leagues
+    association :league_memberships, :leagues, :game_memberships, :games, :where_playing
 
     def prepare
     end
