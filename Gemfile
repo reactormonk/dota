@@ -40,13 +40,11 @@ gem "state_machine", git: "git://github.com/pluginaweek/state_machine.git"
 # auth
 gem "bcrypt-ruby"
 gem "warden"
-gem "bureaucrat"
 
 gem "nake"
 gem "simple-logger"
 
 # === Environment-Specific Setup === #
-unless ENV['RACK_ENV'] == "production"
 group(:development) do
   gem "shotgun", require: nil#, git: "git://github.com/rtomayko/shotgun.git"
   gem "thin", require: nil#, git: "git://github.com/macournoyer/thin.git" # there seems to be some problems with latest thin
@@ -65,7 +63,6 @@ end
 group(:test) do
   gem "baretest", git: "git://github.com/apeiros/baretest.git", branch: "development"
   gem "rack-test"
-end
 end
 
 group(:production) do
