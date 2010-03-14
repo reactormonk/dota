@@ -14,6 +14,7 @@ rescue LoadError
   require "bundler"
   Bundler.setup(:default, :development)
 end
+require 'dm-core' # bundler on heroku seems to have... issues.
 Bundler.require(:default)
 
 require "rango/stacks/controller"
