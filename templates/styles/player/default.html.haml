@@ -1,0 +1,25 @@
+%div[@model, :id]
+  %h2
+    = login
+  - if game = where_playing
+    .game
+      Dieser User spielt gerade in
+      = game
+  %table
+    %caption Mitglied bei
+    %thead
+      %tr
+        %th Name
+        %th Score
+        %th vouched?
+        %th banned?
+    - for lm in league_memberships
+      %tr
+        %td
+          = link_to lm.league.name, resource(lm.league)
+        %td
+          = lm.score
+        %td
+          = lm.vouched?
+        %td
+          = lm.banned?

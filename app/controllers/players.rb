@@ -1,13 +1,15 @@
 class Players < Application
-  before :ensure_authenticated, :exclude => [:show, :index, :login]
+#   before :ensure_authenticated, :exclude => [:show, :index, :login]
 
   def index
     @players = Player.all
+    render "players/index", :players
   end
 
   def show
     @player = Player.first(:login => params[:login])
     raise NotFound unless @player
+    render "players/show", :player
   end
 
   def login
