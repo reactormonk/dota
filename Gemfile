@@ -33,7 +33,6 @@ gem "dm-core", git: "git://github.com/datamapper/dm-core.git"
 gem "dm-timestamps", git: "git://github.com/Tass/dm-more.git"
 gem "dm-types", git: "git://github.com/Tass/dm-more.git"
 gem "dm-validations", git: "git://github.com/Tass/dm-more.git"
-gem "dm-aggregates", git: "git://github.com/Tass/dm-more.git" # for count etc
 
 gem "state_machine", git: "git://github.com/pluginaweek/state_machine.git"
 
