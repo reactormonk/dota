@@ -55,3 +55,8 @@ if ARGV.length > 0 && $0.eql?(__FILE__)
     load ARGV.shift
   end
 end
+
+# require rack stuff
+require "rango/rack/middlewares/basic"
+require_relative "config/router"
+require_relative "config/warden"
