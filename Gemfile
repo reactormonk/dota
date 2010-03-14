@@ -41,7 +41,6 @@ gem "state_machine", git: "git://github.com/pluginaweek/state_machine.git"
 gem "bcrypt-ruby"
 gem "warden"
 
-gem "nake"
 gem "simple-logger"
 
 # === Environment-Specific Setup === #
