@@ -35,8 +35,8 @@ class Application < Rango::Controller
     env['warden']
   end
 
-  def player
-    warden.user(:player)
+  def user
+    warden.user
   end
 
 end

@@ -4,7 +4,7 @@ class Menu < Application
   end
 
   def personal_menu
-    if player
+    if user
       render "menu/personal"
     else
       render "menu/non_personal"
