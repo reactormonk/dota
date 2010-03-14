@@ -44,26 +44,6 @@ gem "nake"
 gem "simple-logger"
 
 # === Environment-Specific Setup === #
-group(:development) do
-  gem "shotgun", require: nil#, git: "git://github.com/rtomayko/shotgun.git"
-  gem "thin", require: nil#, git: "git://github.com/macournoyer/thin.git" # there seems to be some problems with latest thin
-  #gem "unicorn", require: nil#, git: "git://repo.or.cz/unicorn.git"
-  gem "racksh", require: nil#, git: "git://github.com/sickill/racksh.git"
-end
-
-group(:development, :test) do
-  gem "do_sqlite3"#, git: "git://github.com/datamapper/do.git"
-  gem "activesupport"
-  gem "dm-factory_girl", git: "git://github.com/Tass/factory_girl.git", :require => 'factory_girl'
-  gem "ruby-debug19"
-  gem "hirb"
-end
-
-group(:test) do
-  gem "baretest", git: "git://github.com/apeiros/baretest.git", branch: "development"
-  gem "rack-test"
-end
-
 group(:production) do
   gem "do_postgres"
 end
