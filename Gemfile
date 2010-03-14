@@ -29,6 +29,7 @@ gem "styler", git: "git://github.com/Tass/styler.git"
 
 # ORM
 gem "data_objects"
+gem "extlib"
 gem "dm-core", git: "git://github.com/datamapper/dm-core.git"
 gem "dm-timestamps", git: "git://github.com/Tass/dm-more.git"
 gem "dm-types", git: "git://github.com/Tass/dm-more.git"
