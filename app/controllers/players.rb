@@ -3,13 +3,13 @@ class Players < Application
 
   def index
     @players = Player.all
-    render "players/index", :players
+    render "players/index"
   end
 
   def show
     @player = Player.first(:login => params[:login])
     raise NotFound unless @player
-    render "players/show", :player
+    render "players/show"
   end
 
   def login

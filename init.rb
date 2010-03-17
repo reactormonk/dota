@@ -16,6 +16,7 @@ rescue LoadError
 end
 Bundler.require(:default)
 
+require "rango"
 require "rango/stacks/controller"
 
 Rango.environment = "test" if $0 =~ /baretest/
