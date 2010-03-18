@@ -40,9 +40,6 @@ require_relative "app/styles.rb"
 # environment-specific settings
 require_relative "environments"
 
-# if you will run this script with -i argument, interactive session will begin
-Rango.interactive if ARGV.delete("-i")
-
 # so it can work as a runner
 # ./init.rb: start webserver
 if ARGV.length > 0 && $0.eql?(__FILE__)
