@@ -4,7 +4,7 @@ class Player
   # Properties
   #
   property :id,     Serial
-  property :login,  String, :required => true, :unique => true
+  property :name,  String, :required => true, :unique => true
   property :qauth,  String
 
   # 
