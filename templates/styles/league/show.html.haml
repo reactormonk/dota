@@ -17,7 +17,7 @@
     - for lm in @league.league_memberships
       %tr
         %td
-          = link_to lm.player.login, resource(lm.player)
+          = link_to lm.player.name, resource(lm.player)
         %td
           = lm.score
         %td

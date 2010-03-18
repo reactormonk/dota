@@ -11,6 +11,6 @@
       - for gm in @game.game_memberships
         %tr 
           %td
-            = link_to gm.player.login, resource(gm.player)
+            = link_to gm.player.name, resource(gm.player)
           %td
             = gm.score
