@@ -7,9 +7,6 @@
 # it's easy to have default arguments for bin/rackup
 require_relative "init.rb" unless $0.eql?(__FILE__)
 
-# http://wiki.github.com/botanicus/rango/routers
-Rango::Router.use(:usher)
-
 use Rango::Middlewares::Basic
 use Rack::Session::Cookie
 use Rack::Flash, :accessorize => [:notice, :error]

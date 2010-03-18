@@ -1,3 +1,4 @@
+Rango::Router.use(:usher)
 require 'crudtree/interface/usher/rack'
 require 'crudtree/helper'
 Rango::Router.app = Usher::Interface.for(:rack) do
