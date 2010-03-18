@@ -2,9 +2,10 @@
 
 # http://wiki.github.com/botanicus/rango/controllers
 
+require "rango/router/adapters/crudtree"
 require "rango/controller"
 require "rango/mixins/filters"
-require "rango/router/adapters/crudtree"
+require "helpers/adapters/rango"
 require "styler/mixins/rango"
 
 module Rango::Helpers
@@ -15,7 +16,7 @@ end
 
 class Application < Rango::Controller
   include Rango::FiltersMixin
-  include Styler::RangoMixin
+  include Rango::ImplicitRendering
   include Rango::Helpers
 
   # http://wiki.github.com/botanicus/rango/errors-handling

@@ -1,0 +1,9 @@
+#global_menu
+  = block(:global_menu) do
+    %ul
+      %li
+        = link_to "Leagues", resource(:leagues)
+      %li
+        = link_to "Players", resource(:players)
+      %li
+        = link_to "Games", resource(:games)

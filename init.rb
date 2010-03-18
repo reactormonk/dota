@@ -17,6 +17,7 @@ end
 require 'dm-core' # bundler on heroku seems to have... issues.
 Bundler.require(:default)
 
+require "rango"
 require "rango/stacks/controller"
 
 Rango.environment = "test" if $0 =~ /baretest/

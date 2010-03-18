@@ -1,5 +1,5 @@
 BareTest.suite "DotA" do
-  suite "Models", :use => :datamapper do
+  suite "Models" do
     suite "League" do
       suite "rights" do
         setup :lm, "admin" do
