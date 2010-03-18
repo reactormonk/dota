@@ -56,7 +56,7 @@ group(:development, :test) do
   gem "do_sqlite3"#, git: "git://github.com/datamapper/do.git"
   gem "activesupport"
   gem "dm-factory_girl", git: "git://github.com/Tass/factory_girl.git", :require => 'factory_girl'
-  gem "ruby-debug19"
+  gem "ruby-debug19", :require => "ruby-debug"
   gem "hirb"
 end
 
