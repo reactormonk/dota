@@ -3,6 +3,7 @@ class Factory
     class Pick < Build # :nodoc:
       REGISTER = {}
       def initialize(klass)
+        debugger
         @instance = klass.all.reject{|i| REGISTER["#{i.class}#{i.id}"]}.first or raise "No instance of #{klass} found."
         REGISTER["#{@instance.class}#{@instance.id}"] = @instance
       end
@@ -17,7 +18,7 @@ class Factory
     Factory.pick(right)
   end
 end
-if defined? Baretest
+if defined? BareTest
   BareTest.toplevel_suite.teardown do
     defined?(Factory::Proxy::Pick::REGISTER) && Factory::Proxy::Pick::REGISTER.clear
   end
