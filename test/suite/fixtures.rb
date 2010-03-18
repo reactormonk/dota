@@ -1,5 +1,5 @@
 BareTest.suite "DotA" do
-  suite "fixtures", :use => :datamapper do
+  suite "fixtures" do
     suite "#lm" do
       setup do
         Factory.lm(:voucher)
