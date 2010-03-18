@@ -4,3 +4,10 @@ require 'factory_girl'
 require_relative "helper/fixtures/fixtures"
 require_relative "helper/fixtures/pick"
 require_relative "datamapper"
+
+BareTest do
+  require_baretest "0.4.0" # minimum baretest version to run these tests
+  require_ruby     "1.9.1" # minimum ruby version to run these tests
+  use              :support # Use :support in all suites
+  use              :datamapper
+end

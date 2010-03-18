@@ -1,5 +1,5 @@
 BareTest.suite "DotA" do
-  suite "Models", :use => :datamapper do
+  suite "Models" do
     suite "Player" do
       suite "constructors" do
         setup do
