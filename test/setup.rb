@@ -5,6 +5,7 @@ require_relative "helper/fixtures/fixtures"
 require_relative "helper/fixtures/pick"
 require_relative "use/datamapper"
 require_relative "use/rango_rack_test"
+require_relative "use/warden"
 
 BareTest do
   require_baretest "0.4.0" # minimum baretest version to run these tests
