@@ -1,0 +1,8 @@
+%div[@model, :id]
+  %h2
+    - if homepage
+      = link_to name, homepage
+    - else
+      = name
+  -if user && ! banned?(user)
+    = partial './new_game'

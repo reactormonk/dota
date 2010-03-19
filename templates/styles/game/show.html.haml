@@ -1,5 +1,0 @@
-- extends "base.html" unless request.ajax?
-- block(:title) do
-  Game ##{@game.id}
-= block(:content) do
-  = @game.present.with(player: @player)

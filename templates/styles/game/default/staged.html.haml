@@ -1,6 +1,5 @@
-- extends "./presenter.html"
-- includes "./actions/join.html"
-- block(:game_content) do
+%div[@model, :id]{:state => :staged}
+  join button here
   .players
     %table
       %caption Players
@@ -8,9 +7,10 @@
         %tr
           %th Name
           %th Score
-      - for gm in @game.game_memberships
-        %tr 
+      - for gm in game_memberships
+        %tr
           %td
             = link_to gm.player.name, resource(gm.player)
           %td
             = gm.score
+    

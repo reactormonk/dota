@@ -1,0 +1,4 @@
+- extends "base.html" unless request.ajax?
+- block(:title, @league.name)
+= block(:content) do
+  = @league

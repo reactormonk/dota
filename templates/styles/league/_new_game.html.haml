@@ -1,0 +1,11 @@
+.new_game
+  %form(action="/games")
+    %input{name: "game[type]", value: "captaingame", type: "hidden"}
+    %input{name: "game[league]", value: name, type: "hidden"}
+    / You may also send game[mode] if you want to select a different game mode
+    %input{name: "submit", type: "submit", value: "RandomGame"}
+  %form(action="/games")
+    %input{name: "game[type]", value: "captaingame", type: "hidden"}
+    %input{name: "game[league]", value: name, type: "hidden"}
+    / You may also send game[mode] if you want to select a different game mode
+    %input{name: "submit", type: "submit", value: "CaptainGame"}
