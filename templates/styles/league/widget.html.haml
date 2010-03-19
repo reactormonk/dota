@@ -1,0 +1,7 @@
+%div[@model, :id]
+  %h2
+    = link_to name, resource(@model)
+  -if user && ! banned?(user)
+    = partial './new_game'
+  .info
+    = "Diese League hat #{@model.players.count} Player."

@@ -1,0 +1,16 @@
+%div[@model, :id]{:state => :staged}
+  join button here
+  .players
+    %table
+      %caption Players
+      %thead
+        %tr
+          %th Name
+          %th Score
+      - for gm in game_memberships
+        %tr
+          %td
+            = link_to gm.player.name, resource(gm.player)
+          %td
+            = gm.score
+    

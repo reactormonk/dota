@@ -3,7 +3,7 @@ require 'factory_girl'
 require_relative 'pick'
 
 Factory.define :player do |p|
-  p.sequence(:login) {|n| "login#{n}"}
+  p.sequence(:name) {|n| "name#{n}"}
   p.encrypted_password "sekrit"
 end
 

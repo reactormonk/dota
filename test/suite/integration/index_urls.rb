@@ -10,14 +10,14 @@ BareTest.suite "DotA" do
       setup :page, "/players" do
         @page = "/players"
       end
-      setup :page, "/" do
+      setup :page, "/games" do
         @page = "/games"
       end
       setup :exercise do
         get @page
       end
       assert "response for :page is ok" do
-        last_request.ok?
+        last_response.ok?
       end
     end
   end

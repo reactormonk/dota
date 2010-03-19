@@ -18,11 +18,11 @@ end
 
 Warden::Strategies.add(:password) do
   def valid?
-    !! params['player']['login'] || params['player']['password']
+    !! params['player']['name'] || params['player']['password']
   end
 
   def authenticate!
-    return fail! unless user = Player.first(:login => params['player']['login'])
+    return fail! unless user = Player.first(:name => params['player']['name'])
 
     if user.encrypted_password == params['player']['password']
       success!(user)

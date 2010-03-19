@@ -1,22 +1,22 @@
 class Players < Application
-#   before :ensure_authenticated, :exclude => [:show, :index, :login]
+#   before :ensure_authenticated, :exclude => [:show, :index, :name]
 
   def index
-    @players = Player.all
+    @players = style Player.all
     render "players/index"
   end
 
   def show
-    @player = Player.first(:login => params[:login])
+    @player = style Player.first(:name => params[:name])
     raise NotFound unless @player
     render "players/show"
   end
 
-  def login
+  def name
     if warden.authenticate(:password)
       flash.notice = "Logged in successfully."
     else
-      flash.error = "You failed at login."
+      flash.error = "You failed at name."
     end
     redirect("/")
   end

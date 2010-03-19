@@ -14,6 +14,8 @@ class LeagueMembership
   belongs_to :player
   belongs_to :league
 
+  default_scope(:default).update(:order => [:score.desc])
+
   def issued_decrets
     Decret.all(:issuer => self)
   end
