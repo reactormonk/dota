@@ -64,14 +64,19 @@ class GameMembership
     league.captain?(player)
   end
 
+  CLEAN_VOTE_MAPPER = {
+    sentinel: {
+      win:  :sentinel,
+      fail: :scourge
+    },
+    scourge: {
+      win:  :scourge,
+      fail: :sentinel
+    }
+  }
+
   def clean_vote
-    mapping = Hash.new {|h,k| h[k] = k}
-    if party == :sentinel
-      mapping.merge!({:win => :sentinel, :fail => :scourge})
-    else
-      mapping.merge!({:fail => :sentinel, :win => :scourge})
-    end
-    mapping[attribute_get(:vote)]
+    CLEAN_VOTE_MAPPING[party][attribute_get(:vote)]
   end
 
   #
