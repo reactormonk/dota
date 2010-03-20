@@ -26,7 +26,6 @@ class Game
   state_machine :initial => :staged do
     state :staged
     state :running, :scourge, :sentinel, :aborted do
-      validates_present :mode
       validates_size :sentinel, :size => 5
       validates_size :scourge, :size => 5
     end

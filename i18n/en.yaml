@@ -1,0 +1,13 @@
+---
+decret:
+  cross_league: "Decrets are not allowed to be cross-league."
+  self_reference: "You can't declare decrets to yourself."
+  cannot_be_issued_by: "You can't declare %1, you have to be at least %2"
+
+game_membership:
+  may_not_pick: "It's not your turn to pick."
+  already_picked: "%1 is already picked."
+  playing_already: "You are already playing in Game #%1."
+  not_vouched: "You're not vouched in %1."
+  not_captain: "You're not captain in %1."
+  banned: "You're banned in %1."
