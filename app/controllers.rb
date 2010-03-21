@@ -9,6 +9,7 @@ require "helpers/adapters/rango"
 require "styler/mixins/rango"
 
 module Rango::Helpers
+  include R18n::Rack::Helpers
   def flash
     env['x-rack.flash']
   end
