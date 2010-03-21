@@ -1,10 +1,9 @@
 class LeagueMembership
-  include DataMapper::Resource
+  include CustomResource
 
   #
   # Properties
   #
-  property :id, Serial
   property :score, Float, :required => true, :default => 1000.0
   property :admin, Boolean, :default => false
 

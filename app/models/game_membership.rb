@@ -1,10 +1,9 @@
 class GameMembership
-  include DataMapper::Resource
+  include CustomResource
 
   #
   # Properties
   #
-  property :id, Serial
   property :score, Float, :required => true
   property :party, Enum[:staged, :scourge, :sentinel], :required => true, :default => :staged
   property :captain, Boolean, :default => false
@@ -28,7 +27,7 @@ class GameMembership
   # Validations
   #
   validates_present :league
-  validates_with_method :game, :method => :may_pick?, :if => :picked, :message => t.game_membership.may_not_pick
+  validates_with_method :game, :method => :may_pick?, :if => :picked, :message => proc {|r| t.game_membership.may_not_pick}
   validates_with_method :player, :method => :may_be_picked, :if => :picked, :message => proc {|r| t.game_membership.already_picked(r.player.name)}
   validates_with_method :player, :method => :not_playing?, :if => :new?, :message => proc {|r| t.game_membership.playing_already(r.player.where_playing.id)}
   validates_with_method :league, :method => :vouched?, :if => :new?, :message => proc {|r| t.game_membership.not_vouched(r.league)}
@@ -64,7 +63,7 @@ class GameMembership
     league.captain?(player)
   end
 
-  CLEAN_VOTE_MAPPER = {
+  CLEAN_VOTE_MAPPING = {
     sentinel: {
       win:  :sentinel,
       fail: :scourge

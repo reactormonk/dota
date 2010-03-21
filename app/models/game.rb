@@ -1,7 +1,7 @@
 require 'state_machine'
 
 class Game
-  include DataMapper::Resource
+  include CustomResource
 
   #
   # Properties

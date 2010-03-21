@@ -1,11 +1,10 @@
 require 'dm-timestamps'
 class Decret
-  include DataMapper::Resource
+  include CustomResource
 
   #
   # Properties
   #
-  property :id, Serial
   property :created_at, DateTime
   property :given, Boolean, :required => true, :default => true
   property :reason, String, :required => true
@@ -18,8 +17,8 @@ class Decret
   belongs_to :issuer, :model => "LeagueMembership"
   belongs_to :receiver, :model => "LeagueMembership"
 
-  validates_with_method :receiver, :same_league?, :message => t.decret.cross_league
-  validates_with_block :receiver, :message => t.decret.self_reference do |r,p| r.receiver != r.issuer end
+  validates_with_method :receiver, :same_league?, :message => proc {|r| t.decret.cross_league}
+  validates_with_block :receiver, :message => proc {|r| t.decret.self_reference } do |r,p| r.receiver != r.issuer end
 
   def same_league?
     issuer.league == receiver.league
