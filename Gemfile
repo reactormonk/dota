@@ -18,6 +18,7 @@ gem "rubyexts"
 gem "media-path"
 gem "rack-flash"
 gem "helpers", git: "git://github.com/Tass/helpers.git"
+gem "rack-r18n", git: "git://github.com/Tass/rack-r18n.git"
 
 # router
 gem "usher"#, git: "git://github.com/joshbuddy/usher.git"
@@ -44,6 +45,9 @@ gem "bcrypt-ruby"
 gem "warden"
 
 gem "simple-logger"
+
+# i18n
+gem "r18n-core"
 
 # === Environment-Specific Setup === #
 group(:production) do

@@ -8,6 +8,7 @@
 require_relative "init.rb" unless $0.eql?(__FILE__)
 
 use Rango::Middlewares::Basic
+use Rack::R18n
 use Rack::Session::Cookie
 use Rack::Flash, :accessorize => [:notice, :error]
 use Warden::Manager do |manager|

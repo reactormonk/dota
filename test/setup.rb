@@ -13,3 +13,5 @@ BareTest do
   use              :support # Use :support in all suites
   use              :datamapper
 end
+
+R18n.set(R18n::I18n.new("en", "i18n"))

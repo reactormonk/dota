@@ -1,5 +1,5 @@
 class Player
-  include DataMapper::Resource
+  include CustomResource
   #
   # Properties
   #
