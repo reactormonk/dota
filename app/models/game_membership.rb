@@ -65,10 +65,12 @@ class GameMembership
 
   CLEAN_VOTE_MAPPING = {
     sentinel: {
+      abort: :abort,
       win:  :sentinel,
       fail: :scourge
     },
     scourge: {
+      abort: :abort,
       win:  :scourge,
       fail: :sentinel
     }
