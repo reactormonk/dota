@@ -11,3 +11,7 @@ game_membership:
   not_vouched: "You're not vouched in %1."
   not_captain: "You're not captain in %1."
   banned: "You're banned in %1."
+
+base:
+  title: "DotA League Organizer"
+  sources: "Sources"
