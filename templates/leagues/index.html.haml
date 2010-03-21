@@ -1,6 +1,7 @@
 - extends "base.html" unless request.ajax?
-- block(:title, "Leagues")
+- block(:title, t.leagues.title)
 = block(:content) do
-  %h1 Leagues
+  %h1
+    t.leagues.title
   - for league in @leagues
     = league.as(:widget)

@@ -13,7 +13,7 @@ module CustomResource
     receiver.extend         ClassMethods
     receiver.send :include, DataMapper::Resource
     receiver.send :include, InstanceMethods
-    receiver.send :include, R18n::Rack::Helpers
+    receiver.send :include, Rack::R18n::Helpers
     receiver.property :id,  DataMapper::Types::Serial
   end
 end

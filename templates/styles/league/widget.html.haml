@@ -4,4 +4,4 @@
   -if user && ! banned?(user)
     = partial './new_game'
   .info
-    = "Diese League hat #{@model.players.count} Player."
+    = t.leagues.no_of_players(@model.players.count) # TODO Make this work for vouch_required => true

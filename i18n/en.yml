@@ -15,3 +15,27 @@ game_membership:
 base:
   title: "DotA League Organizer"
   sources: "Sources"
+
+errors:
+  not_found:
+    title: "Page not found."
+    content: "Page not found. If you choose this no to be your fail, go poking the admin."
+
+leagues:
+  title: "Leagues"
+  no_of_players: !!pl
+    0: "This league got no vouched players."
+    1: "This league got one vouched players."
+    n: "This league got %1 vouched players."
+
+players:
+  title: "Players"
+  playing_in: "This Player is playing in"
+  member_of: "Mitglied bei:"
+
+games:
+  title: "Games"
+  no_title: "Game #%1"
+
+league_memberships:
+  of: "%1 in the league %2"
