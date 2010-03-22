@@ -8,6 +8,7 @@ class Games < Application
 
   def show
     @game = style Game.first(:id => params[:id])
+    raise NotFound unless @game
     render 'games/show'
   end
 
