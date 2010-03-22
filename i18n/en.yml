@@ -19,7 +19,7 @@ base:
 errors:
   not_found:
     title: "Page not found."
-    content: "Page not found. If you choose this no to be your fail, go poking the admin."
+    content: "Page not found. If you choose this not to be your fail, go poking the admin."
 
 leagues:
   title: "Leagues"
