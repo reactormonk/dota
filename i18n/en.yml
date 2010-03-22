@@ -36,6 +36,11 @@ players:
 games:
   title: "Games"
   no_title: "Game #%1"
+  join: "Join"
+  no_players: !!pl
+    0: "No players in this game. This is a bug. Please report it."
+    1: "There is one player in this game."
+    n: "There are %1 players in this game."
 
 league_memberships:
   of: "%1 in the league %2"

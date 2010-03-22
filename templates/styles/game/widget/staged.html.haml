@@ -1,2 +1,7 @@
 %div[@model, :id]{:state => :staged}
-  join button here
+  %h2
+    = t.games.no_title(id)
+  .player_count
+    = t.games.no_players(players.count)
+  %input{name: "game_membership[game]", value: id, type: "hidden"}
+  %input{name: "submit", type: "submit", value: t.games.join}
