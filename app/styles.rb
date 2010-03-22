@@ -6,4 +6,4 @@ class CustomStyle
   delegate_to_controller :user
 end
 
-%w(game player league).each {|file| require_relative("styles/" + file)}
+%w(league_membership game player league).each {|file| require_relative("styles/" + file)}

@@ -1,0 +1,18 @@
+%div[@model, :id]
+  %h2
+    = t.league_membership.of(link_to(player.name, resource(player)), link_to(league.name, resource(league)))
+  - if admin?
+    .admin
+      = t.league_membership.admin
+  - if captain?
+    .captain
+      = t.league_membership.captain
+  - if banned?
+    .banned
+      = t.league_membership.banned
+  - if voucher?
+    .voucher
+      = t.league_membership.voucher
+  - if vouched?
+    .vouched
+      = t.league_membership.vouched

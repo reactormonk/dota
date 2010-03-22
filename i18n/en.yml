@@ -44,3 +44,8 @@ game:
 
 league_membership:
   of: "%1 in the league %2"
+  admin: "Admin! Bow before me!"
+  captain: "Captain. Follow my orders!"
+  voucher: "Voucher. Don't beg for vouches."
+  banned: "Banned. Failed at life."
+  vouched: "Vouched."

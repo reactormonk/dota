@@ -1,6 +1,8 @@
 %div[@model, :id]
   %h2
     = link_to name, resource(@model)
+  - for lm in league_memberships
+    = lm.as(:widget)
   - if game = where_playing
     .game
       = t.player.playing_in

@@ -1,3 +1,5 @@
 %div[@model, :id]
   %h2
     = t.league_memberships.of(player.name, league.name)
+  - for decret in decrets
+    = decret
