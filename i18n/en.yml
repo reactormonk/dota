@@ -21,19 +21,19 @@ errors:
     title: "Page not found."
     content: "Page not found. If you choose this not to be your fail, go poking the admin."
 
-leagues:
+league:
   title: "Leagues"
   no_of_players: !!pl
     0: "This league got no vouched players."
     1: "This league got one vouched players."
     n: "This league got %1 vouched players."
 
-players:
+player:
   title: "Players"
   playing_in: "This Player is playing in"
   member_of: "Mitglied bei:"
 
-games:
+game:
   title: "Games"
   no_title: "Game #%1"
   join: "Join"
@@ -42,5 +42,5 @@ games:
     1: "There is one player in this game."
     n: "There are %1 players in this game."
 
-league_memberships:
+league_membership:
   of: "%1 in the league %2"

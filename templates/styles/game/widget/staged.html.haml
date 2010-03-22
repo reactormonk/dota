@@ -1,7 +1,7 @@
 %div[@model, :id]{:state => :staged}
   %h2
-    = t.games.no_title(id)
+    = t.game.no_title(id)
   .player_count
-    = t.games.no_players(players.count)
+    = t.game.no_players(players.count)
   %input{name: "game_membership[game]", value: id, type: "hidden"}
-  %input{name: "submit", type: "submit", value: t.games.join}
+  %input{name: "submit", type: "submit", value: t.game.join}

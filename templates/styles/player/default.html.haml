@@ -3,10 +3,10 @@
     = name
   - if game = where_playing
     .game
-      = t.players.playing_in
+      = t.player.playing_in
       = game
   %h3
-    = t.players.member_of
+    = t.player.member_of
   .league_memberships
     - for lm in league_memberships
       = lm.as(:widget)
