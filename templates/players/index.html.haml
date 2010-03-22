@@ -2,6 +2,6 @@
 - block(:title, t.player.title)
 = block(:content) do
   %h1
-    t.player.title
+    = t.player.title
   - for player in @players
     = player.as(:widget)
