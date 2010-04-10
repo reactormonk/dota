@@ -22,7 +22,7 @@ class Player
 
   def generate_lm
     return true unless new?
-    League.all.each {|league| self.leagues << league unless self.leagues.include?(league)}
+    self.leagues |= League.all
   end
 
   #
