@@ -12,13 +12,4 @@ class Players < Application
     render "players/show"
   end
 
-  def name
-    if warden.authenticate(:password)
-      flash.notice = "Logged in successfully."
-    else
-      flash.error = "You failed at name."
-    end
-    redirect("/")
-  end
-
 end

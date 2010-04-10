@@ -6,6 +6,7 @@ class Player
   property :id,     Serial
   property :name,  String, :required => true, :unique => true
   property :qauth,  String
+  property :foreign_id, Integer
 
   # 
   # Associations
@@ -65,15 +66,4 @@ class Player
     !! challenged
   end
 
-  #
-  # Auth
-  #
-  property :encrypted_password, BCryptHash, :required => true
-
-  validates_is_confirmed :password
-
-  def password=(pass)
-    @password = pass
-    self.encrypted_password = pass
-  end
 end
