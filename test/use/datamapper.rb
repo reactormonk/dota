@@ -15,8 +15,7 @@ BareTest.new_component :datamapper do
     DataMapper.repository do |r|
       adapter = r.adapter
       while adapter.current_transaction
-        adapter.current_transaction.rollback
-        adapter.pop_transaction
+        adapter.pop_transaction.rollback
       end
     end
   end
